@@ -1,0 +1,8 @@
+{
+  "name": "manga_api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/andregirao05/manga_api.git",
+  "author": "andregirao05 <andregirao05@gmail.com>",
+  "license": "MIT"
+}
