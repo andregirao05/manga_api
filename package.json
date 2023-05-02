@@ -8,10 +8,10 @@
   "scripts": {
     "prepare": "husky install",
     "commit": "git-cz",
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch src/server",
     "build": "tsup src/",
-    "start": "node dist/index.js",
-    "start:dev": "tsx src/index.ts"
+    "start": "node dist/server",
+    "start:dev": "tsx src/server"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.1",

@@ -1,8 +1,5 @@
 import { Collection, MongoClient, ObjectId, Db } from "mongodb";
 import { IManga, IUpdate, IDatabase, DbManga } from "./interfaces";
-import { config } from "dotenv";
-
-config();
 
 export class Database implements IDatabase {
   private client: MongoClient;
