@@ -1,10 +1,9 @@
 import { Router } from "express";
+import { adaptRoute } from "./routAdapt";
+import { makeGetMangaController } from "./compositions/makeGetMangaController";
 
 const router = Router();
 
-router.get("/", (request, response) => {
-  console.log(request.query);
-  response.status(200).json(request.body);
-});
+router.get("/mangas/:id", adaptRoute(makeGetMangaController()));
 
 export { router };
