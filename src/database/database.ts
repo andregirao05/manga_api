@@ -1,5 +1,6 @@
 import { Collection, MongoClient, ObjectId, Db } from "mongodb";
-import { IManga, IUpdate, IDatabase, DbManga } from "./interfaces";
+import { IManga, IUpdate } from "../entities";
+import { IDatabase } from "./interfaces";
 
 export class Database implements IDatabase {
   private client: MongoClient;
@@ -14,12 +15,12 @@ export class Database implements IDatabase {
     this.updates = this.db.collection<IUpdate>("updates");
   }
 
-  async get(id: string): Promise<DbManga | null> {
+  async get(id: string): Promise<IManga | null> {
     const mangas = await this.mangas.findOne({ _id: new ObjectId(id) });
     return mangas;
   }
 
-  async search(searchText: string): Promise<DbManga[]> {
+  async search(searchText: string): Promise<IManga[]> {
     const cursor = this.mangas.find({ $text: { $search: searchText } });
     const mangas = await cursor.toArray();
     await cursor.close();
@@ -32,7 +33,7 @@ export class Database implements IDatabase {
     return genres;
   }
 
-  async getMangasByGenre(genre: string): Promise<DbManga[]> {
+  async getMangasByGenre(genre: string): Promise<IManga[]> {
     const cursor = this.mangas.find({ genres: genre });
     const mangas = await cursor.toArray();
     await cursor.close();
@@ -40,7 +41,7 @@ export class Database implements IDatabase {
     return mangas;
   }
 
-  async getPopulars(siteOrigin: string): Promise<DbManga[]> {
+  async getPopulars(siteOrigin: string): Promise<IManga[]> {
     const updateData = await this.updates.findOne({ origin: siteOrigin });
 
     const cursor = this.mangas.find({
@@ -53,7 +54,7 @@ export class Database implements IDatabase {
     return mangas;
   }
 
-  async getLatestUpdated(siteOrigin: string): Promise<DbManga[]> {
+  async getLatestUpdated(siteOrigin: string): Promise<IManga[]> {
     const updateData = await this.updates.findOne({ origin: siteOrigin });
 
     const cursor = this.mangas.find({

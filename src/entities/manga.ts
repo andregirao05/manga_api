@@ -1,6 +1,7 @@
 import { Chapter } from "./chapter";
+import { IManga } from "./interfaces";
 
-export class Manga {
+export class Manga implements IManga {
   title: string;
   alternative_title: string;
   author: string;

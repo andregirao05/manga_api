@@ -1,4 +1,6 @@
-export class Chapter {
+import { IChapter } from "./interfaces";
+
+export class Chapter implements IChapter {
   name: string;
   pages: string[];
 
