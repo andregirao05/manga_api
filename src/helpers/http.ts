@@ -10,7 +10,7 @@ export function ok(data: any): HttpResponse<any> {
 export function noContent(error: Error | undefined): HttpResponse<any> {
   return {
     statusCode: 204,
-    body: error?.message,
+    body: error,
   };
 }
 
@@ -31,6 +31,6 @@ export function notFound(data: any): HttpResponse<any> {
 export function serverError(error: Error | undefined): HttpResponse<any> {
   return {
     statusCode: 500,
-    body: error?.message,
+    body: error,
   };
 }
