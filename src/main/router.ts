@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { adaptRoute } from "./routAdapt";
+import { adaptRoute } from "./adaptRoute";
 import {
   makeGetMangaController,
   makeGetPopularMangasController,
