@@ -9,7 +9,7 @@
     "prepare": "husky install",
     "commit": "git-cz",
     "dev": "tsx watch src/main/server",
-    "build": "tsup src/main/server",
+    "build": "tsup src",
     "start": "node dist/main/server",
     "start:dev": "tsx src/main/server"
   },
