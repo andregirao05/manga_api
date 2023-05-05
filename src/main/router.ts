@@ -6,6 +6,7 @@ import {
   makeGetLatestUpdatedMangasController,
   makeGetChaptersController,
   makeGetChapterNamesController,
+  makeGetSingleChapterController,
 } from "./compositions";
 
 const router = Router();
@@ -30,6 +31,11 @@ router.get(
 router.get(
   "/mangas/get/:id/chapter-names",
   adaptRoute(makeGetChapterNamesController())
+);
+
+router.get(
+  "/mangas/get/:id/chapters/:chapterName",
+  adaptRoute(makeGetSingleChapterController())
 );
 
 export { router };

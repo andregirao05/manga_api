@@ -62,7 +62,7 @@ Para obter todos os capítulos de um mangá, use:
 
 `/mangas/get/:id/list-chapters`
 
-### Obter um capítulo específico [ainda não implementado]
+### Obter um capítulo específico
 
 Para obter apenas um capítulo específico (necessário fornecer o nome do capítulo):
 
