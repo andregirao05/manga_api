@@ -64,6 +64,21 @@ export class Database implements IDatabase {
     return null;
   }
 
+  async getSingleChapter(
+    id: string,
+    chapterName: string
+  ): Promise<IChapter | null> {
+    if (this.mangas) {
+      const data = await this.mangas.findOne(
+        { _id: new ObjectId(id), "chapters.name": chapterName },
+        { projection: { "chapters.$": 1, _id: 0 } }
+      );
+
+      return data?.chapters[0] || null;
+    }
+    return null;
+  }
+
   async search(searchText: string): Promise<IMangaWithoutChapters[] | null> {
     if (this.mangas) {
       const cursor = this.mangas.find(
