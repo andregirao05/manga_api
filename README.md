@@ -14,6 +14,13 @@ OBS: em caso de desenvolvimento, para habilitar o commitlint é necessário exec
 
 ## Execução da aplicação
 
+A execução da api depende da conexão com o MongoDB. Para tal, é necessário configurar as varíaveis de ambiente. Crie um arquivo chamado `.env` com o seguinte conteúdo:
+
+```
+MONGO_URI=<colocar a url do mongodb aqui>
+PORT=<colocar a porta de preferência aqui. Exemplo: 3333>
+```
+
 Para executar em modo de **_desenvolvimento_**:
 
 `yarn start:dev`
@@ -37,6 +44,7 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 `/mangas/get/:id`
 
 **Descrição:** bbtem um único mangá a partir de um `id`.
+
 **Parâmetros:**
 
 `id`: uma string que representa o id do mangá.
@@ -65,6 +73,7 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 `/mangas/get/:id/chapters/:chapterName`
 
 **Descrição:** retorna um capítulo específico do mangá (nome e páginas).
+
 **Parâmetros:**
 
 `id`: id do mangá.`chapterName`: uma string com o nome do capítulo.
@@ -83,6 +92,7 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 `/mangas/get/:id/chapters-names`
 
 **Descrição:** retorna uma lista de strings com os _nomes dos capítulos_ do mangá.
+
 **Parâmetros:**
 
 `id`: id do mangá.
@@ -100,6 +110,7 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 `/mangas/get/:id/list-chapters`
 
 **Descrição:** retorna todos os capítulos do mangá (nome e páginas).
+
 **Parâmetros:**
 
 `id`: id do mangá.
@@ -117,6 +128,7 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 `/info/populars/:origin`
 
 **Descrição:** retorna uma lista com os mangás mais populares.
+
 **Parâmetros:**
 
 `origin`: qual o site de origem do mangá ("manga_livre" ou "readm").
@@ -134,6 +146,7 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 `/info/updates/:origin`
 
 **Descrição:** retorna uma lista com os mangás recentemente atualizados.
+
 **Parâmetros:**
 
 `origin`: qual o site de origem dos mangás ("manga_livre" ou "readm").
@@ -151,6 +164,7 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 `/mangas/search/:searchTerm`
 
 **Descrição:** retorna uma lista de mangás com título (principal ou alternativo) igual ao termo procurado.
+
 **Parâmetros:**
 
 `searchTerm`: uma string com o termo de busca.
@@ -168,6 +182,7 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 `/genres/list/:language`
 
 **Descrição:** retorna uma lista com os gêneros de mangás por idioma (português e inglês).
+
 **Parâmetros:**
 
 `language`: linguagem alvo ("english" ou "portuguese").
@@ -185,6 +200,7 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 `/genres/get/:genreName`
 
 **Descrição:** retorna uma lista com os mangás do gênero indicado.
+
 **Parâmetros:**
 
 `genreName`: nome do gênero procurado.
