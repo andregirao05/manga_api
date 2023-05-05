@@ -9,6 +9,7 @@ import {
   makeGetSingleChapterController,
   makeSearchMangasController,
   makeGetGenreNamesController,
+  makeGetMangasByGenreController,
 } from "./compositions";
 
 const router = Router();
@@ -46,5 +47,10 @@ router.get(
 );
 
 router.get("/genres/list/:language", adaptRoute(makeGetGenreNamesController()));
+
+router.get(
+  "/genres/get/:genreName",
+  adaptRoute(makeGetMangasByGenreController())
+);
 
 export { router };

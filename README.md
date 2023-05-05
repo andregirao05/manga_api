@@ -80,7 +80,7 @@ Retorna duas listas com os gêneros de mangás no banco de dados (language deve 
 
 `/genres/list/:language`
 
-### Obter mangás por gênero [ainda não implementado]
+### Obter mangás por gênero
 
 Retorna uma lista de mangás do gênero apontado.
 
