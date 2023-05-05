@@ -5,3 +5,4 @@ export * from "./makeGetChaptersController";
 export * from "./makeGetChapterNamesController";
 export * from "./makeGetSingleChapterController";
 export * from "./makeSearchMangasController";
+export * from "./makeGetGenreNamesController";
