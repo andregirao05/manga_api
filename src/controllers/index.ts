@@ -4,3 +4,4 @@ export * from "./getLatestUpdatedMangasController";
 export * from "./getChaptersController";
 export * from "./getChapterNamesController";
 export * from "./getSingleChapterController";
+export * from "./searchMangasController";
