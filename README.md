@@ -74,7 +74,7 @@ Faz uma busca na base de dados por mangás de acordo com o termo de busca fornec
 
 `/mangas/search/:searchTerm`
 
-### Obter listas de gêneros [ainda não implementado]
+### Obter listas de gêneros
 
 Retorna duas listas com os gêneros de mangás no banco de dados (language deve ser "portuguese" e "english").
 
