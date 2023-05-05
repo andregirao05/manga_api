@@ -1,13 +1,12 @@
-import dotenv from "dotenv";
 import { app } from "./app";
 import { db } from "../database";
+import { getEnv } from "./configs";
 
-dotenv.config();
-
-db.connect(process.env.MONGO_URI as string)
+db.connect(getEnv("MONGO_URI", "") as string)
   .then(() => {
-    app.listen(process.env.PORT, () =>
-      console.log(`Sever running on port ${process.env.PORT}`)
+    const port = getEnv("PORT", "8000");
+    app.listen(port, () =>
+      console.log(`Sever running on port http://localhost:${port}`)
     );
   })
   .catch(console.log);
