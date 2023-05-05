@@ -11,7 +11,7 @@ export interface IManga {
   status: string;
   url: string;
   origin: string;
-  language: "english" | "portuguse";
+  language: "english" | "portuguese";
   thumbnail: string;
   genres: string[];
   summary: string;

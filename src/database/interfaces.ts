@@ -1,13 +1,17 @@
-import { IManga } from "../entities";
+import { IChapter, IManga } from "../entities";
+
+export interface IMangaWithoutChapters extends Omit<IManga, "chapters"> {}
 
 export interface IDatabase {
-  connect: (url: string) => Promise<void>;
-  disconnect: () => Promise<void>;
-  get: (id: string) => Promise<IManga | null>;
-  search: (searchText: string) => Promise<IManga[] | null>;
-  listGenres: (lang: "english" | "portuguse") => Promise<string[] | null>;
-  getMangasByGenre: (genre: string) => Promise<IManga[] | null>;
-  getPopulars: (siteOrigin: string) => Promise<IManga[] | null>;
-  getLatestUpdated: (siteOrigin: string) => Promise<IManga[] | null>;
-  exists: (id: string) => Promise<boolean>;
+  connect(url: string): Promise<void>;
+  disconnect(): Promise<void>;
+  get(id: string): Promise<IMangaWithoutChapters | null>;
+  getChapters(id: string): Promise<IChapter[] | null>;
+  getChapterNames(id: string): Promise<string[] | null>;
+  search(searchText: string): Promise<IMangaWithoutChapters[] | null>;
+  listGenres(lang: "english" | "portuguese"): Promise<string[] | null>;
+  getMangasByGenre(genre: string): Promise<IMangaWithoutChapters[] | null>;
+  getPopulars(siteOrigin: string): Promise<IMangaWithoutChapters[] | null>;
+  getLatestUpdated(siteOrigin: string): Promise<IMangaWithoutChapters[] | null>;
+  exists(id: string): Promise<boolean>;
 }

@@ -1,6 +1,6 @@
 import { Collection, MongoClient, ObjectId, Db } from "mongodb";
-import { IManga, IUpdate } from "../entities";
-import { IDatabase } from "./interfaces";
+import { IChapter, IManga, IUpdate } from "../entities";
+import { IDatabase, IMangaWithoutChapters } from "./interfaces";
 
 export class Database implements IDatabase {
   private client: MongoClient | null;
@@ -29,18 +29,47 @@ export class Database implements IDatabase {
     }
   }
 
-  async get(id: string): Promise<IManga | null> {
+  async get(id: string): Promise<IMangaWithoutChapters | null> {
     if (this.mangas) {
-      const mangas = await this.mangas.findOne({ _id: new ObjectId(id) });
+      const mangas = await this.mangas.findOne(
+        { _id: new ObjectId(id) },
+        { projection: { chapters: 0 } }
+      );
       return mangas;
     }
 
     return null;
   }
 
-  async search(searchText: string): Promise<IManga[] | null> {
+  async getChapters(id: string): Promise<IChapter[] | null> {
     if (this.mangas) {
-      const cursor = this.mangas.find({ $text: { $search: searchText } });
+      const data = await this.mangas.findOne(
+        { _id: new ObjectId(id) },
+        { projection: { chapters: 1, _id: 0 } }
+      );
+
+      return data?.chapters || null;
+    }
+
+    return null;
+  }
+
+  async getChapterNames(id: string): Promise<string[] | null> {
+    const chapters = await this.getChapters(id);
+
+    if (chapters) {
+      return chapters.map((chapter) => chapter.name);
+    }
+
+    return null;
+  }
+
+  async search(searchText: string): Promise<IMangaWithoutChapters[] | null> {
+    if (this.mangas) {
+      const cursor = this.mangas.find(
+        { $text: { $search: searchText } },
+        { projection: { chapters: 0 } }
+      );
       const mangas = await cursor.toArray();
       await cursor.close();
       return mangas;
@@ -49,7 +78,7 @@ export class Database implements IDatabase {
     return null;
   }
 
-  async listGenres(lang: "english" | "portuguse"): Promise<string[] | null> {
+  async listGenres(lang: "english" | "portuguese"): Promise<string[] | null> {
     if (this.mangas) {
       const genres = this.mangas.distinct("genres", { language: lang });
       return genres;
@@ -58,9 +87,14 @@ export class Database implements IDatabase {
     return null;
   }
 
-  async getMangasByGenre(genre: string): Promise<IManga[] | null> {
+  async getMangasByGenre(
+    genre: string
+  ): Promise<IMangaWithoutChapters[] | null> {
     if (this.mangas) {
-      const cursor = this.mangas.find({ genres: genre });
+      const cursor = this.mangas.find(
+        { genres: genre },
+        { projection: { chapters: 0 } }
+      );
       const mangas = await cursor?.toArray();
       await cursor.close();
 
@@ -70,14 +104,19 @@ export class Database implements IDatabase {
     return null;
   }
 
-  async getPopulars(siteOrigin: string): Promise<IManga[] | null> {
+  async getPopulars(
+    siteOrigin: string
+  ): Promise<IMangaWithoutChapters[] | null> {
     if (this.updates && this.mangas) {
       const updateData = await this.updates.findOne({ origin: siteOrigin });
 
-      const cursor = this.mangas.find({
-        origin: siteOrigin,
-        url: { $in: updateData?.populars },
-      });
+      const cursor = this.mangas.find(
+        {
+          origin: siteOrigin,
+          url: { $in: updateData?.populars },
+        },
+        { projection: { chapters: 0 } }
+      );
       const mangas = await cursor.toArray();
       await cursor.close();
 
@@ -87,14 +126,19 @@ export class Database implements IDatabase {
     return null;
   }
 
-  async getLatestUpdated(siteOrigin: string): Promise<IManga[] | null> {
+  async getLatestUpdated(
+    siteOrigin: string
+  ): Promise<IMangaWithoutChapters[] | null> {
     if (this.updates && this.mangas) {
       const updateData = await this.updates.findOne({ origin: siteOrigin });
 
-      const cursor = this.mangas.find({
-        origin: siteOrigin,
-        url: { $in: updateData?.latest_updates },
-      });
+      const cursor = this.mangas.find(
+        {
+          origin: siteOrigin,
+          url: { $in: updateData?.latest_updates },
+        },
+        { projection: { chapters: 0 } }
+      );
       const mangas = await cursor.toArray();
       await cursor.close();
 
@@ -107,7 +151,10 @@ export class Database implements IDatabase {
   async exists(id: string): Promise<boolean> {
     try {
       if (this.mangas) {
-        const results = await this.mangas.findOne({ _id: new ObjectId(id) });
+        const results = await this.mangas.findOne(
+          { _id: new ObjectId(id) },
+          { projection: { chapters: 0 } }
+        );
         return results !== null;
       }
       return false;
