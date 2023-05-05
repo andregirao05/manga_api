@@ -1,8 +1,13 @@
 import { IDatabase } from "../database/interfaces";
-import { IManga } from "../entities";
-import { MangaNotFound, MissingParamError, ServerError } from "../errors";
-import { notFound, ok, serverError, badRequest, noContent } from "../helpers";
+import {
+  InvalidParamError,
+  MangaNotFound,
+  MissingParamError,
+  ServerError,
+} from "../errors";
+import { ok, serverError, badRequest, noContent } from "../helpers";
 import { Controller, HttpRequest, HttpResponse } from "../protocols";
+import { ObjectId } from "mongodb";
 
 export class GetMangaController implements Controller<any, any> {
   constructor(private readonly database: IDatabase) {}
@@ -18,6 +23,10 @@ export class GetMangaController implements Controller<any, any> {
       }
 
       const { id } = request.body;
+
+      if (!ObjectId.isValid(id)) {
+        return badRequest(new InvalidParamError("id"));
+      }
 
       if (!(await this.database.exists(id))) {
         return noContent(new MangaNotFound(id));
