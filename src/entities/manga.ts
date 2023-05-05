@@ -7,6 +7,7 @@ export class Manga implements IManga {
   author: string;
   artist: string;
   status: string;
+  rating: number | null;
   url: string;
   origin: string;
   language: "english" | "portuguese";
@@ -21,6 +22,7 @@ export class Manga implements IManga {
     author: string,
     artist: string,
     status: string,
+    rating: number | null,
     url: string,
     origin: string,
     language: "english" | "portuguese",
@@ -34,6 +36,7 @@ export class Manga implements IManga {
     this.author = author;
     this.artist = artist;
     this.status = status;
+    this.rating = rating;
     this.url = url;
     this.origin = origin;
     this.language = language;

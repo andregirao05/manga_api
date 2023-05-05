@@ -59,6 +59,7 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
   "author": string,
   "artist": string,
   "status": string,
+  "rating": number | null,
   "url": string,
   "origin": "manga_livre" | "readm",
   "language": "english" | "portuguese",
@@ -76,7 +77,8 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 
 **Parâmetros:**
 
-`id`: id do mangá.`chapterName`: uma string com o nome do capítulo.
+`id`: id do mangá.
+`chapterName`: uma string com o nome do capítulo.
 
 **Formato do retorno:**
 
