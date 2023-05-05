@@ -50,13 +50,13 @@ Retorna uma lista com os mangás recentemente atualizados de acordo com o site d
 
 `/info/updates/:origin`
 
-### Obter a lista de capítulos de um mangá [ainda não implementado]
+### Obter a lista de capítulos de um mangá
 
 Para obter a lista com os **nomes dos capítulos** de um mangá, deve-se utilizar a rota:
 
 `/mangas/get/:id/chapters-names`
 
-### Obter todos os capítulos de um mangá [ainda não implementado]
+### Obter todos os capítulos de um mangá
 
 Para obter todos os capítulos de um mangá, use:
 
