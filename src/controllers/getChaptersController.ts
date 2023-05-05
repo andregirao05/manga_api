@@ -33,15 +33,15 @@ export class GetChaptersController implements Controller<any, any> {
         return noContent(new MangaNotFound(id));
       }
 
-      const chapter = await this.database.getChapters(id);
+      const chapters = await this.database.getChapters(id);
 
-      if (!chapter) {
+      if (!chapters) {
         return noContent(
           new DataNotFoundError(`Chapter of manga with id ${id}`)
         );
       }
 
-      return ok(chapter);
+      return ok({ chapters });
     } catch (error) {
       return serverError(new ServerError("Error"));
     }

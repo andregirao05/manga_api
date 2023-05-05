@@ -36,7 +36,7 @@ export class GetPopularMangasController implements Controller<any, any> {
         return noContent(new DataNotFoundError("Popular mangas"));
       }
 
-      return ok(mangas);
+      return ok({ mangas });
     } catch (error) {
       return serverError(new ServerError("Error"));
     }
