@@ -7,24 +7,24 @@ export function ok(data: any): HttpResponse<any> {
   };
 }
 
-export function noContent(error: Error | undefined): HttpResponse<any> {
+export function noContent(data: any): HttpResponse<any> {
   return {
     statusCode: 204,
+    body: data,
+  };
+}
+
+export function badRequest(error: Error | undefined): HttpResponse<any> {
+  return {
+    statusCode: 400,
     body: error,
   };
 }
 
-export function badRequest(data: any): HttpResponse<any> {
-  return {
-    statusCode: 400,
-    body: data,
-  };
-}
-
-export function notFound(data: any): HttpResponse<any> {
+export function notFound(error: Error | undefined): HttpResponse<any> {
   return {
     statusCode: 404,
-    body: data,
+    body: error,
   };
 }
 
