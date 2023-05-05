@@ -1,6 +1,6 @@
 import { IDatabase } from "../database/interfaces";
-import { DataNotFoundError, MissingParamError, ServerError } from "../errors";
-import { ok, serverError, badRequest, noContent, notFound } from "../helpers";
+import { DataNotFoundError, ServerError } from "../errors";
+import { ok, serverError, noContent } from "../helpers";
 import { Controller, HttpRequest, HttpResponse } from "../protocols";
 
 export class SearchMangasController implements Controller<any, any> {
@@ -8,14 +8,6 @@ export class SearchMangasController implements Controller<any, any> {
 
   public async handle(request: HttpRequest<any>): Promise<HttpResponse<any>> {
     try {
-      const requiredFields = ["searchTerm"];
-
-      for (const field of requiredFields) {
-        if (!request.body[field]) {
-          return badRequest(new MissingParamError(field));
-        }
-      }
-
       const { searchTerm } = request.body;
 
       const mangas = await this.database.search(searchTerm);

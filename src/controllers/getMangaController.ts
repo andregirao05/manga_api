@@ -1,10 +1,5 @@
 import { IDatabase } from "../database/interfaces";
-import {
-  InvalidParamError,
-  MangaNotFound,
-  MissingParamError,
-  ServerError,
-} from "../errors";
+import { InvalidParamError, MangaNotFound, ServerError } from "../errors";
 import { ok, serverError, badRequest, noContent } from "../helpers";
 import { Controller, HttpRequest, HttpResponse } from "../protocols";
 import { ObjectId } from "mongodb";
@@ -14,14 +9,6 @@ export class GetMangaController implements Controller<any, any> {
 
   public async handle(request: HttpRequest<any>): Promise<HttpResponse<any>> {
     try {
-      const requiredFields = ["id"];
-
-      for (const field of requiredFields) {
-        if (!request.body[field]) {
-          return badRequest(new MissingParamError(field));
-        }
-      }
-
       const { id } = request.body;
 
       if (!ObjectId.isValid(id)) {

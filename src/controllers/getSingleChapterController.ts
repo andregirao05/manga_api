@@ -4,7 +4,6 @@ import {
   DataNotFoundError,
   InvalidParamError,
   MangaNotFound,
-  MissingParamError,
   ServerError,
 } from "../errors";
 import { ok, serverError, badRequest, noContent } from "../helpers";
@@ -15,14 +14,6 @@ export class GetSingleChapterController implements Controller<any, any> {
 
   public async handle(request: HttpRequest<any>): Promise<HttpResponse<any>> {
     try {
-      const requiredFields = ["id", "chapterName"];
-
-      for (const field of requiredFields) {
-        if (!request.body[field]) {
-          return badRequest(new MissingParamError(field));
-        }
-      }
-
       const { id, chapterName } = request.body;
 
       if (!ObjectId.isValid(id)) {
