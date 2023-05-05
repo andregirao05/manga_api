@@ -1,10 +1,5 @@
 import { IDatabase } from "../database/interfaces";
-import {
-  DataNotFoundError,
-  InvalidParamError,
-  MissingParamError,
-  ServerError,
-} from "../errors";
+import { DataNotFoundError, InvalidParamError, ServerError } from "../errors";
 import { ok, serverError, badRequest, noContent } from "../helpers";
 import { Controller, HttpRequest, HttpResponse } from "../protocols";
 
@@ -16,14 +11,6 @@ export class GetLatestUpdatedMangasController implements Controller<any, any> {
 
   public async handle(request: HttpRequest<any>): Promise<HttpResponse<any>> {
     try {
-      const requiredFields = ["origin"];
-
-      for (const field of requiredFields) {
-        if (!request.body[field]) {
-          return badRequest(new MissingParamError(field));
-        }
-      }
-
       const { origin } = request.body;
 
       if (!this.origins.includes(origin)) {
