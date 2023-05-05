@@ -7,6 +7,7 @@ import {
   makeGetChaptersController,
   makeGetChapterNamesController,
   makeGetSingleChapterController,
+  makeSearchMangasController,
 } from "./compositions";
 
 const router = Router();
@@ -36,6 +37,11 @@ router.get(
 router.get(
   "/mangas/get/:id/chapters/:chapterName",
   adaptRoute(makeGetSingleChapterController())
+);
+
+router.get(
+  "/mangas/search/:searchTerm",
+  adaptRoute(makeSearchMangasController())
 );
 
 export { router };

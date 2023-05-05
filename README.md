@@ -68,7 +68,7 @@ Para obter apenas um capítulo específico (necessário fornecer o nome do capí
 
 `/mangas/get/:id/chapters/:chapterName`
 
-### Buscar por mangá [ainda não implementado]
+### Buscar por mangá
 
 Faz uma busca na base de dados por mangás de acordo com o termo de busca fornecido.
 
