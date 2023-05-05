@@ -1,15 +1,15 @@
 import { NextFunction, Request, Response } from "express";
-import { badRequest } from "../../helpers";
 import { MissingParamError } from "../../errors";
 
 export function verifyRequiredParamsMiddleware(requiredParams: string[]) {
   return function (request: Request, response: Response, next: NextFunction) {
     const missingParams = requiredParams.filter(
-      (param) => !request.query[param]
+      (name) => !request.params[name]
     );
 
     if (missingParams.length > 0) {
-      return badRequest(new MissingParamError(missingParams.join(", ")));
+      const error = new MissingParamError(missingParams.join(", "));
+      return response.status(400).json({ error: error.message });
     }
 
     return next();
