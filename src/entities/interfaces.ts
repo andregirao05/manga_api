@@ -9,6 +9,7 @@ export interface IManga {
   author: string;
   artist: string;
   status: string;
+  rating: number | null;
   url: string;
   origin: string;
   language: "english" | "portuguese";
