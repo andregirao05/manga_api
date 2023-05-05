@@ -1,4 +1,4 @@
-# manga_api
+# Manga API
 
 Uma REST API de mangás usando Node.js, Typescript e MongoDB.
 
@@ -14,7 +14,7 @@ OBS: em caso de desenvolvimento, para habilitar o commitlint é necessário exec
 
 ## Execução da aplicação
 
-Para executar em modo de desenvolvimento:
+Para executar em modo de **_desenvolvimento_**:
 
 `yarn start:dev`
 
@@ -22,7 +22,7 @@ ou em modo de escuta:
 
 `yarn dev`
 
-Para executar em modo de produção, é necessário primeiro fazer o build da aplicação:
+Para executar em modo de **_produção_**, é necessário primeiro fazer o **_build_** da aplicação:
 
 `yarn build`
 
@@ -34,54 +34,165 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 
 ### Obter um único mangá
 
-Esta rota devolve um único mangá. É necessário, para tal, fornecer o seu id.
-
 `/mangas/get/:id`
 
-### Obter mangás mais populares
+**Descrição:** bbtem um único mangá a partir de um `id`.
+**Parâmetros:**
 
-Retorna uma lista com os mangás mais populares de acordo com o site de origem (parâmetro origin deve ser "readm" ou "manga_livre").
+`id`: uma string que representa o id do mangá.
 
-`/info/populars/:origin`
+**Formato do retorno:**
 
-### Obter mangás recentemente atualizados
-
-Retorna uma lista com os mangás recentemente atualizados de acordo com o site de origem (parâmetro origin deve ser "readm" ou "manga_livre").
-
-`/info/updates/:origin`
-
-### Obter a lista de capítulos de um mangá
-
-Para obter a lista com os **nomes dos capítulos** de um mangá, deve-se utilizar a rota:
-
-`/mangas/get/:id/chapters-names`
-
-### Obter todos os capítulos de um mangá
-
-Para obter todos os capítulos de um mangá, use:
-
-`/mangas/get/:id/list-chapters`
+```
+{
+  "_id": string,
+  "title": string,
+  "alternative_title": string,
+  "author": string,
+  "artist": string,
+  "status": string,
+  "url": string,
+  "origin": "manga_livre" | "readm",
+  "language": "english" | "portuguese",
+  "thumbnail": string,
+  "genres": string[],
+  "summary": string
+}
+```
 
 ### Obter um capítulo específico
 
-Para obter apenas um capítulo específico (necessário fornecer o nome do capítulo):
-
 `/mangas/get/:id/chapters/:chapterName`
+
+**Descrição:** retorna um capítulo específico do mangá (nome e páginas).
+**Parâmetros:**
+
+`id`: id do mangá.`chapterName`: uma string com o nome do capítulo.
+
+**Formato do retorno:**
+
+```
+{
+  "name": string,
+  "pages": string[]
+}
+```
+
+### Obter a lista de capítulos de um mangá
+
+`/mangas/get/:id/chapters-names`
+
+**Descrição:** retorna uma lista de strings com os _nomes dos capítulos_ do mangá.
+**Parâmetros:**
+
+`id`: id do mangá.
+
+**Formato do retorno:**
+
+```
+{
+  "chapterNames": string[]
+}
+```
+
+### Obter todos os capítulos de um mangá
+
+`/mangas/get/:id/list-chapters`
+
+**Descrição:** retorna todos os capítulos do mangá (nome e páginas).
+**Parâmetros:**
+
+`id`: id do mangá.
+
+**Formato do retorno:**
+
+```
+{
+  "chapters": Chapter[]
+}
+```
+
+### Obter mangás mais populares
+
+`/info/populars/:origin`
+
+**Descrição:** retorna uma lista com os mangás mais populares.
+**Parâmetros:**
+
+`origin`: qual o site de origem do mangá ("manga_livre" ou "readm").
+
+**Formato do retorno:**
+
+```
+{
+  "mangas": Manga[]
+}
+```
+
+### Obter mangás recentemente atualizados
+
+`/info/updates/:origin`
+
+**Descrição:** retorna uma lista com os mangás recentemente atualizados.
+**Parâmetros:**
+
+`origin`: qual o site de origem dos mangás ("manga_livre" ou "readm").
+
+**Formato do retorno:**
+
+```
+{
+  "mangas": Manga[]
+}
+```
 
 ### Buscar por mangá
 
-Faz uma busca na base de dados por mangás de acordo com o termo de busca fornecido.
-
 `/mangas/search/:searchTerm`
+
+**Descrição:** retorna uma lista de mangás com título (principal ou alternativo) igual ao termo procurado.
+**Parâmetros:**
+
+`searchTerm`: uma string com o termo de busca.
+
+**Formato do retorno:**
+
+```
+{
+  "mangas": Manga[]
+}
+```
 
 ### Obter listas de gêneros
 
-Retorna duas listas com os gêneros de mangás no banco de dados (language deve ser "portuguese" e "english").
-
 `/genres/list/:language`
+
+**Descrição:** retorna uma lista com os gêneros de mangás por idioma (português e inglês).
+**Parâmetros:**
+
+`language`: linguagem alvo ("english" ou "portuguese").
+
+**Formato do retorno:**
+
+```
+{
+  "genres": string[]
+}
+```
 
 ### Obter mangás por gênero
 
-Retorna uma lista de mangás do gênero apontado.
-
 `/genres/get/:genreName`
+
+**Descrição:** retorna uma lista com os mangás do gênero indicado.
+**Parâmetros:**
+
+`genreName`: nome do gênero procurado.
+
+**Formato do retorno:**
+
+```
+{
+  "mangas": Manga[]
+}
+```
