@@ -163,11 +163,13 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 
 ### Buscar por mangá
 
-`/mangas/search/:searchTerm`
+`/mangas/search/:origin/:searchTerm`
 
 **Descrição:** retorna uma lista de mangás com título (principal ou alternativo) igual ao termo procurado.
 
 **Parâmetros:**
+
+`origin`: site de origem dos mangás ("manga_livre" ou "readm").
 
 `searchTerm`: uma string com o termo de busca.
 

@@ -52,8 +52,8 @@ router.get(
 );
 
 router.get(
-  "/mangas/search/:searchTerm",
-  verifyRequiredParamsMiddleware(["searchTerm"]),
+  "/mangas/search/:origin/:searchTerm",
+  verifyRequiredParamsMiddleware(["origin", "searchTerm"]),
   adaptRoute(makeSearchMangasController())
 );
 

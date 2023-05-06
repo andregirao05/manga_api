@@ -1,16 +1,25 @@
 import { IDatabase } from "../database/interfaces";
-import { DataNotFoundError, ServerError } from "../errors";
-import { ok, serverError, noContent } from "../helpers";
+import { DataNotFoundError, InvalidParamError, ServerError } from "../errors";
+import { ok, serverError, noContent, badRequest } from "../helpers";
 import { Controller, HttpRequest, HttpResponse } from "../protocols";
 
 export class SearchMangasController implements Controller<any, any> {
-  constructor(private readonly database: IDatabase) {}
+  constructor(
+    private readonly database: IDatabase,
+    private readonly acceptedOrigins: string[]
+  ) {}
 
   public async handle(request: HttpRequest<any>): Promise<HttpResponse<any>> {
     try {
-      const { searchTerm } = request.body;
+      const { origin, searchTerm } = request.body;
 
-      const mangas = await this.database.search(searchTerm);
+      console.log(origin, searchTerm);
+
+      if (!this.acceptedOrigins.includes(origin)) {
+        return badRequest(new InvalidParamError("origin"));
+      }
+
+      const mangas = await this.database.search(origin, searchTerm);
 
       if (!mangas) {
         return noContent(new DataNotFoundError("Any data"));
