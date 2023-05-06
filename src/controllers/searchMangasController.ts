@@ -13,8 +13,6 @@ export class SearchMangasController implements Controller<any, any> {
     try {
       const { origin, searchTerm } = request.body;
 
-      console.log(origin, searchTerm);
-
       if (!this.acceptedOrigins.includes(origin)) {
         return badRequest(new InvalidParamError("origin"));
       }

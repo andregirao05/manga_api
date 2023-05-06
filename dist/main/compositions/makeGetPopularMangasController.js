@@ -181,10 +181,13 @@ var Database = class {
     }
     return null;
   }
-  async search(searchText) {
+  async search(origin, searchText) {
     if (this.mangas) {
       const cursor = this.mangas.find(
-        { $text: { $search: searchText } },
+        {
+          origin,
+          $text: { $search: searchText }
+        },
         { projection: { chapters: 0 } }
       );
       const mangas = await cursor.toArray();
@@ -271,7 +274,7 @@ var import_express = require("express");
 var bodyParser = (0, import_express.json)();
 
 // src/main/configs/dataConfigs.ts
-var acceptedOrigins = ["manga_livre", "readm", "test"];
+var acceptedOrigins = ["manga_livre", "readm"];
 
 // src/main/compositions/makeGetPopularMangasController.ts
 function makeGetPopularMangasController() {

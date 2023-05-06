@@ -24,7 +24,7 @@ __export(dataConfigs_exports, {
   acceptedOrigins: () => acceptedOrigins
 });
 module.exports = __toCommonJS(dataConfigs_exports);
-var acceptedOrigins = ["manga_livre", "readm", "test"];
+var acceptedOrigins = ["manga_livre", "readm"];
 var acceptedLanguages = ["english", "portuguese"];
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

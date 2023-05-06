@@ -260,13 +260,17 @@ var GetSingleChapterController = class {
 
 // src/controllers/searchMangasController.ts
 var SearchMangasController = class {
-  constructor(database) {
+  constructor(database, acceptedOrigins2) {
     this.database = database;
+    this.acceptedOrigins = acceptedOrigins2;
   }
   async handle(request) {
     try {
-      const { searchTerm } = request.body;
-      const mangas = await this.database.search(searchTerm);
+      const { origin, searchTerm } = request.body;
+      if (!this.acceptedOrigins.includes(origin)) {
+        return badRequest(new InvalidParamError("origin"));
+      }
+      const mangas = await this.database.search(origin, searchTerm);
       if (!mangas) {
         return noContent(new DataNotFoundError("Any data"));
       }
@@ -379,10 +383,13 @@ var Database = class {
     }
     return null;
   }
-  async search(searchText) {
+  async search(origin, searchText) {
     if (this.mangas) {
       const cursor = this.mangas.find(
-        { $text: { $search: searchText } },
+        {
+          origin,
+          $text: { $search: searchText }
+        },
         { projection: { chapters: 0 } }
       );
       const mangas = await cursor.toArray();
@@ -474,7 +481,7 @@ var import_express = require("express");
 var bodyParser = (0, import_express.json)();
 
 // src/main/configs/dataConfigs.ts
-var acceptedOrigins = ["manga_livre", "readm", "test"];
+var acceptedOrigins = ["manga_livre", "readm"];
 var acceptedLanguages = ["english", "portuguese"];
 
 // src/main/compositions/makeGetPopularMangasController.ts
@@ -506,7 +513,7 @@ function makeGetSingleChapterController() {
 
 // src/main/compositions/makeSearchMangasController.ts
 function makeSearchMangasController() {
-  return new SearchMangasController(db);
+  return new SearchMangasController(db, acceptedOrigins);
 }
 
 // src/main/compositions/makeGetGenreNamesController.ts
