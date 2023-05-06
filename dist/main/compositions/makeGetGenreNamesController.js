@@ -181,10 +181,13 @@ var Database = class {
     }
     return null;
   }
-  async search(searchText) {
+  async search(origin, searchText) {
     if (this.mangas) {
       const cursor = this.mangas.find(
-        { $text: { $search: searchText } },
+        {
+          origin,
+          $text: { $search: searchText }
+        },
         { projection: { chapters: 0 } }
       );
       const mangas = await cursor.toArray();

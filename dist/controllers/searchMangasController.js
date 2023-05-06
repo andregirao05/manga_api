@@ -43,6 +43,15 @@ var DataNotFoundError = class extends Error {
   }
 };
 
+// src/errors/invalidParamError.ts
+var InvalidParamError = class extends Error {
+  constructor(paramName) {
+    super(`Param ${paramName} is invalid.`);
+    this.paramName = paramName;
+    this.name = "InvalidParamError";
+  }
+};
+
 // src/helpers/http.ts
 function ok(data) {
   return {
@@ -56,6 +65,12 @@ function noContent(data) {
     body: data
   };
 }
+function badRequest(error) {
+  return {
+    statusCode: 400,
+    body: error
+  };
+}
 function serverError(error) {
   return {
     statusCode: 500,
@@ -65,13 +80,17 @@ function serverError(error) {
 
 // src/controllers/searchMangasController.ts
 var SearchMangasController = class {
-  constructor(database) {
+  constructor(database, acceptedOrigins) {
     this.database = database;
+    this.acceptedOrigins = acceptedOrigins;
   }
   async handle(request) {
     try {
-      const { searchTerm } = request.body;
-      const mangas = await this.database.search(searchTerm);
+      const { origin, searchTerm } = request.body;
+      if (!this.acceptedOrigins.includes(origin)) {
+        return badRequest(new InvalidParamError("origin"));
+      }
+      const mangas = await this.database.search(origin, searchTerm);
       if (!mangas) {
         return noContent(new DataNotFoundError("Any data"));
       }

@@ -250,13 +250,17 @@ var GetSingleChapterController = class {
 
 // src/controllers/searchMangasController.ts
 var SearchMangasController = class {
-  constructor(database) {
+  constructor(database, acceptedOrigins) {
     this.database = database;
+    this.acceptedOrigins = acceptedOrigins;
   }
   async handle(request) {
     try {
-      const { searchTerm } = request.body;
-      const mangas = await this.database.search(searchTerm);
+      const { origin, searchTerm } = request.body;
+      if (!this.acceptedOrigins.includes(origin)) {
+        return badRequest(new InvalidParamError("origin"));
+      }
+      const mangas = await this.database.search(origin, searchTerm);
       if (!mangas) {
         return noContent(new DataNotFoundError("Any data"));
       }
