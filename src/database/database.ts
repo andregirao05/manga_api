@@ -79,10 +79,16 @@ export class Database implements IDatabase {
     return null;
   }
 
-  async search(searchText: string): Promise<IMangaWithoutChapters[] | null> {
+  async search(
+    origin: string,
+    searchText: string
+  ): Promise<IMangaWithoutChapters[] | null> {
     if (this.mangas) {
       const cursor = this.mangas.find(
-        { $text: { $search: searchText } },
+        {
+          origin: origin,
+          $text: { $search: searchText },
+        },
         { projection: { chapters: 0 } }
       );
       const mangas = await cursor.toArray();

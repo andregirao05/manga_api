@@ -9,7 +9,10 @@ export interface IDatabase {
   getChapters(id: string): Promise<IChapter[] | null>;
   getChapterNames(id: string): Promise<string[] | null>;
   getSingleChapter(id: string, chapterName: string): Promise<IChapter | null>;
-  search(searchText: string): Promise<IMangaWithoutChapters[] | null>;
+  search(
+    origin: string,
+    searchText: string
+  ): Promise<IMangaWithoutChapters[] | null>;
   listGenres(lang: "english" | "portuguese"): Promise<string[] | null>;
   getMangasByGenre(genre: string): Promise<IMangaWithoutChapters[] | null>;
   getPopulars(siteOrigin: string): Promise<IMangaWithoutChapters[] | null>;
