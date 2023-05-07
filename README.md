@@ -91,7 +91,7 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 
 ### Obter a lista de capítulos de um mangá
 
-`/mangas/get/:id/chapters-names`
+`/mangas/get/:id/chapter-names`
 
 **Descrição:** retorna uma lista de strings com os _nomes dos capítulos_ do mangá.
 
