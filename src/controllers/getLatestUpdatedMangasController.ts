@@ -25,6 +25,7 @@ export class GetLatestUpdatedMangasController implements Controller<any, any> {
 
       return ok({ mangas });
     } catch (error) {
+      console.log(error);
       return serverError(new ServerError("Error"));
     }
   }

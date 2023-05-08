@@ -22,6 +22,7 @@ export class GetMangaController implements Controller<any, any> {
       const manga = await this.database.get(id);
       return ok(manga);
     } catch (error) {
+      console.log(error);
       return serverError(new ServerError("Error"));
     }
   }

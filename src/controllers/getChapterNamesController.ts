@@ -34,6 +34,7 @@ export class GetChapterNamesController implements Controller<any, any> {
 
       return ok({ chapterNames });
     } catch (error) {
+      console.log(error);
       return serverError(new ServerError("Error"));
     }
   }
