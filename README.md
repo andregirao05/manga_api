@@ -2,8 +2,6 @@
 
 Uma REST API de mangás usando Node.js, Typescript e MongoDB.
 
-**BASE URL:** https://manga-api-6nf7.onrender.com
-
 ## Instalação (usando yarn)
 
 Rodar o comando de instalação de bibliotecas:
