@@ -9,8 +9,8 @@ import {
   getLatestUpdatedMangasController,
   getGenreNamesController,
   getMangasByGenreController
-} from "../useCases";
-import { getSingleChapterController } from "../useCases/getSingleChapter";
+} from "./useCases";
+import { getSingleChapterController } from "./useCases/getSingleChapter";
 
 const router = Router();
 

@@ -1,4 +1,4 @@
-import { acceptedLanguages } from "../../main/configs";
+import { acceptedLanguages } from "../../configs";
 import { mangaRespository } from "../../repositories";
 import { GetGenreNamesController } from "./GetGenreNamesController";
 import { GetGenreNamesUseCase } from "./GetGenreNamesUseCase";

@@ -1,4 +1,4 @@
-import { acceptedOrigins } from "../../main/configs";
+import { acceptedOrigins } from "../../configs";
 import { mangaRespository } from "../../repositories";
 import { SearchMangasController } from "./SearchMangasController";
 import { SearchMangasUseCase } from "./SearchMangasUseCase";

@@ -1,5 +1,5 @@
 import { app } from "./app";
-import { mangaRespository } from "../repositories";
+import { mangaRespository } from "./repositories";
 import { getEnv } from "./configs";
 
 async function main() {
