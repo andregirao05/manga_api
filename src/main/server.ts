@@ -1,10 +1,10 @@
 import { app } from "./app";
-import { db } from "../database";
+import { mangaRespository } from "../repositories";
 import { getEnv } from "./configs";
 
 async function main() {
   try {
-    await db.connect(getEnv("MONGO_URI", ""));
+    await mangaRespository.connect(getEnv("MONGO_URI", ""));
 
     const port = getEnv("PORT", "8000");
 

@@ -1,11 +1,11 @@
-import { IChapter } from "./interfaces";
+interface IChapter extends Chapter {}
 
-export class Chapter implements IChapter {
+export class Chapter {
   name: string;
   pages: string[];
 
-  constructor(name: string, pages: string[]) {
-    this.name = name;
-    this.pages = pages;
+  constructor(data: IChapter) {
+    this.name = data.name;
+    this.pages = data.pages;
   }
 }

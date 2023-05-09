@@ -1,7 +1,6 @@
-import { Chapter } from "./chapter";
-import { IManga } from "./interfaces";
+interface IManga extends Manga {}
 
-export class Manga implements IManga {
+export class Manga {
   title: string;
   alternative_title: string;
   author: string;
@@ -10,39 +9,23 @@ export class Manga implements IManga {
   rating: number | null;
   url: string;
   origin: string;
-  language: "english" | "portuguese";
+  language: string;
   thumbnail: string;
   genres: string[];
   summary: string;
-  chapters: Chapter[];
 
-  constructor(
-    title: string,
-    alternative_title: string,
-    author: string,
-    artist: string,
-    status: string,
-    rating: number | null,
-    url: string,
-    origin: string,
-    language: "english" | "portuguese",
-    thumbnail: string,
-    genres: string[],
-    summary: string,
-    chapters: Chapter[]
-  ) {
-    this.title = title;
-    this.alternative_title = alternative_title;
-    this.author = author;
-    this.artist = artist;
-    this.status = status;
-    this.rating = rating;
-    this.url = url;
-    this.origin = origin;
-    this.language = language;
-    this.thumbnail = thumbnail;
-    this.genres = genres;
-    this.summary = summary;
-    this.chapters = chapters;
+  constructor(data: IManga) {
+    this.title = data.title;
+    this.alternative_title = data.alternative_title;
+    this.author = data.author;
+    this.artist = data.artist;
+    this.status = data.status;
+    this.rating = data.rating;
+    this.url = data.url;
+    this.origin = data.origin;
+    this.language = data.language;
+    this.thumbnail = data.thumbnail;
+    this.genres = data.genres;
+    this.summary = data.summary;
   }
 }
