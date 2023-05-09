@@ -1,36 +1,27 @@
-import { HttpResponse } from "../protocols";
+import { Response } from "express";
 
-export function ok(data: any): HttpResponse<any> {
-  return {
-    statusCode: 200,
-    body: data,
-  };
+export function ok(response: Response, data: any) {
+  return response.status(200).json(data);
 }
 
-export function noContent(data: any): HttpResponse<any> {
-  return {
-    statusCode: 204,
-    body: data,
-  };
+export function noContent(response: Response) {
+  return response.status(204).send("No content.");
 }
 
-export function badRequest(error: Error | undefined): HttpResponse<any> {
-  return {
-    statusCode: 400,
-    body: error,
-  };
+export function badRequest(response: Response, error: Error) {
+  return response.status(400).json({
+    error: error.message,
+  });
 }
 
-export function notFound(error: Error | undefined): HttpResponse<any> {
-  return {
-    statusCode: 404,
-    body: error,
-  };
+export function notFound(response: Response, error: Error) {
+  return response.status(404).json({
+    error: error.message,
+  });
 }
 
-export function serverError(error: Error | undefined): HttpResponse<any> {
-  return {
-    statusCode: 500,
-    body: error,
-  };
+export function serverError(response: Response, error: Error) {
+  return response.status(500).json({
+    error: error.message,
+  });
 }
