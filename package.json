@@ -10,7 +10,8 @@
     "commit": "git-cz",
     "dev": "tsx watch src/server",
     "build": "tsup src",
-    "start": "node dist/server",
+    "start": " node dist/server",
+    "build:start": "tsup src && node dist/server",
     "start:dev": "tsx src/server"
   },
   "devDependencies": {

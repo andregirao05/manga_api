@@ -6,11 +6,15 @@ Uma REST API de mangás usando Node.js, Typescript e MongoDB.
 
 Rodar o comando de instalação de bibliotecas:
 
-`yarn`
+```
+yarn
+```
 
 OBS: em caso de desenvolvimento, para habilitar o commitlint é necessário executar o script "prepare":
 
-`yarn prepare`
+```
+yarn prepare
+```
 
 ## Execução da aplicação
 
@@ -23,19 +27,28 @@ PORT=<colocar a porta de preferência aqui. Exemplo: 3333>
 
 Para executar em modo de **_desenvolvimento_**:
 
-`yarn start:dev`
+```
+yarn start:dev
+
+```
 
 ou em modo de escuta:
 
-`yarn dev`
+```
+yarn dev
+```
 
 Para executar em modo de **_produção_**, é necessário primeiro fazer o **_build_** da aplicação:
 
-`yarn build`
+```
+yarn build
+```
 
 Depois de contruidos os arquivos de build, executar com o seguinte comando:
 
-`yarn start`
+```
+yarn start
+```
 
 ## Rotas
 
