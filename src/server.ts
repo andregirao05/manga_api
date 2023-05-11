@@ -5,8 +5,9 @@ import { getEnv } from "./configs";
 async function main() {
   try {
     await mangaRespository.connect(getEnv("MONGO_URI", ""));
+    console.log("Database connected!!!")
 
-    const port = getEnv("PORT", "8000");
+    const port = getEnv("PORT", "3000");
 
     app.listen(port, () =>
       console.log(`Sever running on port http://localhost:${port}`)
