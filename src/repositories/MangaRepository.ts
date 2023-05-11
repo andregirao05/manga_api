@@ -78,10 +78,10 @@ export class MangaRepositoty implements IMangaRepository {
     const cursor = this.mangas.find(
       {
         origin: origin,
-        $text: { $search: searchText },
+        $text: { $search: `\"${searchText}\"` },
       },
       { projection: { chapters: 0 } }
-    );
+    ).sort({ score: { $meta: "textScore" } });
 
     const mangas = await cursor.toArray();
     await cursor.close();
