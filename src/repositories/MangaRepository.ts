@@ -1,6 +1,19 @@
 import { Collection, MongoClient, ObjectId, Db } from "mongodb";
 import { Manga, Chapter } from "../entities";
 import { IMangaRepository } from "./IMangaRepository";
+import {
+  IGetChapterNamesDTO,
+  IGetChaptersDTO,
+  IGetGenreNamesDTO,
+  IGetLatestUpdatedMangasDTO,
+  IGetMangaDTO,
+  IGetMangasByGenreDTO,
+  IGetPopularMangasDTO,
+  IGetSingleChapterDTO,
+  IResultsDTO,
+  IResultsWithPageInfoDTO,
+  ISearchMangasDTO,
+} from "../models";
 
 interface MangaColType extends Manga {
   chapters: Chapter[];
@@ -18,7 +31,7 @@ export class MangaRepositoty implements IMangaRepository {
   private mangas: Collection<MangaColType> | null;
   private updates: Collection<UpdateColType> | null;
 
-  constructor() {
+  constructor(private readonly mangasPerPage: number = 20) {
     this.client = null;
     this.db = null;
     this.mangas = null;
@@ -39,102 +52,128 @@ export class MangaRepositoty implements IMangaRepository {
     }
   }
 
-  async get(id: string): Promise<Manga> {
+  async get(data: IGetMangaDTO): Promise<IResultsDTO> {
     const mangas = await this.mangas.findOne(
-      { _id: new ObjectId(id) },
+      { _id: new ObjectId(data.id) },
       { projection: { chapters: 0 } }
     );
 
-    if (mangas) return mangas;
-    else return null;
+    return { data: mangas };
   }
 
-  async getChapters(id: string): Promise<Chapter[]> {
-    const data = await this.mangas.findOne(
-      { _id: new ObjectId(id) },
+  async getChapters(data: IGetChaptersDTO): Promise<IResultsDTO> {
+    const results = await this.mangas.findOne(
+      { _id: new ObjectId(data.id) },
       { projection: { chapters: 1, _id: 0 } }
     );
 
-    return data.chapters;
+    return { data: results.chapters };
   }
 
-  async getChapterNames(id: string): Promise<string[]> {
-    const chapters = await this.getChapters(id);
-    return chapters.map((chapter) => chapter.name);
+  async getChapterNames(data: IGetChapterNamesDTO): Promise<IResultsDTO> {
+    const results = await this.mangas.findOne(
+      { _id: new ObjectId(data.id) },
+      { projection: { chapters: 1, _id: 0 } }
+    );
+    const names = results.chapters.map((chapter) => chapter.name);
+
+    return { data: names };
   }
 
-  async getSingleChapter(id: string, chapterName: string): Promise<Chapter> {
-    const data = await this.mangas.findOne(
-      { _id: new ObjectId(id), "chapters.name": chapterName },
+  async getSingleChapter(data: IGetSingleChapterDTO): Promise<IResultsDTO> {
+    const results = await this.mangas.findOne(
+      { _id: new ObjectId(data.id), "chapters.name": data.chapterName },
       { projection: { "chapters.$": 1, _id: 0 } }
     );
 
-    const [chapter] = data.chapters;
+    const [chapter] = results.chapters;
 
-    return chapter;
+    return { data: chapter };
   }
 
-  async search(origin: string, searchText: string): Promise<Manga[]> {
-    const cursor = this.mangas.find(
-      {
-        origin: origin,
-        $text: { $search: `\"${searchText}\"` },
-      },
-      { projection: { chapters: 0 } }
-    ).sort({ score: { $meta: "textScore" } });
+  async search(data: ISearchMangasDTO): Promise<IResultsWithPageInfoDTO> {
+    const cursor = this.mangas
+      .find(
+        {
+          origin: data.origin,
+          $text: { $search: `\"${data.searchTerm}\"` },
+        },
+        { projection: { chapters: 0 } }
+      )
+      .sort({ score: { $meta: "textScore" } })
+      .skip(this.mangasPerPage * (data.page - 1))
+      .limit(this.mangasPerPage);
 
-    const mangas = await cursor.toArray();
+    const results = await cursor.toArray();
     await cursor.close();
 
-    return mangas;
+    return { data: results };
   }
 
-  async listGenres(lang: string): Promise<string[]> {
-    const genres = this.mangas.distinct("genres", { language: lang });
-    return genres;
+  async listGenres(data: IGetGenreNamesDTO): Promise<IResultsDTO> {
+    const genres = await this.mangas.distinct("genres", {
+      language: data.language,
+    });
+
+    return { data: genres };
   }
 
-  async getMangasByGenre(genre: string): Promise<Manga[]> {
-    const cursor = this.mangas.find(
-      { genres: genre },
-      { projection: { chapters: 0 } }
-    );
-    const mangas = await cursor.toArray();
+  async getMangasByGenre(
+    data: IGetMangasByGenreDTO
+  ): Promise<IResultsWithPageInfoDTO> {
+    const cursor = await this.mangas
+      .find({ genres: data.genreName }, { projection: { chapters: 0 } })
+      .skip(this.mangasPerPage * (data.page - 1))
+      .limit(this.mangasPerPage);
+
+    const results = await cursor.toArray();
     await cursor.close();
 
-    return mangas;
+    return { data: results };
   }
 
-  async getPopulars(siteOrigin: string): Promise<Manga[]> {
-    const updateData = await this.updates.findOne({ origin: siteOrigin });
+  async getPopulars(
+    data: IGetPopularMangasDTO
+  ): Promise<IResultsWithPageInfoDTO> {
+    const updateData = await this.updates.findOne({ origin: data.origin });
 
-    const cursor = this.mangas.find(
-      {
-        origin: siteOrigin,
-        url: { $in: updateData.populars },
-      },
-      { projection: { chapters: 0 } }
-    );
-    const mangas = await cursor.toArray();
+    const cursor = this.mangas
+      .find(
+        {
+          origin: data.origin,
+          url: { $in: updateData.populars },
+        },
+        { projection: { chapters: 0 } }
+      )
+      .skip(this.mangasPerPage * (data.page - 1))
+      .limit(this.mangasPerPage);
+
+    const results = await cursor.toArray();
     await cursor.close();
 
-    return mangas;
+    return { data: results };
   }
 
-  async getLatestUpdated(siteOrigin: string): Promise<Manga[]> {
-    const updateData = await this.updates.findOne({ origin: siteOrigin });
+  async getLatestUpdated(
+    data: IGetLatestUpdatedMangasDTO
+  ): Promise<IResultsWithPageInfoDTO> {
+    const updateData = await this.updates.findOne({ origin: data.origin });
 
-    const cursor = this.mangas.find(
-      {
-        origin: siteOrigin,
-        url: { $in: updateData.latest_updates },
-      },
-      { projection: { chapters: 0 } }
-    );
-    const mangas = await cursor.toArray();
+    const cursor = this.mangas
+      .find(
+        {
+          origin: data.origin,
+          url: { $in: updateData.latest_updates },
+        },
+        { projection: { chapters: 0 } }
+      )
+      .skip(this.mangasPerPage * (data.page - 1))
+      .limit(this.mangasPerPage);
+
+    const results = await cursor.toArray();
     await cursor.close();
 
-    return mangas;
+    return { data: results };
   }
 
   async exists(id: string): Promise<boolean> {

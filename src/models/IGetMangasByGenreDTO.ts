@@ -1,3 +1,4 @@
 export interface IGetMangasByGenreDTO {
-  genreName: string
+  genreName: string;
+  page: number;
 }

@@ -1,3 +1,4 @@
 export interface IGetLatestUpdatedMangasDTO {
-  origin: string
+  origin: string;
+  page: number;
 }
