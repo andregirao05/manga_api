@@ -1,34 +1,40 @@
 import { Request, Response } from "express";
 import { Controller } from "../../protocols/Controller";
-import { verifyRequiredParams } from "../verifyRequiredParams";
-import { badRequest, ok, serverError } from "../../helpers";
-import { InvalidParamError, MissingParamError, ServerError } from "../../errors";
+import { badRequest, noContent, ok, serverError } from "../../helpers";
+import { InvalidParamError, ServerError } from "../../errors";
 import { SearchMangasUseCase } from "./SearchMangasUseCase";
 
 export class SearchMangasController implements Controller {
   constructor(
     private readonly searchMangasUseCase: SearchMangasUseCase,
-    private readonly acceptedOrigins: string[]
+    private readonly acceptedOrigins: string[],
+    private readonly validatePage: (page: string) => boolean
   ) {}
 
   async handle(request: Request, response: Response): Promise<Response> {
     try {
-      const missingParams = verifyRequiredParams(request.params, ["origin", "searchTerm"]);
-
-      if (missingParams.length > 0)
-        return badRequest(response, new MissingParamError(`${missingParams.join(", ")}`));
-
-      const { origin, searchTerm } = request.params;
+      const { origin, searchTerm, page } = request.params;
 
       if (!this.acceptedOrigins.includes(origin))
         return badRequest(response, new InvalidParamError("origin"));
 
-      const mangas = await this.searchMangasUseCase.execute({ origin, searchTerm });
+      if (!this.validatePage(page))
+        return badRequest(response, new InvalidParamError("page"));
 
-      return ok(response, { mangas });
+      const results = await this.searchMangasUseCase.execute({
+        origin,
+        searchTerm,
+        page: Number(page),
+      });
+
+      if (!results) {
+        return noContent(response);
+      }
+
+      return ok(response, results);
     } catch (error) {
       console.log(error);
-      return serverError(response, new ServerError(""));
+      return serverError(response, new ServerError("Unexpected Error"));
     }
   }
 }

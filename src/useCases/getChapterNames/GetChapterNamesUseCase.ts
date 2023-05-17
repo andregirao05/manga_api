@@ -1,18 +1,19 @@
 import { IUseCase } from "../../protocols";
 import { IMangaRepository } from "../../repositories";
-import { IGetChapterNamesDTO } from "./IGetChapterNamesDTO";
+import { IGetChapterNamesDTO } from "../../models";
+import { IResultsDTO } from "../../models/IResultsDTO";
 
-export class GetChapterNamesUseCase implements IUseCase<IGetChapterNamesDTO, string[]> {
+export class GetChapterNamesUseCase
+  implements IUseCase<IGetChapterNamesDTO, IResultsDTO>
+{
   constructor(private readonly mangaRepository: IMangaRepository) {}
-  
-  async execute(data: IGetChapterNamesDTO): Promise<string[]> {
-    const { id } = data;
-    
+
+  async execute(data: IGetChapterNamesDTO): Promise<IResultsDTO> {
     try {
-      const chaptersNames = await this.mangaRepository.getChapterNames(id);
-      return chaptersNames;
+      const results = await this.mangaRepository.getChapterNames(data);
+      return results;
     } catch (error) {
-      return null
+      return null;
     }
   }
 }

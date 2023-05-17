@@ -1,18 +1,18 @@
 import { IUseCase } from "../../protocols";
 import { IMangaRepository } from "../../repositories";
-import { IGetGenreNamesDTO } from "./IGetGenreNamesDTO";
+import { IGetGenreNamesDTO, IResultsDTO } from "../../models";
 
-export class GetGenreNamesUseCase implements IUseCase<IGetGenreNamesDTO, string[]> {
+export class GetGenreNamesUseCase
+  implements IUseCase<IGetGenreNamesDTO, IResultsDTO>
+{
   constructor(private readonly mangaRepository: IMangaRepository) {}
-  
-  async execute(data: IGetGenreNamesDTO): Promise<string[]> {
-    const { language } = data;
-    
+
+  async execute(data: IGetGenreNamesDTO): Promise<IResultsDTO> {
     try {
-      const genreNames = await this.mangaRepository.listGenres(language);
-      return genreNames;
+      const results = await this.mangaRepository.listGenres(data);
+      return results;
     } catch (error) {
-      return []
+      return null;
     }
   }
 }

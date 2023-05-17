@@ -1,3 +1,4 @@
 export interface IGetPopularMangasDTO {
-  origin: string
+  origin: string;
+  page: number;
 }
