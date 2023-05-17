@@ -5,7 +5,6 @@ import { getEnv } from "./configs";
 async function main() {
   try {
     await mangaRespository.connect(getEnv("MONGO_URI"));
-    console.log("Database connected!");
 
     const port = getEnv("PORT");
 
