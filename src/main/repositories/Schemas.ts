@@ -1,12 +1,17 @@
-import { Schema } from "mongoose";
+import { Schema, Document, PaginateModel } from "mongoose";
 import paginate from "mongoose-paginate-v2";
+import { Chapter, Manga, Update } from "../../domain/entities";
 
-export const ChapterSchema = new Schema(
+export interface MangaWithChapters extends Manga {
+  chapters: Chapter[];
+}
+
+export const ChapterSchema = new Schema<Chapter>(
   { name: String, pages: [String] },
   { _id: false }
 );
 
-export const MangaSchema = new Schema(
+export const MangaSchema = new Schema<MangaWithChapters>(
   {
     title: String,
     alternative_title: String,
@@ -43,7 +48,7 @@ export const MangaSchema = new Schema(
 
 MangaSchema.plugin(paginate);
 
-export const UpdateSchema = new Schema(
+export const UpdateSchema = new Schema<Update>(
   {
     origin: String,
     populars: [String],
@@ -67,3 +72,5 @@ export const UpdateSchema = new Schema(
     },
   }
 );
+
+export interface MangaModel extends PaginateModel<MangaWithChapters> {}

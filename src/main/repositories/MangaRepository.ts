@@ -14,24 +14,32 @@ import {
   IResultsWithPageInfoDTO,
   ISearchMangasDTO,
 } from "../../domain/DTOs";
-import mongoose from "mongoose";
-import { MangaSchema, UpdateSchema } from "./Schemas";
+
+import {
+  MangaModel,
+  MangaSchema,
+  MangaWithChapters,
+  UpdateSchema,
+} from "./Schemas";
+
+import { model, disconnect, connect, Model } from "mongoose";
+import { Update } from "../../domain/entities";
 
 export class MangaRepositoty implements IMangaRepository {
-  private Manga: any;
-  private Update: any;
+  private Manga: MangaModel;
+  private Update: Model<Update>;
 
   constructor(private readonly mangasPerPage: number = 20) {
-    this.Manga = mongoose.model("Manga", MangaSchema);
-    this.Update = mongoose.model("Update", UpdateSchema);
+    this.Manga = model<MangaWithChapters>("Manga", MangaSchema) as MangaModel;
+    this.Update = model("Update", UpdateSchema);
   }
 
   async connect(url: string): Promise<void> {
-    await mongoose.connect(url);
+    await connect(url);
   }
 
   async disconnect(): Promise<void> {
-    await mongoose.disconnect();
+    await disconnect();
   }
 
   async get(data: IGetMangaDTO): Promise<IResultsDTO> {
