@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Controller } from "./Controller";
+import { IController } from "./IController";
 import { verifyRequiredParams } from "../../main/utils/verifyRequiredParams";
 import { badRequest, noContent, ok, serverError } from "../helpers";
 import {
@@ -11,7 +11,7 @@ import {
 } from "../errors";
 import { GetSingleChapterUseCase } from "../../application/useCases/GetSingleChapterUseCase";
 
-export class GetSingleChapterController implements Controller {
+export class GetSingleChapterController implements IController {
   constructor(
     private readonly getSingleChapterUseCase: GetSingleChapterUseCase,
     private readonly validateId: (id: string) => boolean

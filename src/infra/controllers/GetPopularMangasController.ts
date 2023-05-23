@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { Controller } from "./Controller";
+import { IController } from "./IController";
 import { badRequest, noContent, ok, serverError } from "../helpers";
 import { InvalidParamError, ServerError } from "../errors";
 import { GetPopularMangasUseCase } from "../../application/useCases/GetPopulatMangasUseCase";
 
-export class GetPopularMangasController implements Controller {
+export class GetPopularMangasController implements IController {
   constructor(
     private readonly getPopularMangasUseCase: GetPopularMangasUseCase,
     private readonly acceptedOrigins: string[],

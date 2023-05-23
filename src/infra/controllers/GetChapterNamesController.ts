@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { Controller } from "./Controller";
+import { IController } from "./IController";
 import { badRequest, noContent, ok, serverError } from "../helpers";
 import { InvalidParamError, ServerError } from "../errors";
 import { GetChapterNamesUseCase } from "../../application/useCases/GetChapterNamesUseCase";
 
-export class GetChapterNamesController implements Controller {
+export class GetChapterNamesController implements IController {
   constructor(
     private readonly getChapterNamesUseCase: GetChapterNamesUseCase,
     private readonly validateId: (id: string) => boolean

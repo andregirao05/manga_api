@@ -1,4 +1,4 @@
-import { mangaRespository } from "../../main/repositories";
+import { mangaRespository } from "../repositories";
 import { GetChapterNamesUseCase } from "../../application/useCases";
 import { GetChapterNamesController } from "../../infra/controllers";
 import { validateId } from "../utils";

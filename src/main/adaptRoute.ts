@@ -1,7 +1,7 @@
 import { Request, Response, RequestHandler } from "express";
-import { Controller } from "../infra/controllers";
+import { IController } from "../infra/controllers";
 
-export function adaptRoute(controller: Controller): RequestHandler {
+export function adaptRoute(controller: IController): RequestHandler {
   return (request: Request, response: Response) =>
     controller.handle(request, response);
 }

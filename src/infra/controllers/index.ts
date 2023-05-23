@@ -1,4 +1,4 @@
-export { Controller } from "./Controller";
+export { IController } from "./IController";
 export { GetChapterNamesController } from "./GetChapterNamesController";
 export { GetChaptersController } from "./GetChaptersController";
 export { GetGenreNamesController } from "./GetGenreNamesController";
