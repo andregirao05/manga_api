@@ -1,16 +1,20 @@
 import { IUseCase } from "../useCases";
 import { IMangaRepository } from "../repositories";
-import { IGetSingleChapterDTO, IResultsDTO } from "../../domain/DTOs";
+import { IGetSingleChapterDTO, IResults } from "../../domain/DTOs";
+import { Chapter } from "../../domain/entities";
 
 export class GetSingleChapterUseCase
-  implements IUseCase<IGetSingleChapterDTO, IResultsDTO>
+  implements IUseCase<IGetSingleChapterDTO, IResults<Chapter>>
 {
   constructor(private readonly mangaRepository: IMangaRepository) {}
 
-  async execute(data: IGetSingleChapterDTO): Promise<IResultsDTO> {
+  async execute(data: IGetSingleChapterDTO): Promise<IResults<Chapter>> {
     try {
       const chapter = await this.mangaRepository.getSingleChapter(data);
-      return chapter;
+
+      return {
+        data: chapter,
+      };
     } catch (error) {
       return null;
     }

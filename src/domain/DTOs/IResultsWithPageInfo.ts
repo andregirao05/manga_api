@@ -1,6 +1,6 @@
-import { IResultsDTO } from "./IResultsDTO";
+import { IResults } from "./IResults";
 
-export interface IResultsWithPageInfoDTO extends IResultsDTO {
+export interface IResultsWithPageInfo<T> extends IResults<T> {
   currentPage: number;
   totalPages: number;
 }

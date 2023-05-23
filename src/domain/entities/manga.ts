@@ -1,6 +1,7 @@
 interface IManga extends Manga {}
 
 export class Manga {
+  id: string;
   title: string;
   alternative_title: string;
   author: string;
@@ -14,7 +15,7 @@ export class Manga {
   genres: string[];
   summary: string;
 
-  constructor(data: IManga) {
+  constructor(data: IManga, id: string = null) {
     this.title = data.title;
     this.alternative_title = data.alternative_title;
     this.author = data.author;
@@ -27,5 +28,6 @@ export class Manga {
     this.thumbnail = data.thumbnail;
     this.genres = data.genres;
     this.summary = data.summary;
+    this.id = id;
   }
 }

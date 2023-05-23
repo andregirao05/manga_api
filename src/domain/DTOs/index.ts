@@ -7,5 +7,5 @@ export { IGetMangasByGenreDTO } from "./IGetMangasByGenreDTO";
 export { IGetPopularMangasDTO } from "./IGetPopularMangasDTO";
 export { IGetSingleChapterDTO } from "./IGetSingleChapterDTO";
 export { ISearchMangasDTO } from "./ISearchMangasDTO";
-export { IResultsDTO } from "./IResultsDTO";
-export { IResultsWithPageInfoDTO } from "./IResultsWithPageInfo";
+export { IResults } from "./IResults";
+export { IResultsWithPageInfo } from "./IResultsWithPageInfo";
