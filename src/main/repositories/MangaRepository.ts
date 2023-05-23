@@ -2,6 +2,9 @@ import { ObjectId } from "mongodb";
 import { IMangaRepository } from "../../application/repositories";
 
 import {
+  IAddChapterDTO,
+  IAddMangaDTO,
+  IAddUpdateDTO,
   IGetChapterNamesDTO,
   IGetChaptersDTO,
   IGetGenreNamesDTO,
@@ -10,34 +13,28 @@ import {
   IGetMangasByGenreDTO,
   IGetPopularMangasDTO,
   IGetSingleChapterDTO,
-  IResults,
-  IResultsWithPageInfo,
+  IMangaExistDTO,
   ISearchMangasDTO,
+  ISetUpdateDTO,
 } from "../../domain/models";
 
-import {
-  MangaModel,
-  MangaSchema,
-  MangaWithChapters,
-  UpdateSchema,
-} from "./Schemas";
+import { MangaModel, MangaSchema, UpdateSchema } from "./Schemas";
 
+import { model, disconnect, connect, Model } from "mongoose";
 import {
-  model,
-  disconnect,
-  connect,
-  Model,
-  Document as MongoDoc,
-} from "mongoose";
-import { Chapter, Manga, Update } from "../../domain/entities";
+  Chapter,
+  IMangaWithChapters,
+  Manga,
+  Update,
+} from "../../domain/entities";
 import { MangaPage } from "../../application/repositories/IMangaRepository";
 
-export class MangaRepositoty implements IMangaRepository {
+export class MangaRepository implements IMangaRepository {
   private MangaModel: MangaModel;
   private UpdateModel: Model<Update>;
 
   constructor(private readonly mangasPerPage: number = 20) {
-    this.MangaModel = model<MangaWithChapters>(
+    this.MangaModel = model<IMangaWithChapters>(
       "Manga",
       MangaSchema
     ) as MangaModel;
@@ -72,7 +69,7 @@ export class MangaRepositoty implements IMangaRepository {
   }
 
   async getChapterNames(data: IGetChapterNamesDTO): Promise<string[]> {
-    const results = await this.MangaModel.aggregate([
+    const [results] = await this.MangaModel.aggregate([
       {
         $match: {
           _id: new ObjectId(data.id),
@@ -92,7 +89,7 @@ export class MangaRepositoty implements IMangaRepository {
       },
     ]);
 
-    const names = results[0].chapterNames;
+    const names = results?.chapterNames;
 
     return names;
   }
@@ -205,18 +202,110 @@ export class MangaRepositoty implements IMangaRepository {
     };
   }
 
-  async exists(id: string): Promise<boolean> {
-    try {
-      const results = await this.MangaModel.findOne(
-        { _id: new ObjectId(id) },
-        { projection: { chapters: 0 } }
-      );
-      return results !== null;
-    } catch (error) {
-      console.log(error);
-      return false;
+  async add(data: IAddMangaDTO): Promise<string> {
+    if (
+      await this.mangaExistsByInfo({
+        title: data.title,
+        origin: data.origin,
+        language: data.language,
+      })
+    ) {
+      return null;
     }
+
+    const results = await this.MangaModel.collection.insertOne(data);
+
+    return results.insertedId.toString();
+  }
+
+  async addChapter(data: IAddChapterDTO): Promise<boolean> {
+    const { id, name, pages } = data;
+
+    const chapterNames = await this.getChapterNames({ id });
+
+    if (!chapterNames || chapterNames.includes(name)) {
+      return null;
+    }
+
+    const results = await this.MangaModel.collection.updateOne(
+      {
+        _id: new ObjectId(id),
+      },
+      {
+        $push: {
+          chapters: { name, pages },
+        },
+      }
+    );
+
+    return results.modifiedCount > 0;
+  }
+
+  async addUpdate(data: IAddUpdateDTO): Promise<string> {
+    if (await this.updateExists(data.origin)) {
+      return null;
+    }
+
+    const results = await this.UpdateModel.collection.insertOne(data);
+
+    return results.insertedId.toString();
+  }
+
+  async setUpdate(data: ISetUpdateDTO): Promise<boolean> {
+    const { origin, latest_updates, populars } = data;
+
+    if (!(await this.updateExists(origin))) {
+      return null;
+    }
+
+    const results = await this.UpdateModel.collection.updateOne(
+      { origin },
+      {
+        $set: {
+          origin,
+          latest_updates,
+          populars,
+        },
+      }
+    );
+
+    return results.modifiedCount > 0;
+  }
+
+  async updateExists(origin: string): Promise<boolean> {
+    const results = await this.UpdateModel.findOne(
+      {
+        origin: origin,
+      },
+      { projection: { _id: 1 } }
+    );
+
+    return results !== null;
+  }
+
+  async mangaExistsByInfo(data: IMangaExistDTO): Promise<string> {
+    const results = await this.MangaModel.findOne(
+      {
+        title: data.title,
+        origin: data.origin,
+        language: data.language,
+      },
+      { projection: { _id: 1 } }
+    );
+
+    return results?._id.toString() || null;
+  }
+
+  async mangaExistsById(id: string): Promise<boolean> {
+    const results = await this.MangaModel.findOne(
+      {
+        _id: new ObjectId(id),
+      },
+      { projection: { _id: 1 } }
+    );
+
+    return results !== null;
   }
 }
 
-export const mangaRespository = new MangaRepositoty();
+export const mangaRespository = new MangaRepository();

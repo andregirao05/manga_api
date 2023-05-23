@@ -1,4 +1,6 @@
 import {
+  IAddChapterDTO,
+  IAddMangaDTO,
   IGetChapterNamesDTO,
   IGetChaptersDTO,
   IGetGenreNamesDTO,
@@ -8,8 +10,11 @@ import {
   IGetPopularMangasDTO,
   IGetSingleChapterDTO,
   ISearchMangasDTO,
+  IMangaExistDTO,
+  IAddUpdateDTO,
+  ISetUpdateDTO,
 } from "../../domain/models";
-import { Chapter, Manga } from "../../domain/entities";
+import { Chapter, Manga, Update } from "../../domain/entities";
 
 export interface MangaPage {
   mangas: Manga[];
@@ -31,5 +36,14 @@ export interface IMangaRepository {
   getPopulars(data: IGetPopularMangasDTO): Promise<MangaPage>;
   getLatestUpdated(data: IGetLatestUpdatedMangasDTO): Promise<MangaPage>;
 
-  exists(id: string): Promise<boolean>;
+  add(data: IAddMangaDTO): Promise<string>;
+  addChapter(data: IAddChapterDTO): Promise<boolean>;
+
+  addUpdate(data: IAddUpdateDTO): Promise<string>;
+  setUpdate(data: ISetUpdateDTO): Promise<boolean>;
+
+  updateExists(origin: string): Promise<boolean>;
+
+  mangaExistsByInfo(data: IMangaExistDTO): Promise<string>;
+  mangaExistsById(id: string): Promise<boolean>;
 }

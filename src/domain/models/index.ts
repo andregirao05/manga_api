@@ -9,3 +9,8 @@ export { IGetSingleChapterDTO } from "./IGetSingleChapterDTO";
 export { ISearchMangasDTO } from "./ISearchMangasDTO";
 export { IResults } from "./IResults";
 export { IResultsWithPageInfo } from "./IResultsWithPageInfo";
+export { IAddMangaDTO } from "./IAddMangaDTO";
+export { IAddChapterDTO } from "./IAddChapterDTO";
+export { IMangaExistDTO } from "./IMangaExistsDTO";
+export { IAddUpdateDTO } from "./IAddUpdateDTO";
+export { ISetUpdateDTO } from "./ISetUpdateDTO";
