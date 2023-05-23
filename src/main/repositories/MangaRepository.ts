@@ -130,7 +130,7 @@ export class MangaRepositoty implements IMangaRepository {
     };
   }
 
-  async listGenres(data: IGetGenreNamesDTO): Promise<string[]> {
+  async getGenreNames(data: IGetGenreNamesDTO): Promise<string[]> {
     const genresNames = await this.MangaModel.distinct("genres", {
       language: data.language,
     });

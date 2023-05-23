@@ -20,14 +20,16 @@ export interface MangaPage {
 export interface IMangaRepository {
   connect(url: string): Promise<void>;
   disconnect(): Promise<void>;
+
   get(data: IGetMangaDTO): Promise<Manga>;
   getChapters(data: IGetChaptersDTO): Promise<Chapter[]>;
   getChapterNames(data: IGetChapterNamesDTO): Promise<string[]>;
   getSingleChapter(data: IGetSingleChapterDTO): Promise<Chapter>;
   search(data: ISearchMangasDTO): Promise<MangaPage>;
-  listGenres(data: IGetGenreNamesDTO): Promise<string[]>;
+  getGenreNames(data: IGetGenreNamesDTO): Promise<string[]>;
   getMangasByGenre(data: IGetMangasByGenreDTO): Promise<MangaPage>;
   getPopulars(data: IGetPopularMangasDTO): Promise<MangaPage>;
   getLatestUpdated(data: IGetLatestUpdatedMangasDTO): Promise<MangaPage>;
+
   exists(id: string): Promise<boolean>;
 }

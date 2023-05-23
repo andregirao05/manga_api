@@ -9,7 +9,7 @@ export class GetGenreNamesUseCase
 
   async execute(data: IGetGenreNamesDTO): Promise<IResults<string[]>> {
     try {
-      const genreNames = await this.mangaRepository.listGenres(data);
+      const genreNames = await this.mangaRepository.getGenreNames(data);
 
       return {
         data: genreNames,
