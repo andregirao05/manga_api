@@ -8,7 +8,7 @@ import {
   IGetPopularMangasDTO,
   IGetSingleChapterDTO,
   ISearchMangasDTO,
-} from "../../domain/DTOs";
+} from "../../domain/models";
 import { Chapter, Manga } from "../../domain/entities";
 
 export interface MangaPage {

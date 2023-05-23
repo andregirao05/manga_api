@@ -3,7 +3,7 @@ import { IMangaRepository } from "../repositories";
 import {
   IGetLatestUpdatedMangasDTO,
   IResultsWithPageInfo,
-} from "../../domain/DTOs";
+} from "../../domain/models";
 import { Manga } from "../../domain/entities";
 
 export class GetLatestUpdatedMangasUseCase

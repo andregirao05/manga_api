@@ -1,6 +1,9 @@
 import { IUseCase } from "../useCases";
 import { IMangaRepository } from "../repositories";
-import { IGetPopularMangasDTO, IResultsWithPageInfo } from "../../domain/DTOs";
+import {
+  IGetPopularMangasDTO,
+  IResultsWithPageInfo,
+} from "../../domain/models";
 import { Manga } from "../../domain/entities";
 
 export class GetPopularMangasUseCase

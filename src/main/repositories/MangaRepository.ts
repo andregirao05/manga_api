@@ -13,7 +13,7 @@ import {
   IResults,
   IResultsWithPageInfo,
   ISearchMangasDTO,
-} from "../../domain/DTOs";
+} from "../../domain/models";
 
 import {
   MangaModel,

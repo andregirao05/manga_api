@@ -1,6 +1,6 @@
 import { IUseCase } from "../useCases";
 import { IMangaRepository } from "../repositories";
-import { IGetGenreNamesDTO, IResults } from "../../domain/DTOs";
+import { IGetGenreNamesDTO, IResults } from "../../domain/models";
 
 export class GetGenreNamesUseCase
   implements IUseCase<IGetGenreNamesDTO, IResults<string[]>>

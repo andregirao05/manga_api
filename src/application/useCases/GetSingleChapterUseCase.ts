@@ -1,6 +1,6 @@
 import { IUseCase } from "../useCases";
 import { IMangaRepository } from "../repositories";
-import { IGetSingleChapterDTO, IResults } from "../../domain/DTOs";
+import { IGetSingleChapterDTO, IResults } from "../../domain/models";
 import { Chapter } from "../../domain/entities";
 
 export class GetSingleChapterUseCase
