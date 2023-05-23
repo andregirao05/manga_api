@@ -1,0 +1,1 @@
+export { IMangaRepository } from "./IMangaRepository";

@@ -1,0 +1,9 @@
+export { getChaptersController } from "./getChaptersController";
+export { getChapterNamesController } from "./getChaptersNamesController";
+export { getGenreNamesController } from "./getGenreNamesController";
+export { getLatestUpdatedMangasController } from "./getLatestUpdatedMangasController";
+export { getMangasByGenreController } from "./getMangasByGenreController";
+export { getPopularMangasController } from "./getPopularMangasController";
+export { getSingleChapterController } from "./getSingleChapterController";
+export { searchMangasController } from "./searchMangasController";
+export { getMangaController } from "./getMangaController";
