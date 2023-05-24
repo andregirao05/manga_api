@@ -29,7 +29,7 @@ import {
 } from "../../domain/entities";
 import { MangaPage } from "../../application/repositories/IMangaRepository";
 
-export class MangaRepository implements IMangaRepository {
+class MangaRepository implements IMangaRepository {
   private MangaModel: MangaModel;
   private UpdateModel: Model<Update>;
 
@@ -203,29 +203,12 @@ export class MangaRepository implements IMangaRepository {
   }
 
   async add(data: IAddMangaDTO): Promise<string> {
-    if (
-      await this.mangaExistsByInfo({
-        title: data.title,
-        origin: data.origin,
-        language: data.language,
-      })
-    ) {
-      return null;
-    }
-
     const results = await this.MangaModel.collection.insertOne(data);
-
     return results.insertedId.toString();
   }
 
   async addChapter(data: IAddChapterDTO): Promise<boolean> {
     const { id, name, pages } = data;
-
-    const chapterNames = await this.getChapterNames({ id });
-
-    if (!chapterNames || chapterNames.includes(name)) {
-      return null;
-    }
 
     const results = await this.MangaModel.collection.updateOne(
       {
@@ -242,21 +225,12 @@ export class MangaRepository implements IMangaRepository {
   }
 
   async addUpdate(data: IAddUpdateDTO): Promise<string> {
-    if (await this.updateExists(data.origin)) {
-      return null;
-    }
-
     const results = await this.UpdateModel.collection.insertOne(data);
-
     return results.insertedId.toString();
   }
 
   async setUpdate(data: ISetUpdateDTO): Promise<boolean> {
     const { origin, latest_updates, populars } = data;
-
-    if (!(await this.updateExists(origin))) {
-      return null;
-    }
 
     const results = await this.UpdateModel.collection.updateOne(
       { origin },

@@ -8,7 +8,7 @@ import {
   MangaNotFound,
   MissingParamError,
   ServerError,
-} from "../errors";
+} from "../../application/errors";
 import { GetSingleChapterUseCase } from "../../application/useCases/GetSingleChapterUseCase";
 
 export class GetSingleChapterController implements IController {
