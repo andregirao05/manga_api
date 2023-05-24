@@ -10,6 +10,7 @@ import {
   getGenreNamesController,
   getMangasByGenreController,
   getSingleChapterController,
+  addMangaController,
 } from "./controllers";
 
 const router = Router();
@@ -44,5 +45,7 @@ router.get(
   "/genres/get/:genreName/:page",
   adaptRoute(getMangasByGenreController)
 );
+
+router.post("/mangas/add", adaptRoute(addMangaController));
 
 export { router };

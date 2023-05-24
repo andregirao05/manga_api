@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { IController } from "./IController";
 import { badRequest, noContent, ok, serverError } from "../helpers";
 import { InvalidParamError, ServerError } from "../../application/errors";
-import { GetMangasByGenreUseCase } from "../../application/useCases/GetMangasByGenreUseCase";
+import { GetMangasByGenreUseCase } from "../../application/useCases";
 
 export class GetMangasByGenreController implements IController {
   constructor(

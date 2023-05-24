@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { IController } from "./IController";
-import { GetMangaUseCase } from "../../application/useCases/GetMangaUseCase";
+import { GetMangaUseCase } from "../../application/useCases";
 import { badRequest, noContent, ok, serverError } from "../helpers";
 import { InvalidParamError, ServerError } from "../../application/errors";
 

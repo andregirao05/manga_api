@@ -1,14 +1,7 @@
 import { Request, Response } from "express";
 import { IController } from "./IController";
-import { verifyRequiredParams } from "../../main/utils/verifyRequiredParams";
 import { badRequest, noContent, ok, serverError } from "../helpers";
-import {
-  DataNotFoundError,
-  InvalidParamError,
-  MangaNotFound,
-  MissingParamError,
-  ServerError,
-} from "../../application/errors";
+import { InvalidParamError, ServerError } from "../../application/errors";
 import { GetSingleChapterUseCase } from "../../application/useCases/GetSingleChapterUseCase";
 
 export class GetSingleChapterController implements IController {
@@ -19,17 +12,6 @@ export class GetSingleChapterController implements IController {
 
   async handle(request: Request, response: Response): Promise<Response> {
     try {
-      const missingParams = verifyRequiredParams(request.params, [
-        "id",
-        "chapterName",
-      ]);
-
-      if (missingParams.length > 0)
-        return badRequest(
-          response,
-          new MissingParamError(`${missingParams.join(", ")}`)
-        );
-
       const { id, chapterName } = request.params;
 
       if (!this.validateId(id))

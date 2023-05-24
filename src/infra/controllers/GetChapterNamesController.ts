@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { IController } from "./IController";
 import { badRequest, noContent, ok, serverError } from "../helpers";
 import { InvalidParamError, ServerError } from "../../application/errors";
-import { GetChapterNamesUseCase } from "../../application/useCases/GetChapterNamesUseCase";
+import { GetChapterNamesUseCase } from "../../application/useCases";
 
 export class GetChapterNamesController implements IController {
   constructor(

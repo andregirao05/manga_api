@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { IController } from "./IController";
 import { badRequest, noContent, ok, serverError } from "../helpers";
 import { InvalidParamError, ServerError } from "../../application/errors";
-import { GetPopularMangasUseCase } from "../../application/useCases/GetPopulatMangasUseCase";
+import { GetPopularMangasUseCase } from "../../application/useCases";
 
 export class GetPopularMangasController implements IController {
   constructor(

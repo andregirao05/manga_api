@@ -1,6 +1,6 @@
 import { acceptedOrigins } from "../configs";
 import { mangaRespository } from "../repositories";
-import { validatePage } from "../utils/validatePage";
+import { validatePage } from "../../application/validate/validatePage";
 import { GetLatestUpdatedMangasController } from "../../infra/controllers";
 import { GetLatestUpdatedMangasUseCase } from "../../application/useCases";
 

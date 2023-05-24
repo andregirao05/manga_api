@@ -14,6 +14,12 @@ export function badRequest(response: Response, error: Error) {
   });
 }
 
+export function conflict(response: Response, error: Error) {
+  return response.status(409).json({
+    error: error.message,
+  });
+}
+
 export function notFound(response: Response, error: Error) {
   return response.status(404).json({
     error: error.message,
