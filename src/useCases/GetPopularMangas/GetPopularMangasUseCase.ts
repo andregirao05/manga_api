@@ -12,17 +12,15 @@ export class GetPopularMangasUseCase
   async execute(
     data: IGetPopularMangasDTO
   ): Promise<IResultsWithPageInfo<Manga[]>> {
-    try {
-      const { mangas, currentPage, totalPages } =
-        await this.mangaRepository.getPopulars(data);
+    const { origin, page } = data;
 
-      return {
-        data: mangas,
-        currentPage,
-        totalPages,
-      };
-    } catch (error) {
-      return null;
-    }
+    const { mangas, currentPage, totalPages } =
+      await this.mangaRepository.getPopulars({ origin, page });
+
+    return {
+      data: mangas,
+      currentPage,
+      totalPages,
+    };
   }
 }

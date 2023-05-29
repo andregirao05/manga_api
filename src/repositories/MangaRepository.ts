@@ -164,7 +164,7 @@ class MangaRepository implements IMangaRepository {
     const results = await this.MangaModel.paginate(
       {
         origin: data.origin,
-        url: { $in: updateData.populars },
+        url: { $in: updateData?.populars },
       },
       options
     );
