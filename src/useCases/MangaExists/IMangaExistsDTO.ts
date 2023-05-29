@@ -1,5 +1,3 @@
-export interface IMangaExistDTO {
-  title: string;
-  origin: string;
-  language: string;
+export interface IMangaExistsDTO {
+  url: string;
 }

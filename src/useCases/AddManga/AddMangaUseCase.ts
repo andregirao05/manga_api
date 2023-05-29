@@ -11,9 +11,7 @@ export class AddMangaUseCase
 
   async execute(data: IAddMangaDTO): Promise<IResults<string>> {
     const id = await this.mangaRepository.mangaExistsByInfo({
-      title: data.title,
-      origin: data.origin,
-      language: data.language,
+      url: data.url,
     });
 
     if (id) {

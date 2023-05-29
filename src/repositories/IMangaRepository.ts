@@ -10,7 +10,7 @@ import {
   IGetPopularMangasDTO,
   IGetSingleChapterDTO,
   ISearchMangasDTO,
-  IMangaExistDTO,
+  IMangaExistsDTO,
   IAddUpdateDTO,
   ISetUpdateDTO,
   IGetUpdateDTO,
@@ -46,6 +46,7 @@ export interface IMangaRepository {
 
   updateExists(origin: string): Promise<boolean>;
 
-  mangaExistsByInfo(data: IMangaExistDTO): Promise<string>;
+  mangaExistsByInfo(data: IMangaExistsDTO): Promise<string>;
   mangaExistsById(id: string): Promise<boolean>;
+  mangaExistByUrl(url: string): Promise<boolean>;
 }

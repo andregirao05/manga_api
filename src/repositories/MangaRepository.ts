@@ -20,7 +20,7 @@ import {
   IGetPopularMangasDTO,
   IGetSingleChapterDTO,
   IGetUpdateDTO,
-  IMangaExistDTO,
+  IMangaExistsDTO,
   ISearchMangasDTO,
   ISetUpdateDTO,
 } from "../useCases";
@@ -264,12 +264,10 @@ class MangaRepository implements IMangaRepository {
     return results !== null;
   }
 
-  async mangaExistsByInfo(data: IMangaExistDTO): Promise<string> {
+  async mangaExistsByInfo(data: IMangaExistsDTO): Promise<string> {
     const results = await this.MangaModel.findOne(
       {
-        title: data.title,
-        origin: data.origin,
-        language: data.language,
+        url: data.url,
       },
       { projection: { _id: 1 } }
     );
@@ -286,6 +284,17 @@ class MangaRepository implements IMangaRepository {
     );
 
     return results !== null;
+  }
+
+  async mangaExistByUrl(url: string): Promise<boolean> {
+    const results = await this.MangaModel.findOne(
+      {
+        url,
+      },
+      { projection: { _id: 1 } }
+    );
+
+    return results != null;
   }
 }
 
