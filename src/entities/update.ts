@@ -1,11 +1,13 @@
 export interface IUpdate {
   origin: string;
+  language: string;
   populars: string[];
   latest_updates: string[];
 }
 
-export class Update {
+export class Update implements IUpdate {
   origin: string;
+  language: string;
   populars: string[];
   latest_updates: string[];
 
