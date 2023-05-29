@@ -1,3 +1,9 @@
+export interface IUpdate {
+  origin: string;
+  populars: string[];
+  latest_updates: string[];
+}
+
 export class Update {
   origin: string;
   populars: string[];

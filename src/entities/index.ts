@@ -1,4 +1,4 @@
-export { Chapter } from "./chapter";
-export { Manga } from "./manga";
-export { Update } from "./update";
-export { IMangaWithChapters } from "./IMangaWithChapters";
+export * from "./chapter";
+export * from "./manga";
+export * from "./update";
+export * from "./IMangaWithChapters";

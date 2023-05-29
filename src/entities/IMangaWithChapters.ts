@@ -1,6 +1,6 @@
-import { Chapter } from "./chapter";
-import { Manga } from "./manga";
+import { IChapter } from "./chapter";
+import { IManga } from "./manga";
 
-export interface IMangaWithChapters extends Manga {
-  chapters: Chapter[];
+export interface IMangaWithChapters extends IManga {
+  chapters: IChapter[];
 }

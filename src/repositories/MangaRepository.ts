@@ -16,7 +16,7 @@ import {
   IMangaExistDTO,
   ISearchMangasDTO,
   ISetUpdateDTO,
-} from "../models";
+} from "../useCases";
 import { MangaModel, MangaSchema, UpdateSchema } from "./Schemas";
 import { model, disconnect, connect, Model } from "mongoose";
 

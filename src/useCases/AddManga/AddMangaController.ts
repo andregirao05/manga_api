@@ -1,13 +1,11 @@
 import { Request, Response } from "express";
-import {
-  MangaAlreadyExist,
-  MissingParamError,
-  ServerError,
-} from "../../errors";
+import { MangaAlreadyExist, ServerError } from "../../errors";
 import { badRequest, conflict, ok, serverError } from "../../helpers";
 import { IController } from "../IController";
 import { AddMangaUseCase } from "./AddMangaUseCase";
-import { verifyRequiredFields } from "../../validate";
+import { ValidationError } from "yup";
+import { IAddMangaDTO } from "../../useCases";
+import { addMangaSchema } from "./addMangaValidate";
 
 export class AddMangaController implements IController {
   constructor(private readonly addMangaUseCase: AddMangaUseCase) {}
@@ -15,42 +13,8 @@ export class AddMangaController implements IController {
   async handle(request: Request, response: Response): Promise<Response> {
     try {
       const { body } = request;
-
-      const missingFields = verifyRequiredFields(body, [
-        "title",
-        "alternative_title",
-        "artist",
-        "author",
-        "status",
-        "url",
-        "thumbnail",
-        "origin",
-        "language",
-        "genres",
-        "rating",
-        "summary",
-        "chapters",
-      ]);
-
-      if (missingFields.length > 0) {
-        return badRequest(response, new MissingParamError(missingFields));
-      }
-
-      const results = await this.addMangaUseCase.execute({
-        title: body.title,
-        alternative_title: body.alternative_title,
-        artist: body.artist,
-        author: body.author,
-        status: body.status,
-        url: body.url,
-        thumbnail: body.thumbnail,
-        origin: body.origin,
-        language: body.language,
-        genres: body.genres,
-        rating: body.rating,
-        summary: body.summary,
-        chapters: body.chapters,
-      });
+      const validData = addMangaSchema.validateSync(body) as IAddMangaDTO;
+      const results = await this.addMangaUseCase.execute(validData);
 
       return ok(response, results);
     } catch (error) {
@@ -58,6 +22,11 @@ export class AddMangaController implements IController {
 
       if (error instanceof MangaAlreadyExist) {
         return conflict(response, error);
+      }
+
+      if (error instanceof ValidationError) {
+        console.log(error.name);
+        return badRequest(response, error);
       }
 
       return serverError(response, new ServerError("Unexpected Error"));
