@@ -12,17 +12,13 @@ export class SearchMangasUseCase
   async execute(
     data: ISearchMangasDTO
   ): Promise<IResultsWithPageInfo<Manga[]>> {
-    try {
-      const { mangas, currentPage, totalPages } =
-        await this.mangaRepository.search(data);
+    const { mangas, currentPage, totalPages } =
+      await this.mangaRepository.search(data);
 
-      return {
-        data: mangas,
-        currentPage,
-        totalPages,
-      };
-    } catch (error) {
-      return null;
-    }
+    return {
+      data: mangas,
+      currentPage,
+      totalPages,
+    };
   }
 }

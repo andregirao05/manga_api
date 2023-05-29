@@ -108,10 +108,12 @@ class MangaRepository implements IMangaRepository {
       projection: { chapters: 0 },
     };
 
+    const term = `\"${data.searchTerm}\"`;
+
     const results = await this.MangaModel.paginate(
       {
         origin: data.origin,
-        $text: { $search: `\"${data.searchTerm}\"` },
+        $text: { $search: term },
       },
       options
     );
