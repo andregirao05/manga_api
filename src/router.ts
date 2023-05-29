@@ -14,6 +14,7 @@ import {
   addUpdateController,
   setUpdateController,
   getUpdateController,
+  mangaExistsController,
 } from "./useCases";
 import { addChaptersController } from "./useCases";
 
@@ -50,6 +51,7 @@ router.get(
   adaptRoute(getMangasByGenreController)
 );
 
+router.post("/mangas/exist", adaptRoute(mangaExistsController));
 router.post("/mangas/add", adaptRoute(addMangaController));
 router.post("/chapters/add", adaptRoute(addChaptersController));
 
