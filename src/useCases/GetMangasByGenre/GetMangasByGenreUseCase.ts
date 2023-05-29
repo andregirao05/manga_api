@@ -3,6 +3,7 @@ import { IMangaRepository } from "../../repositories";
 import { IGetMangasByGenreDTO } from "./IGetMangasByGenreDTO";
 import { IResultsWithPageInfo } from "../IResultsWithPageInfo";
 import { Manga } from "../../entities";
+import { DataNotFoundError } from "../../errors";
 
 export class GetMangasByGenreUseCase
   implements IUseCase<IGetMangasByGenreDTO, IResultsWithPageInfo<Manga[]>>
@@ -12,17 +13,19 @@ export class GetMangasByGenreUseCase
   async execute(
     data: IGetMangasByGenreDTO
   ): Promise<IResultsWithPageInfo<Manga[]>> {
-    try {
-      const { mangas, currentPage, totalPages } =
-        await this.mangaRepository.getMangasByGenre(data);
+    const { genreName, page } = data;
 
-      return {
-        data: mangas,
-        currentPage,
-        totalPages,
-      };
-    } catch (error) {
-      return null;
+    const { mangas, currentPage, totalPages } =
+      await this.mangaRepository.getMangasByGenre({ genreName, page });
+
+    if (!mangas || mangas.length == 0) {
+      throw new DataNotFoundError(`Genre ${genreName}`);
     }
+
+    return {
+      data: mangas,
+      currentPage,
+      totalPages,
+    };
   }
 }
