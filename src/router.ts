@@ -13,6 +13,7 @@ import {
   addMangaController,
   addUpdateController,
   setUpdateController,
+  getUpdateController,
 } from "./useCases";
 import { addChaptersController } from "./useCases";
 
@@ -54,5 +55,6 @@ router.post("/chapters/add", adaptRoute(addChaptersController));
 
 router.post("/info/add", adaptRoute(addUpdateController));
 router.post("/info/set", adaptRoute(setUpdateController));
+router.get("/info/get/:origin", adaptRoute(getUpdateController));
 
 export { router };

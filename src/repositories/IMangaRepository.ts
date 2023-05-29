@@ -13,8 +13,9 @@ import {
   IMangaExistDTO,
   IAddUpdateDTO,
   ISetUpdateDTO,
+  IGetUpdateDTO,
 } from "../useCases";
-import { Chapter, Manga } from "../entities";
+import { Chapter, IUpdate, Manga } from "../entities";
 
 export interface MangaPage {
   mangas: Manga[];
@@ -40,6 +41,7 @@ export interface IMangaRepository {
   addChapters(data: IAddChaptersDTO): Promise<boolean>;
 
   addUpdate(data: IAddUpdateDTO): Promise<string>;
+  getUpdate(data: IGetUpdateDTO): Promise<IUpdate>;
   setUpdate(data: ISetUpdateDTO): Promise<boolean>;
 
   updateExists(origin: string): Promise<boolean>;

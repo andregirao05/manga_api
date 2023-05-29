@@ -1,6 +1,12 @@
 import { ObjectId } from "mongodb";
 import { IMangaRepository, MangaPage } from "./IMangaRepository";
-import { Chapter, IMangaWithChapters, Manga, Update } from "../entities";
+import {
+  Chapter,
+  IMangaWithChapters,
+  IUpdate,
+  Manga,
+  Update,
+} from "../entities";
 import {
   IAddChaptersDTO,
   IAddMangaDTO,
@@ -13,6 +19,7 @@ import {
   IGetMangasByGenreDTO,
   IGetPopularMangasDTO,
   IGetSingleChapterDTO,
+  IGetUpdateDTO,
   IMangaExistDTO,
   ISearchMangasDTO,
   ISetUpdateDTO,
@@ -22,14 +29,14 @@ import { model, disconnect, connect, Model } from "mongoose";
 
 class MangaRepository implements IMangaRepository {
   private MangaModel: MangaModel;
-  private UpdateModel: Model<Update>;
+  private UpdateModel: Model<IUpdate>;
 
   constructor(private readonly mangasPerPage: number = 20) {
     this.MangaModel = model<IMangaWithChapters>(
       "Manga",
       MangaSchema
     ) as MangaModel;
-    this.UpdateModel = model("Update", UpdateSchema);
+    this.UpdateModel = model<IUpdate>("Update", UpdateSchema);
   }
 
   async connect(url: string): Promise<void> {
@@ -218,6 +225,12 @@ class MangaRepository implements IMangaRepository {
   async addUpdate(data: IAddUpdateDTO): Promise<string> {
     const results = await this.UpdateModel.collection.insertOne(data);
     return results.insertedId.toString();
+  }
+
+  async getUpdate(data: IGetUpdateDTO): Promise<IUpdate> {
+    const { origin } = data;
+    const results = await this.UpdateModel.findOne({ origin });
+    return results;
   }
 
   async setUpdate(data: ISetUpdateDTO): Promise<boolean> {

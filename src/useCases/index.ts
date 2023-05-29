@@ -14,3 +14,4 @@ export * from "./AddChapters";
 export * from "./MangaExists";
 export * from "./AddUpdate";
 export * from "./SetUpdate";
+export * from "./GetUpdate";

@@ -1,8 +1,8 @@
 import { Schema, PaginateModel } from "mongoose";
 import paginate from "mongoose-paginate-v2";
-import { Chapter, IMangaWithChapters, Update } from "../entities";
+import { IChapter, IMangaWithChapters, IUpdate } from "../entities";
 
-export const ChapterSchema = new Schema<Chapter>(
+export const ChapterSchema = new Schema<IChapter>(
   { name: String, pages: [String] },
   { _id: false }
 );
@@ -44,7 +44,7 @@ export const MangaSchema = new Schema<IMangaWithChapters>(
 
 MangaSchema.plugin(paginate);
 
-export const UpdateSchema = new Schema<Update>(
+export const UpdateSchema = new Schema<IUpdate>(
   {
     origin: String,
     language: String,
