@@ -13,17 +13,15 @@ export class GetLatestUpdatedMangasUseCase
   async execute(
     data: IGetLatestUpdatedMangasDTO
   ): Promise<IResultsWithPageInfo<Manga[]>> {
-    try {
-      const { mangas, currentPage, totalPages } =
-        await this.mangaRepository.getLatestUpdated(data);
+    const { origin, page } = data;
 
-      return {
-        data: mangas,
-        currentPage,
-        totalPages,
-      };
-    } catch (error) {
-      return null;
-    }
+    const { mangas, currentPage, totalPages } =
+      await this.mangaRepository.getPopulars({ origin, page });
+
+    return {
+      data: mangas,
+      currentPage,
+      totalPages,
+    };
   }
 }
