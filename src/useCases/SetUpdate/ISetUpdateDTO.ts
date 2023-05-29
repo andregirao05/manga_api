@@ -1,5 +1,3 @@
-export interface ISetUpdateDTO {
-  origin: string;
-  populars: string[];
-  latest_updates: string[];
-}
+import { IUpdate } from "../../entities";
+
+export interface ISetUpdateDTO extends IUpdate {}
