@@ -3,29 +3,30 @@ import { IController } from "../IController";
 import { badRequest, noContent, ok, serverError } from "../../helpers";
 import { InvalidParamError, ServerError } from "../../errors";
 import { GetGenreNamesUseCase } from "./GetGenreNamesUseCase";
+import { getGenreNamesSchema } from "./getGenreNamesValidate";
+import { IGetGenreNamesDTO } from "./IGetGenreNamesDTO";
+import { ValidationError } from "yup";
 
 export class GetGenreNamesController implements IController {
-  constructor(
-    private readonly getGenreNamesUseCase: GetGenreNamesUseCase,
-    private readonly acceptedLanguages: string[]
-  ) {}
+  constructor(private readonly getGenreNamesUseCase: GetGenreNamesUseCase) {}
 
   async handle(request: Request, response: Response): Promise<Response> {
     try {
-      const { language } = request.params;
+      const { params } = request;
 
-      if (!this.acceptedLanguages.includes(language))
-        return badRequest(response, new InvalidParamError("language"));
-
+      const { language } = getGenreNamesSchema.validateSync(
+        params
+      ) as IGetGenreNamesDTO;
       const results = await this.getGenreNamesUseCase.execute({ language });
-
-      if (!results) {
-        return noContent(response);
-      }
 
       return ok(response, results);
     } catch (error) {
       console.log(error);
+
+      if (error instanceof ValidationError) {
+        return badRequest(response, error);
+      }
+
       return serverError(response, new ServerError("Unexpected Error"));
     }
   }
