@@ -1,5 +1,5 @@
 import {
-  IAddChapterDTO,
+  IAddChaptersDTO,
   IAddMangaDTO,
   IGetChapterNamesDTO,
   IGetChaptersDTO,
@@ -37,7 +37,7 @@ export interface IMangaRepository {
   getLatestUpdated(data: IGetLatestUpdatedMangasDTO): Promise<MangaPage>;
 
   add(data: IAddMangaDTO): Promise<string>;
-  addChapter(data: IAddChapterDTO): Promise<boolean>;
+  addChapters(data: IAddChaptersDTO): Promise<boolean>;
 
   addUpdate(data: IAddUpdateDTO): Promise<string>;
   setUpdate(data: ISetUpdateDTO): Promise<boolean>;

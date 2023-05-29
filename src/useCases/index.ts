@@ -10,7 +10,7 @@ export * from "./GetMangasByGenre";
 export * from "./GetPopularMangas";
 export * from "./GetSingleChapter";
 export * from "./SearchMangas";
-export * from "./AddChapter";
+export * from "./AddChapters";
 export * from "./MangaExists";
 export * from "./AddUpdate";
 export * from "./SetUpdate";

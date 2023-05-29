@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 import { IMangaRepository, MangaPage } from "./IMangaRepository";
 import { Chapter, IMangaWithChapters, Manga, Update } from "../entities";
 import {
-  IAddChapterDTO,
+  IAddChaptersDTO,
   IAddMangaDTO,
   IAddUpdateDTO,
   IGetChapterNamesDTO,
@@ -198,8 +198,8 @@ class MangaRepository implements IMangaRepository {
     return results.insertedId.toString();
   }
 
-  async addChapter(data: IAddChapterDTO): Promise<boolean> {
-    const { id, name, pages } = data;
+  async addChapters(data: IAddChaptersDTO): Promise<boolean> {
+    const { id, chapters } = data;
 
     const results = await this.MangaModel.collection.updateOne(
       {
@@ -207,7 +207,7 @@ class MangaRepository implements IMangaRepository {
       },
       {
         $push: {
-          chapters: { name, pages },
+          chapters: { $each: chapters },
         },
       }
     );

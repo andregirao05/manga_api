@@ -12,6 +12,7 @@ import {
   getSingleChapterController,
   addMangaController,
 } from "./useCases";
+import { addChaptersController } from "./useCases";
 
 const router = Router();
 
@@ -47,5 +48,6 @@ router.get(
 );
 
 router.post("/mangas/add", adaptRoute(addMangaController));
+router.post("/chapters/add", adaptRoute(addChaptersController));
 
 export { router };
