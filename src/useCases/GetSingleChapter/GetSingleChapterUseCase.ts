@@ -3,6 +3,7 @@ import { IMangaRepository } from "../../repositories";
 import { IGetSingleChapterDTO } from "./IGetSingleChapterDTO";
 import { IResults } from "../IResults";
 import { Chapter } from "../../entities";
+import { MangaNotFound } from "../../errors";
 
 export class GetSingleChapterUseCase
   implements IUseCase<IGetSingleChapterDTO, IResults<Chapter>>
@@ -10,14 +11,17 @@ export class GetSingleChapterUseCase
   constructor(private readonly mangaRepository: IMangaRepository) {}
 
   async execute(data: IGetSingleChapterDTO): Promise<IResults<Chapter>> {
-    try {
-      const chapter = await this.mangaRepository.getSingleChapter(data);
+    const { id, chapterName } = data;
 
-      return {
-        data: chapter,
-      };
-    } catch (error) {
-      return null;
-    }
+    const chapter = await this.mangaRepository.getSingleChapter({
+      id,
+      chapterName,
+    });
+
+    if (!chapter) throw new MangaNotFound(id);
+
+    return {
+      data: chapter,
+    };
   }
 }

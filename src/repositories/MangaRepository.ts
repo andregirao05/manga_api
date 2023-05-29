@@ -98,9 +98,7 @@ class MangaRepository implements IMangaRepository {
       chapters: { $elemMatch: { name: data.chapterName } },
     });
 
-    const [chapter] = results.chapters;
-
-    return new Chapter(chapter);
+    return results?.chapters[0];
   }
 
   async search(data: ISearchMangasDTO): Promise<MangaPage> {

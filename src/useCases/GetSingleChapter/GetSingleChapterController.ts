@@ -1,34 +1,35 @@
 import { Request, Response } from "express";
 import { IController } from "../IController";
 import { badRequest, noContent, ok, serverError } from "../../helpers";
-import { InvalidParamError, ServerError } from "../../errors";
+import { MangaNotFound, ServerError } from "../../errors";
 import { GetSingleChapterUseCase } from "./GetSingleChapterUseCase";
+import { ValidationError } from "yup";
 
 export class GetSingleChapterController implements IController {
   constructor(
-    private readonly getSingleChapterUseCase: GetSingleChapterUseCase,
-    private readonly validateId: (id: string) => boolean
+    private readonly getSingleChapterUseCase: GetSingleChapterUseCase
   ) {}
 
   async handle(request: Request, response: Response): Promise<Response> {
     try {
       const { id, chapterName } = request.params;
 
-      if (!this.validateId(id))
-        return badRequest(response, new InvalidParamError("id"));
-
       const results = await this.getSingleChapterUseCase.execute({
         id,
         chapterName,
       });
 
-      if (!results) {
-        return noContent(response);
-      }
-
       return ok(response, results);
     } catch (error) {
       console.log(error);
+
+      if (error instanceof MangaNotFound) {
+        return noContent(response);
+      }
+
+      if (error instanceof ValidationError) {
+        return badRequest(response, error);
+      }
       return serverError(response, new ServerError("Unexpected Error"));
     }
   }
