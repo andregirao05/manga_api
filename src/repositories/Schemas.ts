@@ -47,6 +47,7 @@ MangaSchema.plugin(paginate);
 export const UpdateSchema = new Schema<Update>(
   {
     origin: String,
+    language: String,
     populars: [String],
     latest_updates: [String],
   },

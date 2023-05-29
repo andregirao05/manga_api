@@ -221,13 +221,16 @@ class MangaRepository implements IMangaRepository {
   }
 
   async setUpdate(data: ISetUpdateDTO): Promise<boolean> {
-    const { origin, latest_updates, populars } = data;
+    const { origin, language, latest_updates, populars } = data;
 
     const results = await this.UpdateModel.collection.updateOne(
-      { origin },
+      {
+        origin,
+      },
       {
         $set: {
           origin,
+          language,
           latest_updates,
           populars,
         },
