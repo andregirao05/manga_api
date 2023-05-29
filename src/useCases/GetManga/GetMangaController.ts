@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { IController } from "../IController";
-import { badRequest, noContent, ok, serverError } from "../../helpers";
-import { InvalidParamError, MangaNotFound, ServerError } from "../../errors";
+import { badRequest, notFound, ok, serverError } from "../../helpers";
+import { MangaNotFound, ServerError } from "../../errors";
 import { GetMangaUseCase } from "./GetMangaUseCase";
 import { getMangaValidate } from "./getMangaValidate";
 import { IGetMangaDTO } from "./IGetMangaDTO";
@@ -21,7 +21,7 @@ export class GetMangaController implements IController {
       console.log(error);
 
       if (error instanceof MangaNotFound) {
-        return noContent(response);
+        return notFound(response, error);
       }
 
       if (error instanceof ValidationError) {

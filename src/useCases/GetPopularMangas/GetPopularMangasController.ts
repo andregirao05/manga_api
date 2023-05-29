@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { IController } from "../IController";
-import { badRequest, noContent, ok, serverError } from "../../helpers";
-import { InvalidParamError, ServerError } from "../../errors";
+import { badRequest, ok, serverError } from "../../helpers";
+import { ServerError } from "../../errors";
 import { GetPopularMangasUseCase } from "./GetPopularMangasUseCase";
 import { getPopularMangasSchema } from "./getPopularMangasValidate";
 import { ValidationError } from "yup";

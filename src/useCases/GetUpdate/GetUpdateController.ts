@@ -1,6 +1,6 @@
 import { ValidationError } from "yup";
 import { ServerError, UpdateNotFoundError } from "../../errors";
-import { badRequest, noContent, ok, serverError } from "../../helpers";
+import { badRequest, notFound, ok, serverError } from "../../helpers";
 import { IController } from "../IController";
 import { GetUpdateUseCase } from "./GetUpdateUseCase";
 import { IGetUpdateDTO } from "./IGetUpdateDTO";
@@ -21,7 +21,7 @@ export class GetUpdateController implements IController {
       console.log(error);
 
       if (error instanceof UpdateNotFoundError) {
-        return noContent(response);
+        return notFound(response, error);
       }
 
       if (error instanceof ValidationError) {

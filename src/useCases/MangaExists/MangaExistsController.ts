@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { DataNotFoundError, ServerError } from "../../errors";
-import { badRequest, noContent, ok, serverError } from "../../helpers";
+import { badRequest, notFound, ok, serverError } from "../../helpers";
 import { IController } from "../IController";
 import { ValidationError } from "yup";
 import { MangaExistsUseCase } from "./MangaExistsUseCase";
@@ -21,7 +21,7 @@ export class MangaExistsController implements IController {
       console.log(error);
 
       if (error instanceof DataNotFoundError) {
-        return noContent(response);
+        return notFound(response, error);
       }
 
       if (error instanceof ValidationError) {

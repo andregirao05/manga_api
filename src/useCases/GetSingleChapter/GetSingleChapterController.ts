@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { IController } from "../IController";
-import { badRequest, noContent, ok, serverError } from "../../helpers";
+import { badRequest, notFound, ok, serverError } from "../../helpers";
 import { MangaNotFound, ServerError } from "../../errors";
 import { GetSingleChapterUseCase } from "./GetSingleChapterUseCase";
 import { ValidationError } from "yup";
@@ -24,7 +24,7 @@ export class GetSingleChapterController implements IController {
       console.log(error);
 
       if (error instanceof MangaNotFound) {
-        return noContent(response);
+        return notFound(response, error);
       }
 
       if (error instanceof ValidationError) {
