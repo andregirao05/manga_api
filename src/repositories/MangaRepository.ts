@@ -60,7 +60,7 @@ class MangaRepository implements IMangaRepository {
       chapters: 1,
     });
 
-    const chapters = results.chapters.map(
+    const chapters = results?.chapters.map(
       (chapter: any) => new Chapter(chapter.toObject())
     );
     return chapters;
