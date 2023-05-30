@@ -15,8 +15,8 @@ import {
   setUpdateController,
   getUpdateController,
   mangaExistsController,
-} from "./useCases";
-import { addChaptersController } from "./useCases";
+} from "./useCases/mangas";
+import { addChaptersController } from "./useCases/mangas";
 
 const router = Router();
 

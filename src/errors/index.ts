@@ -6,3 +6,4 @@ export * from "./invalidParamError";
 export * from "./mangaAlreadyRegistered";
 export * from "./updateNotFoundError";
 export * from "./updateAlreadyRegisteredError";
+export * from "./chapterAlreadyRegisteredError";

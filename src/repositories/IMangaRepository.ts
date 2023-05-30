@@ -14,7 +14,7 @@ import {
   IAddUpdateDTO,
   ISetUpdateDTO,
   IGetUpdateDTO,
-} from "../useCases";
+} from "../useCases/mangas";
 import { Chapter, IUpdate, Manga } from "../entities";
 
 export interface MangaPage {

@@ -23,7 +23,7 @@ import {
   IMangaExistsDTO,
   ISearchMangasDTO,
   ISetUpdateDTO,
-} from "../useCases";
+} from "../useCases/mangas";
 import { MangaModel, MangaSchema, UpdateSchema } from "./Schemas";
 import { model, disconnect, connect, Model } from "mongoose";
 
