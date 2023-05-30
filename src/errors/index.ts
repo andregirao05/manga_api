@@ -9,3 +9,4 @@ export * from "./updateAlreadyRegisteredError";
 export * from "./chapterAlreadyRegisteredError";
 export * from "./userNotFoundError";
 export * from "./invalidPasswordError";
+export * from "./invalidAuthTokenError";
