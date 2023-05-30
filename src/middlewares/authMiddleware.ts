@@ -22,7 +22,6 @@ export function authMiddleware(
     );
 
     const res = jwt.verify(authorization, getEnv("TOKEN_GENERATOR_SECRET"));
-    console.log(res);
     return next();
   } catch (error) {
     console.log(error);

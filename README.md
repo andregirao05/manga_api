@@ -2,7 +2,6 @@
 
 Uma REST API de mangás usando Node.js, Typescript e MongoDB.
 
-<hr>
 ## Instalação (usando yarn)
 
 Rodar o comando de instalação de bibliotecas:
@@ -17,7 +16,6 @@ OBS: em caso de desenvolvimento, para habilitar o commitlint é necessário exec
 yarn prepare
 ```
 
-<hr>
 ## Execução da aplicação
 
 A execução da api depende da conexão com o MongoDB. Para tal, é necessário configurar as varíaveis de ambiente. Crie um arquivo chamado `.env` com o seguinte conteúdo:
@@ -31,7 +29,6 @@ Para executar em modo de **_desenvolvimento_**:
 
 ```
 yarn start:dev
-
 ```
 
 ou em modo de escuta:
@@ -51,18 +48,91 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 ```
 yarn start
 ```
-<hr>
+
+## Autenticação
+
+Para fazer requisições na api, é necessário ser um usuário autorizado.
+Cada requisição deve ter um header chamado "authorization" com um token de acesso.
+
+`authorization: <jwt token>`
+
 ## Rotas
+
+### (POST) Autenticação
+
+`/auth`
+
+**Descrição:** retorna o token de autenticação do usuário.
+
+**Corpo da requisição:**
+
+`username`: nome de usuário cadastrado. <br>
+`password`: senha do usuário. <br>
+
+**Formato do resultado:**
+
+```
+{
+  "data": string
+}
+```
+
+### (POST) Adicionar um mangá
+
+`/mangas/add`
+
+**Descrição:** adiciona um novo mangá.
+
+**Corpo da requisição:**
+
+`title`: string <br>
+`alternative_title`: string <br>
+`author`: string | null <br>
+`artist`: string | null <br>
+`status`: string | null <br>
+`rating`: number | null <br>
+`url`: string <br>
+`origin`: string <br>
+`language`: string <br>
+`thumbnail`: string <br>
+`genres`: string[] <br>
+`summary`: string | null <br>
+
+**Formato do resultado:**
+
+```
+{
+  "data": string
+}
+```
+
+### (POST) Checar se um mangá existe
+
+`/mangas/exist`
+
+**Descrição:** Checa se um mangá existe. Se sim, retona o _id_ do mangá.
+
+**Corpo da requisição:**
+
+`url`: string -> url do mangá. <br>
+
+**Formato do resultado:**
+
+```
+{
+  "data": string
+}
+```
 
 ### Obter um único mangá
 
 `/mangas/get/:id`
 
-**Descrição:** bbtem um único mangá a partir de um `id`.
+**Descrição:** obtem um único mangá a partir de um `id`.
 
 **Parâmetros:**
 
-`id`: uma string que representa o id do mangá.
+`id`: uma string que representa o id do mangá. <br>
 
 **Formato do resultado:**
 
@@ -77,8 +147,8 @@ yarn start
     "status": string | null,
     "rating": number | null,
     "url": string,
-    "origin": "manga_livre" | "readm",
-    "language": "english" | "portuguese",
+    "origin": string,
+    "language": string,
     "thumbnail": string,
     "genres": string[],
     "summary": string
@@ -86,8 +156,31 @@ yarn start
 }
 ```
 
-<br>
-### Obter um capítulo específico
+### (POST) Adicionar capítulos
+
+`/chapters/add`
+
+**Descrição:** adiciona uma lista de capítulos em mangá. Retona um booleano com o resultado da inserção.
+
+**Corpo da requisição:**
+
+`id`: string <br> -> ID do mangá
+`chapters`: [
+{
+name: string,
+pages: string[]
+}
+] <br>
+
+**Formato do resultado:**
+
+```
+{
+  "data": boolean
+}
+```
+
+### (GET) Obter um capítulo específico
 
 `/mangas/get/:id/chapters/:chapterName`
 
@@ -109,8 +202,7 @@ yarn start
 }
 ```
 
-<br>
-### Obter a lista de capítulos de um mangá
+### (GET) Obter a lista de capítulos de um mangá
 
 `/mangas/get/:id/chapter-names`
 
@@ -128,8 +220,7 @@ yarn start
 }
 ```
 
-<br>
-### Obter todos os capítulos de um mangá
+### (GET) Obter todos os capítulos de um mangá
 
 `/mangas/get/:id/list-chapters`
 
@@ -147,8 +238,7 @@ yarn start
 }
 ```
 
-<br>
-### Obter mangás mais populares
+### (GET) Obter mangás mais populares
 
 `/info/populars/:origin/:page`
 
@@ -169,8 +259,7 @@ yarn start
 }
 ```
 
-<br>
-### Obter mangás recentemente atualizados
+### (GET) Obter mangás recentemente atualizados
 
 `/info/updates/:origin/:page`
 
@@ -191,8 +280,7 @@ yarn start
 }
 ```
 
-<br>
-### Buscar por mangá
+### (GET) Buscar por mangá
 
 `/mangas/search/:origin/:searchTerm/:page`
 
@@ -215,8 +303,7 @@ yarn start
 }
 ```
 
-<br>
-### Obter listas de gêneros
+### (GET) Obter listas de gêneros
 
 `/genres/list/:language`
 
@@ -234,8 +321,7 @@ yarn start
 }
 ```
 
-<br>
-### Obter mangás por gênero
+### (GET) Obter mangás por gênero
 
 `/genres/get/:genreName/:page`
 
@@ -253,5 +339,70 @@ yarn start
   "data": Manga[],
   "currentPage": number,
   "totalPages": number
+}
+```
+
+### (POST) Adicionar informações de updates do site
+
+`/info/add`
+
+**Descrição:** Adiciona updates dos sites. Retorna o id do Update inserido.
+
+**Corpo da requisição:**
+
+`origin`: string -> site de origem <br>
+`language`: string -> language <br>
+`populars`: string[] -> urls dos mangás populares <br>
+`latest_updates`: string[] -> urls dos sites recentemente atualizados <br>
+
+**Formato do resultado:**
+
+```
+{
+  "data": string
+}
+```
+
+### (GET) Obter informções de updates do site
+
+`/info/get/:origin`
+
+**Descrição:** Retorna as informações de updates do site.
+
+**Parâmetros:**
+
+`origin`: string -> site de origem <br>
+
+**Formato do resultado:**
+
+```
+{
+  "data": {
+    origin: string,
+    language: string,
+    populars: string[],
+    latest_updates: string[]
+  }
+}
+```
+
+### (POST) Atualizar informações de updates do site
+
+`/info/set`
+
+**Descrição:** Altera as informações de updates do site de origem e retorna o resultado (booleano) da operação.
+
+**Corpo da requisição:**
+
+`origin`: string -> site de origem <br>
+`language`: string -> language <br>
+`populars`: string[] -> urls dos mangás populares <br>
+`latest_updates`: string[] -> urls dos sites recentemente atualizados <br>
+
+**Formato do resultado:**
+
+```
+{
+  "data": boolean
 }
 ```
