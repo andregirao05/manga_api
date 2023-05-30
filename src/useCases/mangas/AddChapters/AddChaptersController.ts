@@ -1,50 +1,48 @@
-import { Request, Response } from "express";
-import { IController } from "../../IController";
+import { IController } from "../../../protocols/IController";
 import { AddChaptersUseCase } from "./AddChaptersUseCase";
 import { addChaptersSchema } from "./AddChaptersValidate";
 import { IAddChaptersDTO } from "./IAddChaptersDTO";
-import {
-  badRequest,
-  conflict,
-  noContent,
-  notFound,
-  ok,
-  serverError,
-} from "../../../helpers";
 import { ValidationError } from "yup";
 import {
   MangaNotFound,
   ServerError,
   ChapterAlreadyExistError,
 } from "../../../errors";
+import { IRequest, IResponse } from "../../../protocols";
+import {
+  badRequest,
+  conflict,
+  notFound,
+  ok,
+  serverError,
+} from "../../../helpers";
 
 export class AddChaptersController implements IController {
   constructor(private readonly addChaptersUseCase: AddChaptersUseCase) {}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  async handle(request: IRequest): Promise<IResponse> {
     try {
       const { body } = request;
       const validData = addChaptersSchema.validateSync(body) as IAddChaptersDTO;
       const results = await this.addChaptersUseCase.execute(validData);
 
-      return ok(response, results);
+      return ok(results);
     } catch (error) {
       console.log(error);
 
       if (error instanceof MangaNotFound) {
-        return notFound(response, error);
+        return notFound(error);
       }
 
       if (error instanceof ChapterAlreadyExistError) {
-        return conflict(response, error);
+        return conflict(error);
       }
 
       if (error instanceof ValidationError) {
-        console.log(error.name);
-        return badRequest(response, error);
+        return badRequest(error);
       }
 
-      return serverError(response, new ServerError("Unexpected Error"));
+      return serverError(new ServerError("Unexpected error"));
     }
   }
 }

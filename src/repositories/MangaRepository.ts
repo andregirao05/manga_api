@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { IMangaRepository, MangaPage } from "./IMangaRepository";
+import { IMangaRepository, IMangaPage } from "./IMangaRepository";
 import { IManga, IMangaWithChapters, IUpdate, IChapter } from "../entities";
 import {
   IAddChaptersDTO,
@@ -84,7 +84,7 @@ class MangaRepository implements IMangaRepository {
     return results?.chapters[0];
   }
 
-  async search(data: ISearchMangasDTO): Promise<MangaPage> {
+  async search(data: ISearchMangasDTO): Promise<IMangaPage> {
     const options = {
       page: data.page,
       limit: this.mangasPerPage,
@@ -116,7 +116,7 @@ class MangaRepository implements IMangaRepository {
     return genresNames;
   }
 
-  async getMangasByGenre(data: IGetMangasByGenreDTO): Promise<MangaPage> {
+  async getMangasByGenre(data: IGetMangasByGenreDTO): Promise<IMangaPage> {
     const options = {
       page: data.page,
       limit: this.mangasPerPage,
@@ -135,7 +135,7 @@ class MangaRepository implements IMangaRepository {
     };
   }
 
-  async getPopulars(data: IGetPopularMangasDTO): Promise<MangaPage> {
+  async getPopulars(data: IGetPopularMangasDTO): Promise<IMangaPage> {
     const updateData = await this.UpdateModel.findOne({ origin: data.origin });
 
     const options = {
@@ -159,7 +159,9 @@ class MangaRepository implements IMangaRepository {
     };
   }
 
-  async getLatestUpdated(data: IGetLatestUpdatedMangasDTO): Promise<MangaPage> {
+  async getLatestUpdated(
+    data: IGetLatestUpdatedMangasDTO
+  ): Promise<IMangaPage> {
     const updateData = await this.UpdateModel.findOne({ origin: data.origin });
 
     const options = {

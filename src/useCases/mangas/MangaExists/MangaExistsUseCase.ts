@@ -1,15 +1,12 @@
-import { DataNotFoundError, MangaNotFound } from "../../../errors";
+import { DataNotFoundError } from "../../../errors";
 import { IMangaRepository } from "../../../repositories";
-import { IResults } from "../../IResults";
-import { IUseCase } from "../../IUseCase";
+import { IUseCase } from "../../../protocols/IUseCase";
 import { IMangaExistsDTO } from "./IMangaExistsDTO";
 
-export class MangaExistsUseCase
-  implements IUseCase<IMangaExistsDTO, IResults<string>>
-{
+export class MangaExistsUseCase implements IUseCase<IMangaExistsDTO, string> {
   constructor(private readonly mangaRepository: IMangaRepository) {}
 
-  async execute(data: IMangaExistsDTO): Promise<IResults<string>> {
+  async execute(data: IMangaExistsDTO): Promise<string> {
     const { url } = data;
 
     const id = await this.mangaRepository.mangaExistsByInfo({
@@ -20,8 +17,6 @@ export class MangaExistsUseCase
       throw new DataNotFoundError("Manga not found");
     }
 
-    return {
-      data: id,
-    };
+    return id;
   }
 }

@@ -1,16 +1,16 @@
-import { Request, Response } from "express";
-import { IController } from "../../IController";
+import { IController } from "../../../protocols/IController";
 import { badRequest, notFound, ok, serverError } from "../../../helpers";
 import { MangaNotFound, ServerError } from "../../../errors";
 import { GetSingleChapterUseCase } from "./GetSingleChapterUseCase";
 import { ValidationError } from "yup";
+import { IRequest, IResponse } from "../../../protocols";
 
 export class GetSingleChapterController implements IController {
   constructor(
     private readonly getSingleChapterUseCase: GetSingleChapterUseCase
   ) {}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  async handle(request: IRequest): Promise<IResponse> {
     try {
       const { id, chapterName } = request.params;
 
@@ -19,18 +19,18 @@ export class GetSingleChapterController implements IController {
         chapterName,
       });
 
-      return ok(response, results);
+      return ok(results);
     } catch (error) {
       console.log(error);
 
       if (error instanceof MangaNotFound) {
-        return notFound(response, error);
+        return notFound(error);
       }
 
       if (error instanceof ValidationError) {
-        return badRequest(response, error);
+        return badRequest(error);
       }
-      return serverError(response, new ServerError("Unexpected Error"));
+      return serverError(new ServerError("Unexpected Error"));
     }
   }
 }

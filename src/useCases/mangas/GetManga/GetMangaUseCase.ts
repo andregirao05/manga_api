@@ -1,16 +1,13 @@
 import { IMangaRepository } from "../../../repositories";
-import { IUseCase } from "../../IUseCase";
+import { IUseCase } from "../../../protocols/IUseCase";
 import { IGetMangaDTO } from "./IGetMangaDTO";
-import { IResults } from "../../IResults";
-import { Manga } from "../../../entities";
+import { IManga } from "../../../entities";
 import { MangaNotFound } from "../../../errors";
 
-export class GetMangaUseCase
-  implements IUseCase<IGetMangaDTO, IResults<Manga>>
-{
+export class GetMangaUseCase implements IUseCase<IGetMangaDTO, IManga> {
   constructor(private readonly mangaRepository: IMangaRepository) {}
 
-  public async execute(data: IGetMangaDTO): Promise<IResults<Manga>> {
+  public async execute(data: IGetMangaDTO): Promise<IManga> {
     const { id } = data;
     const exists = await this.mangaRepository.mangaExistsById(id);
 
@@ -20,8 +17,6 @@ export class GetMangaUseCase
 
     const manga = await this.mangaRepository.get(data);
 
-    return {
-      data: manga,
-    };
+    return manga;
   }
 }

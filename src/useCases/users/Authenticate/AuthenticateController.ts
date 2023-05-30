@@ -5,16 +5,16 @@ import {
   UserNotFoundError,
 } from "../../../errors";
 import { badRequest, notFound, ok, serverError } from "../../../helpers";
-import { IController } from "../../IController";
+import { IController } from "../../../protocols/IController";
 import { AuthenticateUseCase } from "./AuthenticateUseCase";
 import { IAuthenticateDTO } from "./IAuthenticateDTO";
 import { authenticateSchema } from "./authenticateSchema";
-import { Request, Response } from "express";
+import { IRequest, IResponse } from "../../../protocols";
 
 export class AuthenticateController implements IController {
   constructor(private readonly authenticateUseCase: AuthenticateUseCase) {}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  async handle(request: IRequest): Promise<IResponse> {
     try {
       const { body } = request;
       const validData = authenticateSchema.validateSync(
@@ -22,23 +22,23 @@ export class AuthenticateController implements IController {
       ) as IAuthenticateDTO;
       const results = await this.authenticateUseCase.execute(validData);
 
-      return ok(response, results);
+      return ok(results);
     } catch (error) {
       console.log(error);
 
       if (error instanceof UserNotFoundError) {
-        return notFound(response, error);
+        return notFound(error);
       }
 
       if (error instanceof InvalidPasswordError) {
-        return badRequest(response, error);
+        return badRequest(error);
       }
 
       if (error instanceof ValidationError) {
-        return badRequest(response, error);
+        return badRequest(error);
       }
 
-      return serverError(response, new ServerError("Unexpected Error"));
+      return serverError(new ServerError("Unexpected Error"));
     }
   }
 }

@@ -1,15 +1,12 @@
 import { IAddMangaDTO } from "./IAddMangaDTO";
-import { IResults } from "../../IResults";
 import { MangaAlreadyExist } from "../../../errors";
 import { IMangaRepository } from "../../../repositories";
-import { IUseCase } from "../../IUseCase";
+import { IUseCase } from "../../../protocols/IUseCase";
 
-export class AddMangaUseCase
-  implements IUseCase<IAddMangaDTO, IResults<string>>
-{
+export class AddMangaUseCase implements IUseCase<IAddMangaDTO, string> {
   constructor(private readonly mangaRepository: IMangaRepository) {}
 
-  async execute(data: IAddMangaDTO): Promise<IResults<string>> {
+  async execute(data: IAddMangaDTO): Promise<string> {
     const id = await this.mangaRepository.mangaExistsByInfo({
       url: data.url,
     });
@@ -20,8 +17,6 @@ export class AddMangaUseCase
 
     const insertedId = await this.mangaRepository.add(data);
 
-    return {
-      data: insertedId,
-    };
+    return insertedId;
   }
 }

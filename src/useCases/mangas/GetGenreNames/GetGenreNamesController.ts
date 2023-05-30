@@ -1,16 +1,16 @@
-import { Request, Response } from "express";
-import { IController } from "../../IController";
+import { IController } from "../../../protocols/IController";
 import { badRequest, ok, serverError } from "../../../helpers";
 import { ServerError } from "../../../errors";
 import { GetGenreNamesUseCase } from "./GetGenreNamesUseCase";
 import { getGenreNamesSchema } from "./getGenreNamesValidate";
 import { IGetGenreNamesDTO } from "./IGetGenreNamesDTO";
 import { ValidationError } from "yup";
+import { IRequest, IResponse } from "../../../protocols";
 
 export class GetGenreNamesController implements IController {
   constructor(private readonly getGenreNamesUseCase: GetGenreNamesUseCase) {}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  async handle(request: IRequest): Promise<IResponse> {
     try {
       const { params } = request;
 
@@ -19,15 +19,15 @@ export class GetGenreNamesController implements IController {
       ) as IGetGenreNamesDTO;
       const results = await this.getGenreNamesUseCase.execute({ language });
 
-      return ok(response, results);
+      return ok(results);
     } catch (error) {
       console.log(error);
 
       if (error instanceof ValidationError) {
-        return badRequest(response, error);
+        return badRequest(error);
       }
 
-      return serverError(response, new ServerError("Unexpected Error"));
+      return serverError(new ServerError("Unexpected Error"));
     }
   }
 }

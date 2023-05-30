@@ -1,16 +1,16 @@
-import { Request, Response } from "express";
-import { IController } from "../../IController";
+import { IController } from "../../../protocols/IController";
 import { badRequest, ok, serverError } from "../../../helpers";
 import { ServerError } from "../../../errors";
 import { SearchMangasUseCase } from "./SearchMangasUseCase";
 import { searchMangasValidate } from "./searchMangasValidate";
 import { ISearchMangasDTO } from "./ISearchMangasDTO";
 import { ValidationError } from "yup";
+import { IRequest, IResponse } from "../../../protocols";
 
 export class SearchMangasController implements IController {
   constructor(private readonly searchMangasUseCase: SearchMangasUseCase) {}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  async handle(request: IRequest): Promise<IResponse> {
     try {
       const { params } = request;
 
@@ -23,15 +23,15 @@ export class SearchMangasController implements IController {
         page,
       });
 
-      return ok(response, results);
+      return ok(results);
     } catch (error) {
       console.log(error);
 
       if (error instanceof ValidationError) {
-        return badRequest(response, error);
+        return badRequest(error);
       }
 
-      return serverError(response, new ServerError("Unexpected Error"));
+      return serverError(new ServerError("Unexpected Error"));
     }
   }
 }

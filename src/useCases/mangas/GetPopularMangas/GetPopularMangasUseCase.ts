@@ -1,24 +1,20 @@
-import { IUseCase } from "../../IUseCase";
-import { IMangaRepository } from "../../../repositories";
+import { IUseCase } from "../../../protocols/IUseCase";
+import { IMangaRepository, IMangaPage } from "../../../repositories";
 import { IGetPopularMangasDTO } from "./IGetPopularMangasDTO";
-import { IResultsWithPageInfo } from "../../IResultsWithPageInfo";
-import { Manga } from "../../../entities";
 
 export class GetPopularMangasUseCase
-  implements IUseCase<IGetPopularMangasDTO, IResultsWithPageInfo<Manga[]>>
+  implements IUseCase<IGetPopularMangasDTO, IMangaPage>
 {
   constructor(private readonly mangaRepository: IMangaRepository) {}
 
-  async execute(
-    data: IGetPopularMangasDTO
-  ): Promise<IResultsWithPageInfo<Manga[]>> {
+  async execute(data: IGetPopularMangasDTO): Promise<IMangaPage> {
     const { origin, page } = data;
 
     const { mangas, currentPage, totalPages } =
       await this.mangaRepository.getPopulars({ origin, page });
 
     return {
-      data: mangas,
+      mangas,
       currentPage,
       totalPages,
     };

@@ -1,27 +1,17 @@
-import { Request, Response } from "express";
-import { IController } from "../../IController";
-import {
-  badRequest,
-  noContent,
-  notFound,
-  ok,
-  serverError,
-} from "../../../helpers";
-import {
-  DataNotFoundError,
-  InvalidParamError,
-  ServerError,
-} from "../../../errors";
+import { IController } from "../../../protocols/IController";
+import { badRequest, notFound, ok, serverError } from "../../../helpers";
+import { DataNotFoundError, ServerError } from "../../../errors";
 import { GetMangasByGenreUseCase } from "./GetMangasByGenreUseCase";
 import { getMangasByGenreValidate } from "./getMangasuByGenreValidate";
 import { ValidationError } from "yup";
+import { IRequest, IResponse } from "../../../protocols";
 
 export class GetMangasByGenreController implements IController {
   constructor(
     private readonly getMangasByGenreUseCase: GetMangasByGenreUseCase
   ) {}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  async handle(request: IRequest): Promise<IResponse> {
     try {
       const { params } = request;
 
@@ -31,19 +21,19 @@ export class GetMangasByGenreController implements IController {
         page: Number(page),
       });
 
-      return ok(response, results);
+      return ok(results);
     } catch (error) {
       console.log(error);
 
       if (error instanceof DataNotFoundError) {
-        return notFound(response, error);
+        return notFound(error);
       }
 
       if (error instanceof ValidationError) {
-        return badRequest(response, error);
+        return badRequest(error);
       }
 
-      return serverError(response, new ServerError("Unexpected Error"));
+      return serverError(new ServerError("Unexpected Error"));
     }
   }
 }

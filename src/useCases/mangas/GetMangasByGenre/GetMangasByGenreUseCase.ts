@@ -1,18 +1,15 @@
-import { IUseCase } from "../../IUseCase";
-import { IMangaRepository } from "../../../repositories";
+import { IUseCase } from "../../../protocols/IUseCase";
+import { IMangaRepository, IMangaPage } from "../../../repositories";
 import { IGetMangasByGenreDTO } from "./IGetMangasByGenreDTO";
-import { IResultsWithPageInfo } from "../../IResultsWithPageInfo";
 import { Manga } from "../../../entities";
 import { DataNotFoundError } from "../../../errors";
 
 export class GetMangasByGenreUseCase
-  implements IUseCase<IGetMangasByGenreDTO, IResultsWithPageInfo<Manga[]>>
+  implements IUseCase<IGetMangasByGenreDTO, IMangaPage>
 {
   constructor(private readonly mangaRepository: IMangaRepository) {}
 
-  async execute(
-    data: IGetMangasByGenreDTO
-  ): Promise<IResultsWithPageInfo<Manga[]>> {
+  async execute(data: IGetMangasByGenreDTO): Promise<IMangaPage> {
     const { genreName, page } = data;
 
     const { mangas, currentPage, totalPages } =
@@ -23,7 +20,7 @@ export class GetMangasByGenreUseCase
     }
 
     return {
-      data: mangas,
+      mangas,
       currentPage,
       totalPages,
     };

@@ -1,15 +1,18 @@
 import { IUser } from "../../../entities";
 import { InvalidPasswordError, UserNotFoundError } from "../../../errors";
 import { IUserRepository } from "../../../repositories";
-import { IResultsWithAuthTokens } from "../../IResultsWithAuthToken";
-import { IUseCase } from "../../IUseCase";
+import { IUseCase } from "../../../protocols/IUseCase";
 import { IAuthenticateDTO } from "./IAuthenticateDTO";
 import { ICrypter } from "./ICrypter";
 import { ITokenGenerator } from "./ITokenGenerator";
 
+export interface IAuthResults {
+  token: string;
+  user: IUser;
+}
+
 export class AuthenticateUseCase
-  implements
-    IUseCase<IAuthenticateDTO, IResultsWithAuthTokens<Omit<IUser, "password">>>
+  implements IUseCase<IAuthenticateDTO, IAuthResults>
 {
   constructor(
     private readonly userRepository: IUserRepository,
@@ -17,9 +20,7 @@ export class AuthenticateUseCase
     private readonly tokenGenerator: ITokenGenerator
   ) {}
 
-  async execute(
-    data: IAuthenticateDTO
-  ): Promise<IResultsWithAuthTokens<Omit<IUser, "password">>> {
+  async execute(data: IAuthenticateDTO): Promise<IAuthResults> {
     const { username, password } = data;
 
     const user = await this.userRepository.getUser({ username });
@@ -34,7 +35,7 @@ export class AuthenticateUseCase
     const token = await this.tokenGenerator.generate({ id: user.id });
 
     return {
-      data: user,
+      user,
       token,
     };
   }

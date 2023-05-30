@@ -1,22 +1,18 @@
-import { IUseCase } from "../../IUseCase";
-import { IMangaRepository } from "../../../repositories";
+import { IUseCase } from "../../../protocols/IUseCase";
+import { IMangaPage, IMangaRepository } from "../../../repositories";
 import { ISearchMangasDTO } from "./ISearchMangasDTO";
-import { IResultsWithPageInfo } from "../../IResultsWithPageInfo";
-import { Manga } from "../../../entities";
 
 export class SearchMangasUseCase
-  implements IUseCase<ISearchMangasDTO, IResultsWithPageInfo<Manga[]>>
+  implements IUseCase<ISearchMangasDTO, IMangaPage>
 {
   constructor(private readonly mangaRepository: IMangaRepository) {}
 
-  async execute(
-    data: ISearchMangasDTO
-  ): Promise<IResultsWithPageInfo<Manga[]>> {
+  async execute(data: ISearchMangasDTO): Promise<IMangaPage> {
     const { mangas, currentPage, totalPages } =
       await this.mangaRepository.search(data);
 
     return {
-      data: mangas,
+      mangas,
       currentPage,
       totalPages,
     };

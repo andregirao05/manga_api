@@ -1,5 +1,5 @@
-export * from "../IUseCase";
-export * from "../IController";
+export * from "../../protocols/IUseCase";
+export * from "../../protocols/IController";
 export * from "./AddManga";
 export * from "./GetChapters";
 export * from "./GetChapterNamesUseCase";

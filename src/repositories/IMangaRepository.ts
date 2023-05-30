@@ -17,7 +17,7 @@ import {
 } from "../useCases/mangas";
 import { IChapter, IManga, IUpdate } from "../entities";
 
-export interface MangaPage {
+export interface IMangaPage {
   mangas: IManga[];
   currentPage: number;
   totalPages: number;
@@ -28,11 +28,11 @@ export interface IMangaRepository {
   getChapters(data: IGetChaptersDTO): Promise<IChapter[]>;
   getChapterNames(data: IGetChapterNamesDTO): Promise<string[]>;
   getSingleChapter(data: IGetSingleChapterDTO): Promise<IChapter>;
-  search(data: ISearchMangasDTO): Promise<MangaPage>;
+  search(data: ISearchMangasDTO): Promise<IMangaPage>;
   getGenreNames(data: IGetGenreNamesDTO): Promise<string[]>;
-  getMangasByGenre(data: IGetMangasByGenreDTO): Promise<MangaPage>;
-  getPopulars(data: IGetPopularMangasDTO): Promise<MangaPage>;
-  getLatestUpdated(data: IGetLatestUpdatedMangasDTO): Promise<MangaPage>;
+  getMangasByGenre(data: IGetMangasByGenreDTO): Promise<IMangaPage>;
+  getPopulars(data: IGetPopularMangasDTO): Promise<IMangaPage>;
+  getLatestUpdated(data: IGetLatestUpdatedMangasDTO): Promise<IMangaPage>;
 
   add(data: IAddMangaDTO): Promise<string>;
   addChapters(data: IAddChaptersDTO): Promise<boolean>;

@@ -1,35 +1,34 @@
-import { Request, Response } from "express";
 import { MangaAlreadyExist, ServerError } from "../../../errors";
-import { badRequest, conflict, ok, serverError } from "../../../helpers";
-import { IController } from "../../IController";
+import { IController } from "../../../protocols/IController";
 import { AddMangaUseCase } from "./AddMangaUseCase";
 import { ValidationError } from "yup";
 import { IAddMangaDTO } from "./IAddMangaDTO";
 import { addMangaSchema } from "./addMangaValidate";
+import { IRequest, IResponse } from "../../../protocols";
+import { badRequest, conflict, ok, serverError } from "../../../helpers";
 
 export class AddMangaController implements IController {
   constructor(private readonly addMangaUseCase: AddMangaUseCase) {}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  async handle(request: IRequest): Promise<IResponse> {
     try {
       const { body } = request;
       const validData = addMangaSchema.validateSync(body) as IAddMangaDTO;
       const results = await this.addMangaUseCase.execute(validData);
 
-      return ok(response, results);
+      return ok(results);
     } catch (error) {
       console.log(error);
 
       if (error instanceof MangaAlreadyExist) {
-        return conflict(response, error);
+        return conflict(error);
       }
 
       if (error instanceof ValidationError) {
-        console.log(error.name);
-        return badRequest(response, error);
+        return badRequest(error);
       }
 
-      return serverError(response, new ServerError("Unexpected Error"));
+      return serverError(new ServerError("Unexpected Error"));
     }
   }
 }

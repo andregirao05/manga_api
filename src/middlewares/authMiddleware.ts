@@ -27,16 +27,22 @@ export function authMiddleware(
     console.log(error);
 
     if (error instanceof ValidationError) {
-      return badRequest(response, error);
+      return response.status(400).json({
+        data: null,
+        error: error.message,
+      });
     }
 
     if (error instanceof jwt.JsonWebTokenError) {
-      return badRequest(
-        response,
-        new InvalidAuthTokenError(request.headers.authorization)
-      );
+      return response.status(400).json({
+        data: null,
+        error: new InvalidAuthTokenError(request.headers.authorization).message,
+      });
     }
 
-    return serverError(response, new ServerError("Unexpected Error"));
+    return response.status(500).json({
+      data: null,
+      error: new ServerError("Unexpected Error").message,
+    });
   }
 }

@@ -1,16 +1,13 @@
 import { IUpdate } from "../../../entities";
 import { UpdateNotFoundError } from "../../../errors";
 import { IMangaRepository } from "../../../repositories";
-import { IResults } from "../../IResults";
-import { IUseCase } from "../../IUseCase";
+import { IUseCase } from "../../../protocols/IUseCase";
 import { IGetUpdateDTO } from "./IGetUpdateDTO";
 
-export class GetUpdateUseCase
-  implements IUseCase<IGetUpdateDTO, IResults<IUpdate>>
-{
+export class GetUpdateUseCase implements IUseCase<IGetUpdateDTO, IUpdate> {
   constructor(private readonly mangaRepository: IMangaRepository) {}
 
-  async execute(data: IGetUpdateDTO): Promise<IResults<IUpdate>> {
+  async execute(data: IGetUpdateDTO): Promise<IUpdate> {
     const { origin } = data;
 
     const updateInfo = await this.mangaRepository.getUpdate({
@@ -21,8 +18,6 @@ export class GetUpdateUseCase
       throw new UpdateNotFoundError(origin);
     }
 
-    return {
-      data: updateInfo,
-    };
+    return updateInfo;
   }
 }

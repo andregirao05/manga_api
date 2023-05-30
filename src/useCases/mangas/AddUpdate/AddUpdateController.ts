@@ -1,34 +1,34 @@
-import { Request, Response } from "express";
-import { IController } from "../../IController";
+import { IController } from "../../../protocols/IController";
 import { AddUpdateUseCase } from "./AddUpdateUseCase";
 import { IAddUpdateDTO } from "./IAddUpdateDTO";
-import { badRequest, conflict, ok, serverError } from "../../../helpers";
 import { ServerError, UpdateAlreadyRegisteredError } from "../../../errors";
 import { ValidationError } from "yup";
 import { addUpdateSchema } from "./addUpdateValidate";
+import { IRequest, IResponse } from "../../../protocols";
+import { badRequest, conflict, ok, serverError } from "../../../helpers";
 
 export class AddUpdateController implements IController {
   constructor(private readonly addUpdateUseCase: AddUpdateUseCase) {}
 
-  async handle(request: Request, response: Response) {
+  async handle(request: IRequest): Promise<IResponse> {
     try {
       const { body } = request;
       const validData = addUpdateSchema.validateSync(body) as IAddUpdateDTO;
       const results = await this.addUpdateUseCase.execute(validData);
 
-      return ok(response, results);
+      return ok(results);
     } catch (error) {
       console.log(error);
 
       if (error instanceof UpdateAlreadyRegisteredError) {
-        return conflict(response, error);
+        return conflict(error);
       }
 
       if (error instanceof ValidationError) {
-        return badRequest(response, error);
+        return badRequest(error);
       }
 
-      return serverError(response, new ServerError("Unexpected Error"));
+      return serverError(new ServerError("Unexpected error"));
     }
   }
 }
