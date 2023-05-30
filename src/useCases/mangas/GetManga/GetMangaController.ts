@@ -13,7 +13,7 @@ export class GetMangaController implements IController {
   async handle(request: IRequest): Promise<IResponse> {
     try {
       const validData = getMangaValidate.validateSync(
-        request.query
+        request.params
       ) as IGetMangaDTO;
       const results = await this.getMangaUseCase.execute(validData);
 

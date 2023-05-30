@@ -13,7 +13,7 @@ export class GetChaptersController implements IController {
   async handle(request: IRequest): Promise<IResponse> {
     try {
       const validData = getChaptersValidate.validateSync(
-        request.query
+        request.params
       ) as IGetChaptersDTO;
       const results = await this.getChaptersUseCase.execute(validData);
 

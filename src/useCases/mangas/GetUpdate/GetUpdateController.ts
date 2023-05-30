@@ -12,8 +12,10 @@ export class GetUpdateController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const validData = getUpdateSchema.validateSync(request.query) as IGetUpdateDTO;
-      const results = await this.getUpdateUseCase.execute(validData);
+      const {origin} = getUpdateSchema.validateSync(request.params) as IGetUpdateDTO;
+      const results = await this.getUpdateUseCase.execute({
+        origin
+      });
 
       return ok(results);
     } catch (error) {

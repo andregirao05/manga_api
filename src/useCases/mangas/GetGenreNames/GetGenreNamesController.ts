@@ -13,7 +13,7 @@ export class GetGenreNamesController implements IController {
   async handle(request: IRequest): Promise<IResponse> {
     try {
       const { language } = getGenreNamesSchema.validateSync(
-        request.query
+        request.params
       ) as IGetGenreNamesDTO;
       const results = await this.getGenreNamesUseCase.execute({ language });
 

@@ -1,9 +1,10 @@
 import { IController } from "../../../protocols/IController";
 import { badRequest, notFound, ok, serverError } from "../../../helpers";
-import { MangaNotFound, ServerError } from "../../../errors";
+import { DataNotFoundError, MangaNotFound, ServerError } from "../../../errors";
 import { GetSingleChapterUseCase } from "./GetSingleChapterUseCase";
 import { ValidationError } from "yup";
 import { IRequest, IResponse } from "../../../protocols";
+import { getSingleChapterSchema } from "./getSingleChapterValidate";
 
 export class GetSingleChapterController implements IController {
   constructor(
@@ -12,7 +13,7 @@ export class GetSingleChapterController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { id, chapterName } = request.query;
+      const { id, chapterName } = getSingleChapterSchema.validateSync(request.params);
 
       const results = await this.getSingleChapterUseCase.execute({
         id,
@@ -23,7 +24,7 @@ export class GetSingleChapterController implements IController {
     } catch (error) {
       console.log(error);
 
-      if (error instanceof MangaNotFound) {
+      if (error instanceof DataNotFoundError) {
         return notFound(error);
       }
 

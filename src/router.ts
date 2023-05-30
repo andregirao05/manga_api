@@ -24,28 +24,28 @@ const router = Router();
 
 
 //Mangas routes
-router.get("/mangas/get", authMiddleware, adaptRoute(getMangaController));
+router.get("/mangas/get/:id", authMiddleware, adaptRoute(getMangaController));
 
 router.get(
-  "/mangas/search",
+  "/mangas/search/:origin/:searchTerm/:page",
   authMiddleware,
   adaptRoute(searchMangasController)
 );
 
 router.get(
-  "/mangas/populars",
+  "/mangas/populars/:origin/:page",
   authMiddleware,
   adaptRoute(getPopularMangasController)
 );
 
 router.get(
-  "/mangas/latest-updates",
+  "/mangas/latest-updates/:origin/:page",
   authMiddleware,
   adaptRoute(getLatestUpdatedMangasController)
 );
 
 router.get(
-  "/mangas/by-genre",
+  "/mangas/by-genre/:genreName/:page",
   authMiddleware,
   adaptRoute(getMangasByGenreController)
   );
@@ -58,19 +58,19 @@ router.post("/mangas/exists", authMiddleware, adaptRoute(mangaExistsController))
 //Chapters Routes
 
 router.get(
-  "/chapters/names",
+  "/chapters/names/:id",
   authMiddleware,
   adaptRoute(getChapterNamesController)
 );
 
 router.get(
-  "/chapters/all",
+  "/chapters/all/:id",
   authMiddleware,
   adaptRoute(getChaptersController)
 );
 
 router.get(
-  "/chapters/get",
+  "/chapters/get/:id/:chapterName",
   authMiddleware,
   adaptRoute(getSingleChapterController)
 );
@@ -81,7 +81,7 @@ router.post("/chapters/add", authMiddleware, adaptRoute(addChaptersController));
 //Genre routes
 
 router.get(
-  "/genres/names",
+  "/genres/names/:language",
   authMiddleware,
   adaptRoute(getGenreNamesController)
 );
@@ -90,18 +90,18 @@ router.get(
 //Info routes
 
 router.get(
-  "/info/get",
+  "/info/get/:origin",
   authMiddleware,
   adaptRoute(getUpdateController)
 );
 
-router.post("/info/set", authMiddleware, adaptRoute(addUpdateController));
+router.post("/info/add", authMiddleware, adaptRoute(addUpdateController));
 router.post("/info/update", authMiddleware, adaptRoute(setUpdateController));
 
 
 //User routes
 
-router.post("/auth", adaptRoute(authenticateController));
+router.post("/users/auth", adaptRoute(authenticateController));
 
 
 export { router };

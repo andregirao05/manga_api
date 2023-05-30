@@ -13,7 +13,7 @@ export class GetMangasByGenreController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { genreName, page } = getMangasByGenreValidate.validateSync(request.query);
+      const { genreName, page } = getMangasByGenreValidate.validateSync(request.params);
       const results = await this.getMangasByGenreUseCase.execute({
         genreName,
         page: Number(page),

@@ -1,10 +1,10 @@
 Mangás:
   GET:
-    /mangas/get?id=<id>
-    /mangas/search?searchTerm=<term>&origin=<site>&page=<page>
-    /mangas/populars?origin=<site>&page=<page>
-    /mangas/latest-updates?origin=<site>&page=<page>
-    /mangas/by-genre?genreName=<genre name>&page=<page>
+    /mangas/get/:id
+    /mangas/search/:origin/:searchTerm/:page
+    /mangas/populars/:origin/:page
+    /mangas/latest-updates/:origin/:page
+    /mangas/by-genre/:genreName/:page
     
 
   POST:
@@ -14,21 +14,22 @@ Mangás:
 
 Capítulos:
   GET:
-    /chapters/names?id=<id>
-    /chapters/all?id=<id>
-    /chapters/get?id=<id>&chapterName=<chapter name>
+    /chapters/names/:id
+    /chapters/all/:id
+    /chapters/get/:id/:chapterName
 
   POST:
     /chapters/add
 
 
 Gêneros:
-  /genres/names?language=<language>
+  GET:
+  /genres/names/:language
 
 
 Informações:
   GET:
-    /info/get
+    /info/get/:origin
 
   POST:
     /info/add

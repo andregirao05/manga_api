@@ -2,7 +2,7 @@ import { IUseCase } from "../../../protocols/IUseCase";
 import { IMangaRepository } from "../../../repositories";
 import { IGetSingleChapterDTO } from "./IGetSingleChapterDTO";
 import { IChapter } from "../../../entities";
-import { MangaNotFound } from "../../../errors";
+import { DataNotFoundError, MangaNotFound } from "../../../errors";
 
 export class GetSingleChapterUseCase
   implements IUseCase<IGetSingleChapterDTO, IChapter>
@@ -17,7 +17,7 @@ export class GetSingleChapterUseCase
       chapterName,
     });
 
-    if (!chapter) throw new MangaNotFound(id);
+    if (!chapter) throw new DataNotFoundError("Data");
 
     return chapter;
   }
