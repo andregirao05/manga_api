@@ -7,3 +7,5 @@ export * from "./mangaAlreadyRegistered";
 export * from "./updateNotFoundError";
 export * from "./updateAlreadyRegisteredError";
 export * from "./chapterAlreadyRegisteredError";
+export * from "./userNotFoundError";
+export * from "./invalidPasswordError";

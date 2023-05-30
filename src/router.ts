@@ -17,6 +17,7 @@ import {
   mangaExistsController,
 } from "./useCases/mangas";
 import { addChaptersController } from "./useCases/mangas";
+import { authenticateController } from "./useCases";
 
 const router = Router();
 
@@ -58,5 +59,7 @@ router.post("/chapters/add", adaptRoute(addChaptersController));
 router.post("/info/add", adaptRoute(addUpdateController));
 router.post("/info/set", adaptRoute(setUpdateController));
 router.get("/info/get/:origin", adaptRoute(getUpdateController));
+
+router.post("/auth", adaptRoute(authenticateController));
 
 export { router };

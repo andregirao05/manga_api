@@ -24,9 +24,6 @@ export interface MangaPage {
 }
 
 export interface IMangaRepository {
-  connect(url: string): Promise<void>;
-  disconnect(): Promise<void>;
-
   get(data: IGetMangaDTO): Promise<Manga>;
   getChapters(data: IGetChaptersDTO): Promise<Chapter[]>;
   getChapterNames(data: IGetChapterNamesDTO): Promise<string[]>;

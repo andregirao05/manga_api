@@ -1,12 +1,6 @@
 import { ObjectId } from "mongodb";
 import { IMangaRepository, MangaPage } from "./IMangaRepository";
-import {
-  Chapter,
-  IMangaWithChapters,
-  IUpdate,
-  Manga,
-  Update,
-} from "../entities";
+import { Chapter, IMangaWithChapters, IUpdate, Manga } from "../entities";
 import {
   IAddChaptersDTO,
   IAddMangaDTO,
@@ -24,8 +18,8 @@ import {
   ISearchMangasDTO,
   ISetUpdateDTO,
 } from "../useCases/mangas";
-import { MangaModel, MangaSchema, UpdateSchema } from "./Schemas";
-import { model, disconnect, connect, Model } from "mongoose";
+import { MangaModel, MangaSchema, UpdateSchema } from "./MangaRepoSchemas";
+import { model, Model } from "mongoose";
 
 class MangaRepository implements IMangaRepository {
   private MangaModel: MangaModel;
@@ -37,14 +31,6 @@ class MangaRepository implements IMangaRepository {
       MangaSchema
     ) as MangaModel;
     this.UpdateModel = model<IUpdate>("Update", UpdateSchema);
-  }
-
-  async connect(url: string): Promise<void> {
-    await connect(url);
-  }
-
-  async disconnect(): Promise<void> {
-    await disconnect();
   }
 
   async get(data: IGetMangaDTO): Promise<Manga> {
