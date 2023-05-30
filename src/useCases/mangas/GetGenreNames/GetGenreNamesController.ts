@@ -12,10 +12,8 @@ export class GetGenreNamesController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { params } = request;
-
       const { language } = getGenreNamesSchema.validateSync(
-        params
+        request.query
       ) as IGetGenreNamesDTO;
       const results = await this.getGenreNamesUseCase.execute({ language });
 

@@ -13,10 +13,9 @@ export class GetLatestUpdatedMangasController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { params } = request;
 
       const { origin, page } =
-        getLatestUpdatedMangasSchema.validateSync(params);
+        getLatestUpdatedMangasSchema.validateSync(request.query);
 
       const results = await this.getLatestUpdatedMangasUseCase.execute({
         origin,

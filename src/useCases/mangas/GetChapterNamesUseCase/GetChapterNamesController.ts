@@ -14,10 +14,9 @@ export class GetChapterNamesController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { params } = request;
 
       const validData = getChapterNamesSchema.validateSync(
-        params
+        request.query
       ) as IGetChapterNamesDTO;
       const results = await this.getChapterNamesUseCase.execute(validData);
 

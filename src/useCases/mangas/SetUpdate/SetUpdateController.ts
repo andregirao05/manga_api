@@ -12,8 +12,7 @@ export class SetUpdateController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { body } = request;
-      const validData = setUpdateSchema.validateSync(body) as ISetUpdateDTO;
+      const validData = setUpdateSchema.validateSync(request.body) as ISetUpdateDTO;
       const results = await this.setUpdateUseCase.execute(validData);
 
       return ok(results);

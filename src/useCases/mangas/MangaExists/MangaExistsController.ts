@@ -12,8 +12,7 @@ export class MangaExistsController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { body } = request;
-      const validData = mangaExistsSchema.validateSync(body) as IMangaExistsDTO;
+      const validData = mangaExistsSchema.validateSync(request.body) as IMangaExistsDTO;
       const results = await this.mangaExistsUseCase.execute(validData);
 
       return ok(results);

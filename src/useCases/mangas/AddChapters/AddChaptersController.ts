@@ -22,8 +22,7 @@ export class AddChaptersController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { body } = request;
-      const validData = addChaptersSchema.validateSync(body) as IAddChaptersDTO;
+      const validData = addChaptersSchema.validateSync(request.body) as IAddChaptersDTO;
       const results = await this.addChaptersUseCase.execute(validData);
 
       return ok(results);

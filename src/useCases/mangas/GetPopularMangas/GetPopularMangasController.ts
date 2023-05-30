@@ -13,9 +13,7 @@ export class GetPopularMangasController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { params } = request;
-
-      const { origin, page } = getPopularMangasSchema.validateSync(params);
+      const { origin, page } = getPopularMangasSchema.validateSync(request.query);
 
       const results = await this.getPopularMangasUseCase.execute({
         origin,

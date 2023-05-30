@@ -12,8 +12,7 @@ export class AddUpdateController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { body } = request;
-      const validData = addUpdateSchema.validateSync(body) as IAddUpdateDTO;
+      const validData = addUpdateSchema.validateSync(request.body) as IAddUpdateDTO;
       const results = await this.addUpdateUseCase.execute(validData);
 
       return ok(results);

@@ -12,8 +12,7 @@ export class AddMangaController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { body } = request;
-      const validData = addMangaSchema.validateSync(body) as IAddMangaDTO;
+      const validData = addMangaSchema.validateSync(request.body) as IAddMangaDTO;
       const results = await this.addMangaUseCase.execute(validData);
 
       return ok(results);

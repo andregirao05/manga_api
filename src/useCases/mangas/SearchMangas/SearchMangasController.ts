@@ -12,10 +12,8 @@ export class SearchMangasController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { params } = request;
-
       const { origin, searchTerm, page } = searchMangasValidate.validateSync(
-        params
+        request.query
       ) as ISearchMangasDTO;
       const results = await this.searchMangasUseCase.execute({
         origin,

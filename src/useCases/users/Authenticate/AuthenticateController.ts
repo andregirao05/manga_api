@@ -16,9 +16,8 @@ export class AuthenticateController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { body } = request;
       const validData = authenticateSchema.validateSync(
-        body
+        request.body
       ) as IAuthenticateDTO;
       const results = await this.authenticateUseCase.execute(validData);
 

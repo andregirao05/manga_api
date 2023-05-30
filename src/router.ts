@@ -22,63 +22,86 @@ import { authMiddleware } from "./middlewares";
 
 const router = Router();
 
-router.get("/mangas/get/:id", authMiddleware, adaptRoute(getMangaController));
-router.get(
-  "/mangas/get/:id/list-chapters",
-  authMiddleware,
-  adaptRoute(getChaptersController)
-);
+
+//Mangas routes
+router.get("/mangas/get", authMiddleware, adaptRoute(getMangaController));
 
 router.get(
-  "/mangas/get/:id/chapter-names",
-  authMiddleware,
-  adaptRoute(getChapterNamesController)
-);
-router.get(
-  "/mangas/get/:id/chapters/:chapterName",
-  authMiddleware,
-  adaptRoute(getSingleChapterController)
-);
-
-router.get(
-  "/mangas/search/:origin/:searchTerm/:page",
+  "/mangas/search",
   authMiddleware,
   adaptRoute(searchMangasController)
 );
+
 router.get(
-  "/info/populars/:origin/:page",
+  "/mangas/populars",
   authMiddleware,
   adaptRoute(getPopularMangasController)
 );
+
 router.get(
-  "/info/updates/:origin/:page",
+  "/mangas/latest-updates",
   authMiddleware,
   adaptRoute(getLatestUpdatedMangasController)
 );
 
 router.get(
-  "/genres/list/:language",
+  "/mangas/by-genre",
+  authMiddleware,
+  adaptRoute(getMangasByGenreController)
+  );
+  
+router.post("/mangas/add", authMiddleware, adaptRoute(addMangaController));
+
+router.post("/mangas/exists", authMiddleware, adaptRoute(mangaExistsController));
+
+
+//Chapters Routes
+
+router.get(
+  "/chapters/names",
+  authMiddleware,
+  adaptRoute(getChapterNamesController)
+);
+
+router.get(
+  "/chapters/all",
+  authMiddleware,
+  adaptRoute(getChaptersController)
+);
+
+router.get(
+  "/chapters/get",
+  authMiddleware,
+  adaptRoute(getSingleChapterController)
+);
+
+router.post("/chapters/add", authMiddleware, adaptRoute(addChaptersController));
+
+
+//Genre routes
+
+router.get(
+  "/genres/names",
   authMiddleware,
   adaptRoute(getGenreNamesController)
 );
-router.get(
-  "/genres/get/:genreName/:page",
-  authMiddleware,
-  adaptRoute(getMangasByGenreController)
-);
 
-router.post("/mangas/exist", authMiddleware, adaptRoute(mangaExistsController));
-router.post("/mangas/add", authMiddleware, adaptRoute(addMangaController));
-router.post("/chapters/add", authMiddleware, adaptRoute(addChaptersController));
 
-router.post("/info/add", authMiddleware, adaptRoute(addUpdateController));
-router.post("/info/set", authMiddleware, adaptRoute(setUpdateController));
+//Info routes
+
 router.get(
-  "/info/get/:origin",
+  "/info/get",
   authMiddleware,
   adaptRoute(getUpdateController)
 );
 
+router.post("/info/set", authMiddleware, adaptRoute(addUpdateController));
+router.post("/info/update", authMiddleware, adaptRoute(setUpdateController));
+
+
+//User routes
+
 router.post("/auth", adaptRoute(authenticateController));
+
 
 export { router };

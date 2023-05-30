@@ -12,7 +12,7 @@ export class GetSingleChapterController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { id, chapterName } = request.params;
+      const { id, chapterName } = request.query;
 
       const results = await this.getSingleChapterUseCase.execute({
         id,

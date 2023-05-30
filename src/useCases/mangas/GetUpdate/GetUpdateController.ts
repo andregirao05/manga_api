@@ -4,17 +4,15 @@ import { badRequest, notFound, ok, serverError } from "../../../helpers";
 import { IController } from "../../../protocols/IController";
 import { GetUpdateUseCase } from "./GetUpdateUseCase";
 import { IGetUpdateDTO } from "./IGetUpdateDTO";
-import { Request, Response } from "express";
 import { getUpdateSchema } from "./getUpdateValidate";
-import { IResponse } from "../../../protocols";
+import { IRequest, IResponse } from "../../../protocols";
 
 export class GetUpdateController implements IController {
   constructor(private readonly getUpdateUseCase: GetUpdateUseCase) {}
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { params } = request;
-      const validData = getUpdateSchema.validateSync(params) as IGetUpdateDTO;
+      const validData = getUpdateSchema.validateSync(request.query) as IGetUpdateDTO;
       const results = await this.getUpdateUseCase.execute(validData);
 
       return ok(results);
