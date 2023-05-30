@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { IMangaRepository, MangaPage } from "./IMangaRepository";
-import { Chapter, IMangaWithChapters, IUpdate, Manga } from "../entities";
+import { IManga, IMangaWithChapters, IUpdate, IChapter } from "../entities";
 import {
   IAddChaptersDTO,
   IAddMangaDTO,
@@ -33,23 +33,20 @@ class MangaRepository implements IMangaRepository {
     this.UpdateModel = model<IUpdate>("Update", UpdateSchema);
   }
 
-  async get(data: IGetMangaDTO): Promise<Manga> {
+  async get(data: IGetMangaDTO): Promise<IManga> {
     const manga = await this.MangaModel.findOne({ _id: data.id }).select({
       chapters: 0,
     });
 
-    return new Manga(manga.toObject(), manga._id.toString());
+    return manga;
   }
 
-  async getChapters(data: IGetChaptersDTO): Promise<Chapter[]> {
+  async getChapters(data: IGetChaptersDTO): Promise<IChapter[]> {
     const results = await this.MangaModel.findOne({ _id: data.id }).select({
       chapters: 1,
     });
 
-    const chapters = results?.chapters.map(
-      (chapter: any) => new Chapter(chapter.toObject())
-    );
-    return chapters;
+    return results?.chapters;
   }
 
   async getChapterNames(data: IGetChapterNamesDTO): Promise<string[]> {
@@ -78,7 +75,7 @@ class MangaRepository implements IMangaRepository {
     return names;
   }
 
-  async getSingleChapter(data: IGetSingleChapterDTO): Promise<Chapter> {
+  async getSingleChapter(data: IGetSingleChapterDTO): Promise<IChapter> {
     const results = await this.MangaModel.findOne({ _id: data.id }).select({
       _id: 0,
       chapters: { $elemMatch: { name: data.chapterName } },
@@ -187,7 +184,37 @@ class MangaRepository implements IMangaRepository {
   }
 
   async add(data: IAddMangaDTO): Promise<string> {
-    const results = await this.MangaModel.collection.insertOne(data);
+    const {
+      title,
+      alternative_title,
+      artist,
+      author,
+      origin,
+      language,
+      rating,
+      status,
+      summary,
+      url,
+      thumbnail,
+      genres,
+      chapters,
+    } = data;
+
+    const results = await this.MangaModel.collection.insertOne({
+      title,
+      alternative_title,
+      artist,
+      author,
+      origin,
+      language,
+      rating,
+      status,
+      summary,
+      url,
+      thumbnail,
+      genres,
+      chapters,
+    });
     return results.insertedId.toString();
   }
 
@@ -209,7 +236,13 @@ class MangaRepository implements IMangaRepository {
   }
 
   async addUpdate(data: IAddUpdateDTO): Promise<string> {
-    const results = await this.UpdateModel.collection.insertOne(data);
+    const { origin, language, latest_updates, populars } = data;
+    const results = await this.UpdateModel.collection.insertOne({
+      origin,
+      language,
+      latest_updates,
+      populars,
+    });
     return results.insertedId.toString();
   }
 
