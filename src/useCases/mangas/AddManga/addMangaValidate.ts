@@ -10,7 +10,7 @@ const chapterSchema: ObjectSchema<IChapter> = object({
 
 const addMangaSchema = object<IAddMangaDTO>({
   title: string().required(),
-  alternative_title: string().required(),
+  alternative_title: string().nullable().defined(),
   artist: string().nullable().defined(),
   author: string().nullable().defined(),
   genres: array(string()).required().min(1),

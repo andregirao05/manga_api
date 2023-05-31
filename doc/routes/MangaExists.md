@@ -1,6 +1,6 @@
 # Checar se mangá existe (POST)
 
-`/mangas/exists` 
+`/mangas/exists`
 
 ## Descrição
 
@@ -12,20 +12,20 @@ Adiciona um novo mangá e retorna o seu id.
 
 **Headers**
 
-| Field | Format | Description |
-|-------|-------|-------------|
-|authorization| string | Token de acesso concedido a usuários autenticados. |
+| Field         | Format | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| authorization | string | Token de acesso concedido a usuários autenticados. |
 
 **Body**
 
-| Field | Format | Description |
-|-------|-------|-------------|
-| url | string | Endereço de origem do mangá |
+| Field | Format | Description                 |
+| ----- | ------ | --------------------------- |
+| url   | string | Endereço de origem do mangá |
 
 ### Response
 
 **Data**
 
-| Format | Description |
-|-------|-------------|
-|string ou null | ID do mangá (se o mangá estiver cadastrado). Null se o mangá não existir | 
+| Format         | Description                                                              |
+| -------------- | ------------------------------------------------------------------------ |
+| string ou null | ID do mangá (se o mangá estiver cadastrado). Null se o mangá não existir |
