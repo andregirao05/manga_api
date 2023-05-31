@@ -25,7 +25,7 @@ Adiciona um novo mangá e retorna o seu id.
 | author | string ou null | Nome do author |
 | artist | string ou null | Nome do artista |
 | status | string ou null | Status de produção do mangá|
-| rating | string ou null | Nota do mangá |
+| rating | number ou null | Nota do mangá |
 | url | string | Endereço de origem do mangá |
 | origin | string | Tag do site de origem |
 | language | string | Idioma do mangá |
