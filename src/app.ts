@@ -1,6 +1,6 @@
 import express from "express";
 import { router } from "./router";
-import { setupMiddleware } from "./configs/setupMiddleware";
+import { setupMiddleware } from "./configs";
 
 const app = express();
 

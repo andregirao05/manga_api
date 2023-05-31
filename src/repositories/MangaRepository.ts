@@ -1,6 +1,10 @@
 import { ObjectId } from "mongodb";
-import { IMangaRepository } from "./IMangaRepository";
+import { IMangaRepository, IMangaPage } from "./IMangaRepository";
+import { IManga, IMangaWithChapters, IUpdate, IChapter } from "../entities";
 import {
+  IAddChaptersDTO,
+  IAddMangaDTO,
+  IAddUpdateDTO,
   IGetChapterNamesDTO,
   IGetChaptersDTO,
   IGetGenreNamesDTO,
@@ -9,48 +13,44 @@ import {
   IGetMangasByGenreDTO,
   IGetPopularMangasDTO,
   IGetSingleChapterDTO,
-  IResultsDTO,
-  IResultsWithPageInfoDTO,
+  IGetUpdateDTO,
+  IMangaExistsDTO,
   ISearchMangasDTO,
-} from "../models";
-import mongoose from "mongoose";
-import { MangaSchema, UpdateSchema } from "./Schemas";
+  ISetUpdateDTO,
+} from "../useCases/mangas";
+import { MangaModel, MangaSchema, UpdateSchema } from "./MangaRepoSchemas";
+import { model, Model } from "mongoose";
 
-export class MangaRepositoty implements IMangaRepository {
-  private Manga: any;
-  private Update: any;
+class MangaRepository implements IMangaRepository {
+  private MangaModel: MangaModel;
+  private UpdateModel: Model<IUpdate>;
 
   constructor(private readonly mangasPerPage: number = 20) {
-    this.Manga = mongoose.model("Manga", MangaSchema);
-    this.Update = mongoose.model("Update", UpdateSchema);
+    this.MangaModel = model<IMangaWithChapters>(
+      "Manga",
+      MangaSchema
+    ) as MangaModel;
+    this.UpdateModel = model<IUpdate>("Update", UpdateSchema);
   }
 
-  async connect(url: string): Promise<void> {
-    await mongoose.connect(url);
-  }
-
-  async disconnect(): Promise<void> {
-    await mongoose.disconnect();
-  }
-
-  async get(data: IGetMangaDTO): Promise<IResultsDTO> {
-    const manga = await this.Manga.findOne({ _id: data.id }).select({
+  async get(data: IGetMangaDTO): Promise<IManga> {
+    const manga = await this.MangaModel.findOne({ _id: data.id }).select({
       chapters: 0,
     });
 
-    return { data: manga };
+    return manga;
   }
 
-  async getChapters(data: IGetChaptersDTO): Promise<IResultsDTO> {
-    const results = await this.Manga.findOne({ _id: data.id }).select({
+  async getChapters(data: IGetChaptersDTO): Promise<IChapter[]> {
+    const results = await this.MangaModel.findOne({ _id: data.id }).select({
       chapters: 1,
     });
 
-    return { data: results.chapters };
+    return results?.chapters;
   }
 
-  async getChapterNames(data: IGetChapterNamesDTO): Promise<IResultsDTO> {
-    const results = await this.Manga.aggregate([
+  async getChapterNames(data: IGetChapterNamesDTO): Promise<string[]> {
+    const [results] = await this.MangaModel.aggregate([
       {
         $match: {
           _id: new ObjectId(data.id),
@@ -70,77 +70,73 @@ export class MangaRepositoty implements IMangaRepository {
       },
     ]);
 
-    const names = results[0].chapterNames;
+    const names = results?.chapterNames;
 
-    return { data: names };
+    return names;
   }
 
-  async getSingleChapter(data: IGetSingleChapterDTO): Promise<IResultsDTO> {
-    const results = await this.Manga.findOne({ _id: data.id }).select({
+  async getSingleChapter(data: IGetSingleChapterDTO): Promise<IChapter> {
+    const results = await this.MangaModel.findOne({ _id: data.id }).select({
       _id: 0,
       chapters: { $elemMatch: { name: data.chapterName } },
     });
 
-    const [chapter] = results.chapters;
-
-    return { data: chapter };
+    return results?.chapters[0];
   }
 
-  async search(data: ISearchMangasDTO): Promise<IResultsWithPageInfoDTO> {
+  async search(data: ISearchMangasDTO): Promise<IMangaPage> {
     const options = {
       page: data.page,
       limit: this.mangasPerPage,
       projection: { chapters: 0 },
     };
 
-    const results = await this.Manga.paginate(
+    const term = `\"${data.searchTerm}\"`;
+
+    const results = await this.MangaModel.paginate(
       {
         origin: data.origin,
-        $text: { $search: `\"${data.searchTerm}\"` },
+        $text: { $search: term },
       },
       options
     );
 
     return {
-      data: results.docs,
+      mangas: results.docs,
       currentPage: results.page,
       totalPages: results.totalPages,
     };
   }
 
-  async listGenres(data: IGetGenreNamesDTO): Promise<IResultsDTO> {
-    const genres = await this.Manga.distinct("genres", {
+  async getGenreNames(data: IGetGenreNamesDTO): Promise<string[]> {
+    const genresNames = await this.MangaModel.distinct("genres", {
       language: data.language,
     });
 
-    return { data: genres };
+    return genresNames;
   }
 
-  async getMangasByGenre(
-    data: IGetMangasByGenreDTO
-  ): Promise<IResultsWithPageInfoDTO> {
+  async getMangasByGenre(data: IGetMangasByGenreDTO): Promise<IMangaPage> {
     const options = {
       page: data.page,
       limit: this.mangasPerPage,
       projection: { chapters: 0 },
     };
 
-    const results = await this.Manga.paginate(
+    const results = await this.MangaModel.paginate(
       { genres: data.genreName },
       options
     );
 
     return {
-      data: results.docs,
+      mangas: results.docs,
       currentPage: results.page,
       totalPages: results.totalPages,
     };
   }
 
-  async getPopulars(
-    data: IGetPopularMangasDTO
-  ): Promise<IResultsWithPageInfoDTO> {
-    const updateData = await this.Update.findOne({ origin: data.origin });
+  async getPopulars(data: IGetPopularMangasDTO): Promise<IMangaPage> {
+    const updateData = await this.UpdateModel.findOne({ origin: data.origin });
 
     const options = {
       page: data.page,
@@ -148,16 +144,16 @@ export class MangaRepositoty implements IMangaRepository {
       projection: { chapters: 0 },
     };
 
-    const results = await this.Manga.paginate(
+    const results = await this.MangaModel.paginate(
       {
         origin: data.origin,
-        url: { $in: updateData.populars },
+        url: { $in: updateData?.populars },
       },
       options
     );
 
     return {
-      data: results.docs,
+      mangas: results.docs,
       currentPage: results.page,
       totalPages: results.totalPages,
     };
@@ -165,8 +161,8 @@ export class MangaRepositoty implements IMangaRepository {
 
   async getLatestUpdated(
     data: IGetLatestUpdatedMangasDTO
-  ): Promise<IResultsWithPageInfoDTO> {
-    const updateData = await this.Update.findOne({ origin: data.origin });
+  ): Promise<IMangaPage> {
+    const updateData = await this.UpdateModel.findOne({ origin: data.origin });
 
     const options = {
       page: data.page,
@@ -174,33 +170,153 @@ export class MangaRepositoty implements IMangaRepository {
       projection: { chapters: 0 },
     };
 
-    const results = await this.Manga.paginate(
+    const results = await this.MangaModel.paginate(
       {
         origin: data.origin,
-        url: { $in: updateData.latest_updates },
+        url: { $in: updateData?.latest_updates },
       },
       options
     );
 
     return {
-      data: results.docs,
+      mangas: results.docs,
       currentPage: results.page,
       totalPages: results.totalPages,
     };
   }
 
-  async exists(id: string): Promise<boolean> {
-    try {
-      const results = await this.Manga.findOne(
-        { _id: new ObjectId(id) },
-        { projection: { chapters: 0 } }
-      );
-      return results !== null;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
+  async add(data: IAddMangaDTO): Promise<string> {
+    const {
+      title,
+      alternative_title,
+      artist,
+      author,
+      origin,
+      language,
+      rating,
+      status,
+      summary,
+      url,
+      thumbnail,
+      genres,
+      chapters,
+    } = data;
+
+    const results = await this.MangaModel.collection.insertOne({
+      title,
+      alternative_title,
+      artist,
+      author,
+      origin,
+      language,
+      rating,
+      status,
+      summary,
+      url,
+      thumbnail,
+      genres,
+      chapters,
+    });
+    return results.insertedId.toString();
+  }
+
+  async addChapters(data: IAddChaptersDTO): Promise<boolean> {
+    const { id, chapters } = data;
+
+    const results = await this.MangaModel.collection.updateOne(
+      {
+        _id: new ObjectId(id),
+      },
+      {
+        $push: {
+          chapters: { $each: chapters },
+        },
+      }
+    );
+
+    return results.modifiedCount > 0;
+  }
+
+  async addUpdate(data: IAddUpdateDTO): Promise<string> {
+    const { origin, language, latest_updates, populars } = data;
+    const results = await this.UpdateModel.collection.insertOne({
+      origin,
+      language,
+      latest_updates,
+      populars,
+    });
+    return results.insertedId.toString();
+  }
+
+  async getUpdate(data: IGetUpdateDTO): Promise<IUpdate> {
+    const { origin } = data;
+    const results = await this.UpdateModel.findOne({ origin });
+    return results;
+  }
+
+  async setUpdate(data: ISetUpdateDTO): Promise<boolean> {
+    const { origin, language, latest_updates, populars } = data;
+
+    const results = await this.UpdateModel.collection.updateOne(
+      {
+        origin,
+      },
+      {
+        $set: {
+          origin,
+          language,
+          latest_updates,
+          populars,
+        },
+      }
+    );
+
+    return results.modifiedCount > 0;
+  }
+
+  async updateExists(origin: string): Promise<boolean> {
+    const results = await this.UpdateModel.findOne(
+      {
+        origin: origin,
+      },
+      { projection: { _id: 1 } }
+    );
+
+    return results !== null;
+  }
+
+  async mangaExistsByInfo(data: IMangaExistsDTO): Promise<string> {
+    const results = await this.MangaModel.findOne(
+      {
+        url: data.url,
+      },
+      { projection: { _id: 1 } }
+    );
+
+    return results?._id.toString() || null;
+  }
+
+  async mangaExistsById(id: string): Promise<boolean> {
+    const results = await this.MangaModel.findOne(
+      {
+        _id: new ObjectId(id),
+      },
+      { projection: { _id: 1 } }
+    );
+
+    return results !== null;
+  }
+
+  async mangaExistByUrl(url: string): Promise<boolean> {
+    const results = await this.MangaModel.findOne(
+      {
+        url,
+      },
+      { projection: { _id: 1 } }
+    );
+
+    return results != null;
   }
 }
 
-export const mangaRespository = new MangaRepositoty();
+export const mangaRespository = new MangaRepository();

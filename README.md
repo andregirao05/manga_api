@@ -2,7 +2,6 @@
 
 Uma REST API de mangás usando Node.js, Typescript e MongoDB.
 
-<hr>
 ## Instalação (usando yarn)
 
 Rodar o comando de instalação de bibliotecas:
@@ -17,21 +16,20 @@ OBS: em caso de desenvolvimento, para habilitar o commitlint é necessário exec
 yarn prepare
 ```
 
-<hr>
 ## Execução da aplicação
 
 A execução da api depende da conexão com o MongoDB. Para tal, é necessário configurar as varíaveis de ambiente. Crie um arquivo chamado `.env` com o seguinte conteúdo:
 
 ```
 MONGO_URI=<colocar a url do mongodb aqui>
-PORT=<colocar a porta de preferência aqui. Exemplo: 3333>
+PORT=<colocar a porta de preferência aqui>
+TOKEN_GENERATOR_SECRET=<MD5 hash para gerar tokens>
 ```
 
 Para executar em modo de **_desenvolvimento_**:
 
 ```
 yarn start:dev
-
 ```
 
 ou em modo de escuta:
@@ -51,207 +49,50 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 ```
 yarn start
 ```
-<hr>
+
+***
+
+## Formato de resposta
+
+| Field | Format | Description |
+|-------|-------|-------------|
+| data | any | Campo destinado para os dados de resposta (o tipo depende da rota). Em caso de erro, valor deste campo será `null` |
+| error | string | Mensagem de erro (caso ocorra). Se não houver erro, este campo será `null` |
+
 ## Rotas
 
-### Obter um único mangá
+### Autenticação
 
-`/mangas/get/:id`
+Para fazer requisições na api, é necessário ser um usuário autorizado.
+Cada requisição **deve ter um header chamado "authorization" com um token de acesso**.
 
-**Descrição:** bbtem um único mangá a partir de um `id`.
+`authorization: <jwt token>`
 
-**Parâmetros:**
+- [Autenticação](/doc/routes/Authenticate.md)
 
-`id`: uma string que representa o id do mangá.
+### Mangás
 
-**Formato do resultado:**
+- [Obter um mangá](/doc/routes/GetManga.md)
+- [Buscar um mangá](/doc/routes/SearchMangas.md)
+- [Listar mangás populares](/doc/routes/GetPopularMangas.md)
+- [Listar mangás recentemente atualizados](/doc/routes/GetLatestUpdatedMangas.md)
+- [Listar mangás por gênero](/doc/routes/GetMangasByGenre.md)
+- [Adicionar um novo mangá](/doc/routes/AddManga.md)
+- [Checar se mangá existe](/doc/routes/MangaExists.md)
 
-```
-{
-  "data": {
-    "id": string,
-    "title": string,
-    "alternative_title": string,
-    "author": string | null,
-    "artist": string | null,
-    "status": string | null,
-    "rating": number | null,
-    "url": string,
-    "origin": "manga_livre" | "readm",
-    "language": "english" | "portuguese",
-    "thumbnail": string,
-    "genres": string[],
-    "summary": string
-  }
-}
-```
+### Capítulos
 
-<br>
-### Obter um capítulo específico
+- [Obter nomes dos capítulos de um mangá](/doc/routes/GetChapterNames.md)
+- [Listar todos os capítulos de um mangá](/doc/routes/GetChapters.md)
+- [Obter um capítulo específico](/doc/routes/GetSingleChapter.md)
+- [Adicionar capítulos a um mangá](/doc/routes/AddChapters.md)
 
-`/mangas/get/:id/chapters/:chapterName`
+## Gêneros
 
-**Descrição:** retorna um capítulo específico do mangá (nome e páginas).
+- [Obter nomes de gêneros de mangás](/doc/routes/GetGenreNames.md)
 
-**Parâmetros:**
+### Informações dos sites dos mangás
 
-`id`: id do mangá. <br>
-`chapterName`: uma string com o nome do capítulo. <br>
-
-**Formato do resultado:**
-
-```
-{
-  "data": {
-    "name": string,
-    "pages": string[]
-  }
-}
-```
-
-<br>
-### Obter a lista de capítulos de um mangá
-
-`/mangas/get/:id/chapter-names`
-
-**Descrição:** retorna uma lista de strings com os _nomes dos capítulos_ do mangá.
-
-**Parâmetros:**
-
-`id`: id do mangá. <br>
-
-**Formato do resultado:**
-
-```
-{
-  "data": string[]
-}
-```
-
-<br>
-### Obter todos os capítulos de um mangá
-
-`/mangas/get/:id/list-chapters`
-
-**Descrição:** retorna todos os capítulos do mangá (nome e páginas).
-
-**Parâmetros:**
-
-`id`: id do mangá. <br>
-
-**Formato do resultado:**
-
-```
-{
-  "data": Chapter[]
-}
-```
-
-<br>
-### Obter mangás mais populares
-
-`/info/populars/:origin/:page`
-
-**Descrição:** retorna uma lista com os mangás mais populares.
-
-**Parâmetros:**
-
-`origin`: qual o site de origem do mangá ("manga_livre" ou "readm"). <br>
-`page`: número da página de resultados (inicia sempre em 1). <br>
-
-**Formato do resultado:**
-
-```
-{
-  "data": Manga[],
-  "currentPage": number,
-  "totalPages": number
-}
-```
-
-<br>
-### Obter mangás recentemente atualizados
-
-`/info/updates/:origin/:page`
-
-**Descrição:** retorna uma lista com os mangás recentemente atualizados.
-
-**Parâmetros:**
-
-`origin`: qual o site de origem dos mangás ("manga_livre" ou "readm"). <br>
-`page`: número da página de resultados (inicia sempre em 1). <br>
-
-**Formato do resultado:**
-
-```
-{
-  "data": Manga[],
-  "currentPage": number,
-  "totalPages": number
-}
-```
-
-<br>
-### Buscar por mangá
-
-`/mangas/search/:origin/:searchTerm/:page`
-
-**Descrição:** retorna uma lista de mangás com título (principal ou alternativo) igual ao termo procurado.
-
-**Parâmetros:**
-
-`origin`: site de origem dos mangás ("manga_livre" ou "readm"). <br>
-`page`: número da página de resultados (inicia sempre em 1). <br>
-
-`searchTerm`: uma string com o termo de busca.
-
-**Formato do resultado:**
-
-```
-{
-  "data": Manga[],
-  "currentPage": number,
-  "totalPages": number
-}
-```
-
-<br>
-### Obter listas de gêneros
-
-`/genres/list/:language`
-
-**Descrição:** retorna uma lista com os gêneros de mangás por idioma (português e inglês).
-
-**Parâmetros:**
-
-`language`: linguagem alvo ("english" ou "portuguese"). <br>
-
-**Formato do resultado:**
-
-```
-{
-  "data": string[]
-}
-```
-
-<br>
-### Obter mangás por gênero
-
-`/genres/get/:genreName/:page`
-
-**Descrição:** retorna uma lista com os mangás do gênero indicado.
-
-**Parâmetros:**
-
-`genreName`: nome do gênero procurado. <br>
-`page`: número da página de resultados (inicia sempre em 1). <br>
-
-**Formato do resultado:**
-
-```
-{
-  "data": Manga[],
-  "currentPage": number,
-  "totalPages": number
-}
-```
+- [Obter informações de um site de origem](/doc/routes/GetUpdate.md)
+- [Adicionar informações de um novo site de origem](/doc/routes/AddUpdate.md)
+- [Atualizar as informações de um site de origem](/doc/routes/SetUpdate.md)

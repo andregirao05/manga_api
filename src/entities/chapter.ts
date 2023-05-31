@@ -1,6 +1,9 @@
-interface IChapter extends Chapter {}
+export interface IChapter {
+  name: string;
+  pages: string[];
+}
 
-export class Chapter {
+export class Chapter implements IChapter {
   name: string;
   pages: string[];
 

@@ -1,4 +1,6 @@
 import {
+  IAddChaptersDTO,
+  IAddMangaDTO,
   IGetChapterNamesDTO,
   IGetChaptersDTO,
   IGetGenreNamesDTO,
@@ -7,26 +9,41 @@ import {
   IGetMangasByGenreDTO,
   IGetPopularMangasDTO,
   IGetSingleChapterDTO,
-  IResultsDTO,
-  IResultsWithPageInfoDTO,
   ISearchMangasDTO,
-} from "../models";
+  IMangaExistsDTO,
+  IAddUpdateDTO,
+  ISetUpdateDTO,
+  IGetUpdateDTO,
+} from "../useCases/mangas";
+import { IChapter, IManga, IUpdate } from "../entities";
+
+export interface IMangaPage {
+  mangas: IManga[];
+  currentPage: number;
+  totalPages: number;
+}
 
 export interface IMangaRepository {
-  connect(url: string): Promise<void>;
-  disconnect(): Promise<void>;
-  get(data: IGetMangaDTO): Promise<IResultsDTO>;
-  getChapters(data: IGetChaptersDTO): Promise<IResultsDTO>;
-  getChapterNames(data: IGetChapterNamesDTO): Promise<IResultsDTO>;
-  getSingleChapter(data: IGetSingleChapterDTO): Promise<IResultsDTO>;
-  search(data: ISearchMangasDTO): Promise<IResultsWithPageInfoDTO>;
-  listGenres(data: IGetGenreNamesDTO): Promise<IResultsDTO>;
-  getMangasByGenre(
-    data: IGetMangasByGenreDTO
-  ): Promise<IResultsWithPageInfoDTO>;
-  getPopulars(data: IGetPopularMangasDTO): Promise<IResultsWithPageInfoDTO>;
-  getLatestUpdated(
-    data: IGetLatestUpdatedMangasDTO
-  ): Promise<IResultsWithPageInfoDTO>;
-  exists(id: string): Promise<boolean>;
+  get(data: IGetMangaDTO): Promise<IManga>;
+  getChapters(data: IGetChaptersDTO): Promise<IChapter[]>;
+  getChapterNames(data: IGetChapterNamesDTO): Promise<string[]>;
+  getSingleChapter(data: IGetSingleChapterDTO): Promise<IChapter>;
+  search(data: ISearchMangasDTO): Promise<IMangaPage>;
+  getGenreNames(data: IGetGenreNamesDTO): Promise<string[]>;
+  getMangasByGenre(data: IGetMangasByGenreDTO): Promise<IMangaPage>;
+  getPopulars(data: IGetPopularMangasDTO): Promise<IMangaPage>;
+  getLatestUpdated(data: IGetLatestUpdatedMangasDTO): Promise<IMangaPage>;
+
+  add(data: IAddMangaDTO): Promise<string>;
+  addChapters(data: IAddChaptersDTO): Promise<boolean>;
+
+  addUpdate(data: IAddUpdateDTO): Promise<string>;
+  getUpdate(data: IGetUpdateDTO): Promise<IUpdate>;
+  setUpdate(data: ISetUpdateDTO): Promise<boolean>;
+
+  updateExists(origin: string): Promise<boolean>;
+
+  mangaExistsByInfo(data: IMangaExistsDTO): Promise<string>;
+  mangaExistsById(id: string): Promise<boolean>;
+  mangaExistByUrl(url: string): Promise<boolean>;
 }

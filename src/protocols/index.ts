@@ -1,2 +1,4 @@
-export { Controller } from "./Controller"
-export { IUseCase } from "./IUseCase"
+export * from "./IController";
+export * from "./IResponse";
+export * from "./IResquest";
+export * from "./IUseCase";
