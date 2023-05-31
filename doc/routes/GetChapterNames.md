@@ -1,6 +1,6 @@
 # Obter nomes dos capítulos de um mangá (GET)
 
-`/chapters/names/:id` 
+`/chapters/names/:id`
 
 ## Descrição
 
@@ -12,21 +12,20 @@ Retorna os nomes dos capítulos de um mangá.
 
 **Headers**
 
-| Field | Format | Description |
-|-------|-------|-------------|
-|authorization| string | Token de acesso concedido a usuários autenticados. |
-
+| Field         | Format | Description                                        |
+| ------------- | ------ | -------------------------------------------------- |
+| authorization | string | Token de acesso concedido a usuários autenticados. |
 
 **Params**
 
 | Field | Format | Description |
-|-------|-------|-------------|
-|id| string | ID do mangá |
+| ----- | ------ | ----------- |
+| id    | string | ID do mangá |
 
 ### Response
 
 **Data**
 
-| Format | Description |
-|-------|-------------|
+| Format    | Description                      |
+| --------- | -------------------------------- |
 | string[ ] | Lista com os nomes dos capítulos |

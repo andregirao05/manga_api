@@ -50,14 +50,14 @@ Depois de contruidos os arquivos de build, executar com o seguinte comando:
 yarn start
 ```
 
-***
+---
 
 ## Formato de resposta
 
-| Field | Format | Description |
-|-------|-------|-------------|
-| data | any | Campo destinado para os dados de resposta (o tipo depende da rota). Em caso de erro, valor deste campo será `null` |
-| error | string | Mensagem de erro (caso ocorra). Se não houver erro, este campo será `null` |
+| Field | Format | Description                                                                                                        |
+| ----- | ------ | ------------------------------------------------------------------------------------------------------------------ |
+| data  | any    | Campo destinado para os dados de resposta (o tipo depende da rota). Em caso de erro, valor deste campo será `null` |
+| error | string | Mensagem de erro (caso ocorra). Se não houver erro, este campo será `null`                                         |
 
 ## Rotas
 
