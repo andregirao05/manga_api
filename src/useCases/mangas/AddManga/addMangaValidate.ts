@@ -16,12 +16,12 @@ const addMangaSchema = object<IAddMangaDTO>({
   genres: array(string()).required().min(1),
   status: string().nullable().defined(),
   url: string().required(),
-  rating: number().nullable().positive().required(),
+  rating: number().nullable().positive().defined(),
   language: string().oneOf(acceptedLanguages).required(),
   origin: string().required(),
   summary: string().nullable().defined(),
   thumbnail: string().required(),
-  chapters: array().of(chapterSchema.required()).required(),
+  chapters: array().of(chapterSchema.required()).required().min(1),
 });
 
 export { addMangaSchema };
