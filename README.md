@@ -87,7 +87,7 @@ Cada requisição **deve ter um header chamado "authorization" com um token de a
 - [Obter um capítulo específico](/doc/routes/GetSingleChapter.md)
 - [Adicionar capítulos a um mangá](/doc/routes/AddChapters.md)
 
-## Gêneros
+### Gêneros
 
 - [Obter nomes de gêneros de mangás](/doc/routes/GetGenreNames.md)
 

@@ -135,3 +135,5 @@ dist
 Dockerfile
 docker-compose.yml
 Makefile
+
+processes.json
