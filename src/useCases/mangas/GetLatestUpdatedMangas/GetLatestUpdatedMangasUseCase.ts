@@ -11,7 +11,7 @@ export class GetLatestUpdatedMangasUseCase
     const { origin, page } = data;
 
     const { mangas, currentPage, totalPages } =
-      await this.mangaRepository.getPopulars({ origin, page });
+      await this.mangaRepository.getLatestUpdated({ origin, page });
 
     return {
       mangas,
