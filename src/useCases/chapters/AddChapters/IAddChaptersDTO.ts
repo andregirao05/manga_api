@@ -1,4 +1,4 @@
-import { IChapter } from "../../../entities";
+import { IChapter } from "entities";
 
 export interface IAddChaptersDTO {
   id: string;

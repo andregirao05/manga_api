@@ -1,5 +1,5 @@
-import { IMangaRepository } from "../../../repositories";
-import { IUseCase } from "../../../protocols/IUseCase";
+import { IMangaRepository } from "repositories";
+import { IUseCase } from "protocols";
 import { IMangaExistsDTO } from "./IMangaExistsDTO";
 
 export class MangaExistsUseCase implements IUseCase<IMangaExistsDTO, string> {

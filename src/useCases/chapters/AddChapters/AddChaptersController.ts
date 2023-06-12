@@ -1,30 +1,24 @@
-import { IController } from "../../../protocols/IController";
+import { IController, IRequest, IResponse } from "protocols";
 import { AddChaptersUseCase } from "./AddChaptersUseCase";
-import { addChaptersSchema } from "./AddChaptersValidate";
 import { IAddChaptersDTO } from "./IAddChaptersDTO";
-import { ValidationError } from "yup";
 import {
   MangaNotFoundError,
   ServerError,
   ChapterAlreadyExistError,
-} from "../../../errors";
-import { IRequest, IResponse } from "../../../protocols";
-import {
-  badRequest,
-  conflict,
-  notFound,
-  ok,
-  serverError,
-} from "../../../helpers";
+  ValidationError,
+} from "errors";
+import { badRequest, conflict, notFound, ok, serverError } from "helpers";
+import { IValidator } from "validation";
 
 export class AddChaptersController implements IController {
-  constructor(private readonly addChaptersUseCase: AddChaptersUseCase) {}
+  constructor(
+    private readonly addChaptersUseCase: AddChaptersUseCase,
+    private readonly validator: IValidator<IAddChaptersDTO>
+  ) {}
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const validData = addChaptersSchema.validateSync(
-        request.body
-      ) as IAddChaptersDTO;
+      const validData = await this.validator.validate(request.body);
       const results = await this.addChaptersUseCase.execute(validData);
 
       return ok(results);

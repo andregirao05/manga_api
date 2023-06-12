@@ -1,6 +1,6 @@
-import { UpdateNotFoundError } from "../../../errors";
-import { IMangaRepository } from "../../../repositories";
-import { IUseCase } from "../../../protocols";
+import { UpdateNotFoundError } from "errors";
+import { IMangaRepository } from "repositories";
+import { IUseCase } from "protocols";
 import { ISetUpdateDTO } from "./ISetUpdateDTO";
 
 export class SetUpdateUseCase implements IUseCase<ISetUpdateDTO, boolean> {

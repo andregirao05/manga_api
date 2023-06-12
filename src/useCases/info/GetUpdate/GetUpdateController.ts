@@ -1,20 +1,20 @@
-import { ValidationError } from "yup";
-import { ServerError, UpdateNotFoundError } from "../../../errors";
-import { badRequest, notFound, ok, serverError } from "../../../helpers";
-import { IController } from "../../../protocols";
+import { ServerError, UpdateNotFoundError, ValidationError } from "errors";
+import { badRequest, notFound, ok, serverError } from "helpers";
+import { IController } from "protocols";
 import { GetUpdateUseCase } from "./GetUpdateUseCase";
 import { IGetUpdateDTO } from "./IGetUpdateDTO";
-import { getUpdateSchema } from "./getUpdateValidate";
-import { IRequest, IResponse } from "../../../protocols";
+import { IRequest, IResponse } from "protocols";
+import { IValidator } from "validation";
 
 export class GetUpdateController implements IController {
-  constructor(private readonly getUpdateUseCase: GetUpdateUseCase) {}
+  constructor(
+    private readonly getUpdateUseCase: GetUpdateUseCase,
+    private readonly validator: IValidator<IGetUpdateDTO>
+  ) {}
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { origin } = getUpdateSchema.validateSync(
-        request.params
-      ) as IGetUpdateDTO;
+      const { origin } = await this.validator.validate(request.params);
       const results = await this.getUpdateUseCase.execute({
         origin,
       });

@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import { IUser } from "../entities";
+import { IUser } from "entities";
 
 export const UserSchema = new Schema<IUser>(
   { username: String, password: String },

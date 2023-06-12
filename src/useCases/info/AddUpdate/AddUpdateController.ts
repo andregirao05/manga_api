@@ -1,20 +1,23 @@
-import { IController } from "../../../protocols";
+import { IController, IRequest, IResponse } from "protocols";
 import { AddUpdateUseCase } from "./AddUpdateUseCase";
 import { IAddUpdateDTO } from "./IAddUpdateDTO";
-import { ServerError, UpdateAlreadyRegisteredError } from "../../../errors";
-import { ValidationError } from "yup";
-import { addUpdateSchema } from "./addUpdateValidate";
-import { IRequest, IResponse } from "../../../protocols";
-import { badRequest, conflict, ok, serverError } from "../../../helpers";
+import {
+  ServerError,
+  UpdateAlreadyRegisteredError,
+  ValidationError,
+} from "errors";
+import { badRequest, conflict, ok, serverError } from "helpers";
+import { IValidator } from "validation";
 
 export class AddUpdateController implements IController {
-  constructor(private readonly addUpdateUseCase: AddUpdateUseCase) {}
+  constructor(
+    private readonly addUpdateUseCase: AddUpdateUseCase,
+    private readonly validator: IValidator<IAddUpdateDTO>
+  ) {}
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const validData = addUpdateSchema.validateSync(
-        request.body
-      ) as IAddUpdateDTO;
+      const validData = await this.validator.validate(request.body);
       const results = await this.addUpdateUseCase.execute(validData);
 
       return ok(results);

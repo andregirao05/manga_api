@@ -1,3 +1,3 @@
-import { IUpdate } from "../../../entities";
+import { IUpdate } from "entities";
 
 export interface IAddUpdateDTO extends IUpdate {}

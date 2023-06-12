@@ -1,5 +1,5 @@
 import { ObjectSchema, array, object, string } from "yup";
-import { IChapter } from "../../../entities";
+import { IChapter } from "entities";
 import { IAddChaptersDTO } from "./IAddChaptersDTO";
 
 const chapterSchema: ObjectSchema<IChapter> = object({

@@ -1,20 +1,22 @@
-import { IController } from "../../../protocols/IController";
-import { badRequest, ok, serverError } from "../../../helpers";
-import { ServerError } from "../../../errors";
+import { IController } from "protocols";
+import { badRequest, ok, serverError } from "helpers";
+import { ServerError, ValidationError } from "errors";
 import { SearchMangasUseCase } from "./SearchMangasUseCase";
-import { searchMangasValidate } from "./searchMangasValidate";
 import { ISearchMangasDTO } from "./ISearchMangasDTO";
-import { ValidationError } from "yup";
-import { IRequest, IResponse } from "../../../protocols";
+import { IRequest, IResponse } from "protocols";
+import { IValidator } from "validation";
 
 export class SearchMangasController implements IController {
-  constructor(private readonly searchMangasUseCase: SearchMangasUseCase) {}
+  constructor(
+    private readonly searchMangasUseCase: SearchMangasUseCase,
+    private readonly validator: IValidator<ISearchMangasDTO>
+  ) {}
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { origin, searchTerm, page } = searchMangasValidate.validateSync(
+      const { origin, searchTerm, page } = await this.validator.validate(
         request.params
-      ) as ISearchMangasDTO;
+      );
       const results = await this.searchMangasUseCase.execute({
         origin,
         searchTerm,

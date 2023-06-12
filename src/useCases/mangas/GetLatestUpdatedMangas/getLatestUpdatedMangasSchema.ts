@@ -1,5 +1,5 @@
 import { ObjectSchema, number, object, string } from "yup";
-import { acceptedOrigins } from "../../../configs";
+import { acceptedOrigins } from "configs";
 import { IGetLatestUpdatedMangasDTO } from "./IGetLatestUpdatedMangasDTO";
 
 const getLatestUpdatedMangasSchema: ObjectSchema<IGetLatestUpdatedMangasDTO> =

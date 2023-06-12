@@ -1,7 +1,7 @@
 import { IAddMangaDTO } from "./IAddMangaDTO";
-import { MangaAlreadyExistError } from "../../../errors";
-import { IMangaRepository } from "../../../repositories";
-import { IUseCase } from "../../../protocols/IUseCase";
+import { MangaAlreadyExistError } from "errors";
+import { IMangaRepository } from "repositories";
+import { IUseCase } from "protocols";
 
 export class AddMangaUseCase implements IUseCase<IAddMangaDTO, string> {
   constructor(private readonly mangaRepository: IMangaRepository) {}

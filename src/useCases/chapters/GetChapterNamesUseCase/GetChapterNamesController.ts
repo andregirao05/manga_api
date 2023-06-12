@@ -1,22 +1,20 @@
-import { IController } from "../../../protocols";
-import { MangaNotFoundError, ServerError } from "../../../errors";
+import { IController } from "protocols";
+import { MangaNotFoundError, ServerError, ValidationError } from "errors";
 import { GetChapterNamesUseCase } from "./GetChapterNamesUseCase";
-import { getChapterNamesSchema } from "./getChapterNamesValidate";
 import { IGetChapterNamesDTO } from "./IGetChapterNamesDTO";
-import { ValidationError } from "yup";
-import { IRequest, IResponse } from "../../../protocols";
-import { badRequest, notFound, ok, serverError } from "../../../helpers";
+import { IRequest, IResponse } from "protocols";
+import { badRequest, notFound, ok, serverError } from "helpers";
+import { IValidator } from "validation";
 
 export class GetChapterNamesController implements IController {
   constructor(
-    private readonly getChapterNamesUseCase: GetChapterNamesUseCase
+    private readonly getChapterNamesUseCase: GetChapterNamesUseCase,
+    private readonly validator: IValidator<IGetChapterNamesDTO>
   ) {}
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const validData = getChapterNamesSchema.validateSync(
-        request.params
-      ) as IGetChapterNamesDTO;
+      const validData = await this.validator.validate(request.params);
       const results = await this.getChapterNamesUseCase.execute(validData);
 
       return ok(results);

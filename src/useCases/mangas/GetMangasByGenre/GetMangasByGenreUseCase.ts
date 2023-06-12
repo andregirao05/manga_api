@@ -1,7 +1,7 @@
-import { IUseCase } from "../../../protocols/IUseCase";
-import { IMangaRepository, IMangaPage } from "../../../repositories";
+import { IUseCase } from "protocols";
+import { IMangaRepository, IMangaPage } from "repositories";
 import { IGetMangasByGenreDTO } from "./IGetMangasByGenreDTO";
-import { DataNotFoundError } from "../../../errors";
+import { DataNotFoundError } from "errors";
 
 export class GetMangasByGenreUseCase
   implements IUseCase<IGetMangasByGenreDTO, IMangaPage>

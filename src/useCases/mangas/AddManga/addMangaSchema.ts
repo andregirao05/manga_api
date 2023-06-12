@@ -1,7 +1,7 @@
 import { ObjectSchema, array, number, object, string } from "yup";
-import { IChapter } from "../../../entities";
-import { IAddMangaDTO } from "../../../useCases";
-import { acceptedLanguages } from "../../../configs";
+import { IChapter } from "entities";
+import { IAddMangaDTO } from "useCases";
+import { acceptedLanguages } from "configs";
 
 const chapterSchema: ObjectSchema<IChapter> = object({
   name: string().required(),

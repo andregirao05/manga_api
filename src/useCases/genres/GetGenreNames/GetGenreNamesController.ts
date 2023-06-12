@@ -1,20 +1,20 @@
-import { IController } from "../../../protocols";
-import { badRequest, ok, serverError } from "../../../helpers";
-import { ServerError } from "../../../errors";
+import { IController } from "protocols";
+import { badRequest, ok, serverError } from "helpers";
+import { ServerError, ValidationError } from "errors";
 import { GetGenreNamesUseCase } from "./GetGenreNamesUseCase";
-import { getGenreNamesSchema } from "./getGenreNamesValidate";
 import { IGetGenreNamesDTO } from "./IGetGenreNamesDTO";
-import { ValidationError } from "yup";
-import { IRequest, IResponse } from "../../../protocols";
+import { IRequest, IResponse } from "protocols";
+import { IValidator } from "validation";
 
 export class GetGenreNamesController implements IController {
-  constructor(private readonly getGenreNamesUseCase: GetGenreNamesUseCase) {}
+  constructor(
+    private readonly getGenreNamesUseCase: GetGenreNamesUseCase,
+    private readonly validator: IValidator<IGetGenreNamesDTO>
+  ) {}
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { language } = getGenreNamesSchema.validateSync(
-        request.params
-      ) as IGetGenreNamesDTO;
+      const { language } = await this.validator.validate(request.params);
       const results = await this.getGenreNamesUseCase.execute({ language });
 
       return ok(results);

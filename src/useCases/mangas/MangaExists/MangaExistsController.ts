@@ -1,18 +1,20 @@
-import { DataNotFoundError, ServerError } from "../../../errors";
-import { badRequest, notFound, ok, serverError } from "../../../helpers";
-import { IController } from "../../../protocols/IController";
-import { ValidationError } from "yup";
+import { DataNotFoundError, ServerError, ValidationError } from "errors";
+import { badRequest, notFound, ok, serverError } from "helpers";
+import { IController } from "protocols";
 import { MangaExistsUseCase } from "./MangaExistsUseCase";
 import { IMangaExistsDTO } from "./IMangaExistsDTO";
-import { mangaExistsSchema } from "./mangaExistValidate";
-import { IRequest, IResponse } from "../../../protocols";
+import { IRequest, IResponse } from "protocols";
+import { IValidator } from "validation";
 
 export class MangaExistsController implements IController {
-  constructor(private readonly mangaExistsUseCase: MangaExistsUseCase) {}
+  constructor(
+    private readonly mangaExistsUseCase: MangaExistsUseCase,
+    private readonly validator: IValidator<IMangaExistsDTO>
+  ) {}
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const validData = mangaExistsSchema.validateSync(request.body) as IMangaExistsDTO;
+      const validData = await this.validator.validate(request.body);
       const results = await this.mangaExistsUseCase.execute(validData);
 
       return ok(results);

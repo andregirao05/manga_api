@@ -1,5 +1,5 @@
-import { IUseCase } from "../../../protocols";
-import { IMangaRepository } from "../../../repositories";
+import { IUseCase } from "protocols";
+import { IMangaRepository } from "repositories";
 import { IGetGenreNamesDTO } from "./IGetGenreNamesDTO";
 
 export class GetGenreNamesUseCase

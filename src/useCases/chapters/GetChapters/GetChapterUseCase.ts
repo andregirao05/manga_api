@@ -1,8 +1,8 @@
-import { IUseCase } from "../../../protocols/IUseCase";
-import { IMangaRepository } from "../../../repositories";
+import { IUseCase } from "protocols";
+import { IMangaRepository } from "repositories";
 import { IGetChaptersDTO } from "./IGetChaptersDTO";
-import { IChapter } from "../../../entities";
-import { MangaNotFoundError } from "../../../errors";
+import { IChapter } from "entities";
+import { MangaNotFoundError } from "errors";
 
 export class GetChaptersUseCase
   implements IUseCase<IGetChaptersDTO, IChapter[]>

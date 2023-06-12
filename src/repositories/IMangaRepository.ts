@@ -14,8 +14,8 @@ import {
   IAddUpdateDTO,
   ISetUpdateDTO,
   IGetUpdateDTO,
-} from "../useCases/mangas";
-import { IChapter, IManga, IUpdate } from "../entities";
+} from "useCases";
+import { IChapter, IManga, IUpdate } from "entities";
 
 export interface IMangaPage {
   mangas: IManga[];

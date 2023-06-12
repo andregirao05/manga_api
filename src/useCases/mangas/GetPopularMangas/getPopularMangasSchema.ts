@@ -1,6 +1,6 @@
 import { ObjectSchema, number, object, string } from "yup";
 import { IGetPopularMangasDTO } from "./IGetPopularMangasDTO";
-import { acceptedOrigins } from "../../../configs";
+import { acceptedOrigins } from "configs";
 
 const getPopularMangasSchema: ObjectSchema<IGetPopularMangasDTO> = object({
   origin: string().oneOf(acceptedOrigins).required(),

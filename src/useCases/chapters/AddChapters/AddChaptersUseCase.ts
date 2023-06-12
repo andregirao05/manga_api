@@ -1,6 +1,6 @@
-import { MangaNotFoundError, ChapterAlreadyExistError } from "../../../errors";
-import { IMangaRepository } from "../../../repositories";
-import { IUseCase } from "../../../protocols";
+import { MangaNotFoundError, ChapterAlreadyExistError } from "errors";
+import { IMangaRepository } from "repositories";
+import { IUseCase } from "protocols";
 import { IAddChaptersDTO } from "./IAddChaptersDTO";
 
 export class AddChaptersUseCase implements IUseCase<IAddChaptersDTO, boolean> {

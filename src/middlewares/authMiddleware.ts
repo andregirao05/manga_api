@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { ValidationError, object, string } from "yup";
 import * as jwt from "jsonwebtoken";
-import { getEnv } from "../configs";
-import { badRequest, serverError } from "../helpers";
-import { InvalidAuthTokenError, ServerError } from "../errors";
+import { getEnv } from "configs";
+import { InvalidAuthTokenError, ServerError } from "errors";
 
 const authMiddlewareSchema = object({
   authorization: string()

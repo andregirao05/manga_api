@@ -1,7 +1,7 @@
-import { IUser } from "../../../entities";
-import { InvalidPasswordError, UserNotFoundError } from "../../../errors";
-import { IUserRepository } from "../../../repositories";
-import { IUseCase } from "../../../protocols/IUseCase";
+import { IUser } from "entities";
+import { InvalidPasswordError, UserNotFoundError } from "errors";
+import { IUserRepository } from "repositories";
+import { IUseCase } from "protocols";
 import { IAuthenticateDTO } from "./IAuthenticateDTO";
 import { ICrypter } from "./ICrypter";
 import { ITokenGenerator } from "./ITokenGenerator";

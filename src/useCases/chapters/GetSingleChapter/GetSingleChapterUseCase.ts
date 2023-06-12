@@ -1,8 +1,8 @@
-import { IUseCase } from "../../../protocols";
-import { IMangaRepository } from "../../../repositories";
+import { IUseCase } from "protocols";
+import { IMangaRepository } from "repositories";
 import { IGetSingleChapterDTO } from "./IGetSingleChapterDTO";
-import { IChapter } from "../../../entities";
-import { DataNotFoundError, MangaNotFoundError } from "../../../errors";
+import { IChapter } from "entities";
+import { DataNotFoundError } from "errors";
 
 export class GetSingleChapterUseCase
   implements IUseCase<IGetSingleChapterDTO, IChapter>
