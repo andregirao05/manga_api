@@ -124,7 +124,7 @@ class MangaRepository implements IMangaRepository {
     };
 
     const results = await this.MangaModel.paginate(
-      { genres: data.genreName },
+      { genres: data.genreName, origin: data.origin },
       options
     );
 

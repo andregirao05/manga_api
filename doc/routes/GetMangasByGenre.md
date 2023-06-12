@@ -1,6 +1,6 @@
 # Obter mangás por gênero (GET)
 
-`/mangas/by-genre/:genreName/:page`
+`/mangas/by-genre/:origin/:genreName/:page`
 
 ## Descrição
 
@@ -22,6 +22,7 @@ Retorna os mangás do gênero especificado.
 
 | Field     | Format            | Description                   |
 | --------- | ----------------- | ----------------------------- |
+| origin    | string            | Site de origim dos mangás     |
 | genreName | string            | Nome do gênero desejado       |
 | page      | number (interger) | Página de resultados desejada |
 
