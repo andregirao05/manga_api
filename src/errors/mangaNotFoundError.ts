@@ -1,4 +1,4 @@
-import { DataNotFoundError } from "./dataNotFound";
+import { DataNotFoundError } from "./dataNotFoundError";
 
 export class MangaNotFound extends DataNotFoundError {
   constructor(public readonly id: string) {

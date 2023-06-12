@@ -1,4 +1,4 @@
-import { MangaAlreadyExist, ServerError } from "../../../errors";
+import { MangaAlreadyExistError, ServerError } from "../../../errors";
 import { IController } from "../../../protocols/IController";
 import { AddMangaUseCase } from "./AddMangaUseCase";
 import { ValidationError } from "yup";
@@ -12,14 +12,16 @@ export class AddMangaController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const validData = addMangaSchema.validateSync(request.body) as IAddMangaDTO;
+      const validData = addMangaSchema.validateSync(
+        request.body
+      ) as IAddMangaDTO;
       const results = await this.addMangaUseCase.execute(validData);
 
       return ok(results);
     } catch (error) {
       console.log(error);
 
-      if (error instanceof MangaAlreadyExist) {
+      if (error instanceof MangaAlreadyExistError) {
         return conflict(error);
       }
 

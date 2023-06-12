@@ -1,5 +1,5 @@
 import { IAddMangaDTO } from "./IAddMangaDTO";
-import { MangaAlreadyExist } from "../../../errors";
+import { MangaAlreadyExistError } from "../../../errors";
 import { IMangaRepository } from "../../../repositories";
 import { IUseCase } from "../../../protocols/IUseCase";
 
@@ -12,7 +12,7 @@ export class AddMangaUseCase implements IUseCase<IAddMangaDTO, string> {
     });
 
     if (id) {
-      throw new MangaAlreadyExist(id);
+      throw new MangaAlreadyExistError(id);
     }
 
     const insertedId = await this.mangaRepository.add(data);
