@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { IMangaRepository, IMangaPage } from "./IMangaRepository";
-import { IManga, IMangaWithChapters, IUpdate, IChapter } from "../entities";
+import { IManga, IMangaWithChapters, IUpdate, IChapter } from "entities";
 import {
   IAddChaptersDTO,
   IAddMangaDTO,
@@ -17,7 +17,7 @@ import {
   IMangaExistsDTO,
   ISearchMangasDTO,
   ISetUpdateDTO,
-} from "../useCases/mangas";
+} from "useCases";
 import { MangaModel, MangaSchema, UpdateSchema } from "./MangaRepoSchemas";
 import { model, Model } from "mongoose";
 

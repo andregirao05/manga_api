@@ -1,21 +1,20 @@
-import { IController } from "../../../protocols/IController";
-import { badRequest, ok, serverError } from "../../../helpers";
-import { ServerError } from "../../../errors";
+import { IController } from "protocols";
+import { badRequest, ok, serverError } from "helpers";
+import { ServerError, ValidationError } from "errors";
 import { GetLatestUpdatedMangasUseCase } from "./GetLatestUpdatedMangasUseCase";
-import { getLatestUpdatedMangasSchema } from "./getLatestUpdatedMangasValidate";
-import { ValidationError } from "yup";
-import { IRequest, IResponse } from "../../../protocols";
+import { IRequest, IResponse } from "protocols";
+import { IValidator } from "validation";
+import { IGetLatestUpdatedMangasDTO } from "./IGetLatestUpdatedMangasDTO";
 
 export class GetLatestUpdatedMangasController implements IController {
   constructor(
-    private readonly getLatestUpdatedMangasUseCase: GetLatestUpdatedMangasUseCase
+    private readonly getLatestUpdatedMangasUseCase: GetLatestUpdatedMangasUseCase,
+    private readonly validator: IValidator<IGetLatestUpdatedMangasDTO>
   ) {}
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-
-      const { origin, page } =
-        getLatestUpdatedMangasSchema.validateSync(request.params);
+      const { origin, page } = await this.validator.validate(request.params);
 
       const results = await this.getLatestUpdatedMangasUseCase.execute({
         origin,

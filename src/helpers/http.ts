@@ -1,4 +1,4 @@
-import { IResponse } from "../protocols";
+import { IResponse } from "protocols";
 
 export function ok(data: any): IResponse<any> {
   return {

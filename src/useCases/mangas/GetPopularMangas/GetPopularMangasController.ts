@@ -1,19 +1,20 @@
-import { IController } from "../../../protocols/IController";
-import { badRequest, ok, serverError } from "../../../helpers";
-import { ServerError } from "../../../errors";
+import { IController } from "protocols";
+import { badRequest, ok, serverError } from "helpers";
+import { ServerError, ValidationError } from "errors";
 import { GetPopularMangasUseCase } from "./GetPopularMangasUseCase";
-import { getPopularMangasSchema } from "./getPopularMangasValidate";
-import { ValidationError } from "yup";
-import { IRequest, IResponse } from "../../../protocols";
+import { IRequest, IResponse } from "protocols";
+import { IValidator } from "validation";
+import { IGetPopularMangasDTO } from "./IGetPopularMangasDTO";
 
 export class GetPopularMangasController implements IController {
   constructor(
-    private readonly getPopularMangasUseCase: GetPopularMangasUseCase
+    private readonly getPopularMangasUseCase: GetPopularMangasUseCase,
+    private readonly validator: IValidator<IGetPopularMangasDTO>
   ) {}
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { origin, page } = getPopularMangasSchema.validateSync(request.params);
+      const { origin, page } = await this.validator.validate(request.params);
 
       const results = await this.getPopularMangasUseCase.execute({
         origin,

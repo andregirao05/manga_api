@@ -1,5 +1,5 @@
-import { IUseCase } from "../../../protocols/IUseCase";
-import { IMangaPage, IMangaRepository } from "../../../repositories";
+import { IUseCase } from "protocols";
+import { IMangaPage, IMangaRepository } from "repositories";
 import { ISearchMangasDTO } from "./ISearchMangasDTO";
 
 export class SearchMangasUseCase

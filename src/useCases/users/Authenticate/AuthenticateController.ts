@@ -1,24 +1,24 @@
-import { ValidationError } from "yup";
 import {
   InvalidPasswordError,
   ServerError,
   UserNotFoundError,
-} from "../../../errors";
-import { badRequest, notFound, ok, serverError } from "../../../helpers";
-import { IController } from "../../../protocols/IController";
+  ValidationError,
+} from "errors";
+import { badRequest, notFound, ok, serverError } from "helpers";
+import { IController, IRequest, IResponse } from "protocols";
 import { AuthenticateUseCase } from "./AuthenticateUseCase";
 import { IAuthenticateDTO } from "./IAuthenticateDTO";
-import { authenticateSchema } from "./authenticateSchema";
-import { IRequest, IResponse } from "../../../protocols";
+import { IValidator } from "validation";
 
 export class AuthenticateController implements IController {
-  constructor(private readonly authenticateUseCase: AuthenticateUseCase) {}
+  constructor(
+    private readonly authenticateUseCase: AuthenticateUseCase,
+    private readonly validator: IValidator<IAuthenticateDTO>
+  ) {}
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const validData = authenticateSchema.validateSync(
-        request.body
-      ) as IAuthenticateDTO;
+      const validData = await this.validator.validate(request.body);
       const results = await this.authenticateUseCase.execute(validData);
 
       return ok(results);

@@ -1,4 +1,4 @@
-import { DataNotFoundError } from "./dataNotFound";
+import { DataNotFoundError } from "./dataNotFoundError";
 
 export class UpdateNotFoundError extends DataNotFoundError {
   constructor(public readonly origin: string) {

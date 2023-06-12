@@ -1,5 +1,5 @@
 import { Model, model } from "mongoose";
-import { IUser } from "../entities";
+import { IUser } from "entities";
 import { IGetUserProps, IUserRepository } from "./IUserRepository";
 import { UserSchema } from "./UserRepoSchemas";
 

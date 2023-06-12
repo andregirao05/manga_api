@@ -1,19 +1,20 @@
-import { IController } from "../../../protocols/IController";
-import { badRequest, notFound, ok, serverError } from "../../../helpers";
-import { DataNotFoundError, ServerError } from "../../../errors";
+import { IController } from "protocols";
+import { badRequest, notFound, ok, serverError } from "helpers";
+import { DataNotFoundError, ServerError, ValidationError } from "errors";
 import { GetMangasByGenreUseCase } from "./GetMangasByGenreUseCase";
-import { getMangasByGenreValidate } from "./getMangasuByGenreValidate";
-import { ValidationError } from "yup";
-import { IRequest, IResponse } from "../../../protocols";
+import { IRequest, IResponse } from "protocols";
+import { IValidator } from "validation";
+import { IGetMangasByGenreDTO } from "./IGetMangasByGenreDTO";
 
 export class GetMangasByGenreController implements IController {
   constructor(
-    private readonly getMangasByGenreUseCase: GetMangasByGenreUseCase
+    private readonly getMangasByGenreUseCase: GetMangasByGenreUseCase,
+    private readonly validator: IValidator<IGetMangasByGenreDTO>
   ) {}
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { origin, genreName, page } = getMangasByGenreValidate.validateSync(
+      const { origin, genreName, page } = await this.validator.validate(
         request.params
       );
       const results = await this.getMangasByGenreUseCase.execute({
