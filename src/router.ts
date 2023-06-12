@@ -22,7 +22,6 @@ import { authMiddleware } from "./middlewares";
 
 const router = Router();
 
-
 //Mangas routes
 router.get("/mangas/get/:id", authMiddleware, adaptRoute(getMangaController));
 
@@ -45,15 +44,18 @@ router.get(
 );
 
 router.get(
-  "/mangas/by-genre/:genreName/:page",
+  "/mangas/by-genre/:origin/:genreName/:page",
   authMiddleware,
   adaptRoute(getMangasByGenreController)
-  );
-  
+);
+
 router.post("/mangas/add", authMiddleware, adaptRoute(addMangaController));
 
-router.post("/mangas/exists", authMiddleware, adaptRoute(mangaExistsController));
-
+router.post(
+  "/mangas/exists",
+  authMiddleware,
+  adaptRoute(mangaExistsController)
+);
 
 //Chapters Routes
 
@@ -77,7 +79,6 @@ router.get(
 
 router.post("/chapters/add", authMiddleware, adaptRoute(addChaptersController));
 
-
 //Genre routes
 
 router.get(
@@ -85,7 +86,6 @@ router.get(
   authMiddleware,
   adaptRoute(getGenreNamesController)
 );
-
 
 //Info routes
 
@@ -98,10 +98,8 @@ router.get(
 router.post("/info/add", authMiddleware, adaptRoute(addUpdateController));
 router.post("/info/update", authMiddleware, adaptRoute(setUpdateController));
 
-
 //User routes
 
 router.post("/users/auth", adaptRoute(authenticateController));
-
 
 export { router };
