@@ -1,7 +1,7 @@
 import { IUpdate } from "../../../entities";
 import { UpdateNotFoundError } from "../../../errors";
 import { IMangaRepository } from "../../../repositories";
-import { IUseCase } from "../../../protocols/IUseCase";
+import { IUseCase } from "../../../protocols";
 import { IGetUpdateDTO } from "./IGetUpdateDTO";
 
 export class GetUpdateUseCase implements IUseCase<IGetUpdateDTO, IUpdate> {

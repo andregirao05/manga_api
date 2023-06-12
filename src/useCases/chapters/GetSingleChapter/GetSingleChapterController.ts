@@ -1,6 +1,10 @@
-import { IController } from "../../../protocols/IController";
+import { IController } from "../../../protocols";
 import { badRequest, notFound, ok, serverError } from "../../../helpers";
-import { DataNotFoundError, MangaNotFound, ServerError } from "../../../errors";
+import {
+  DataNotFoundError,
+  MangaNotFoundError,
+  ServerError,
+} from "../../../errors";
 import { GetSingleChapterUseCase } from "./GetSingleChapterUseCase";
 import { ValidationError } from "yup";
 import { IRequest, IResponse } from "../../../protocols";
@@ -13,7 +17,9 @@ export class GetSingleChapterController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { id, chapterName } = getSingleChapterSchema.validateSync(request.params);
+      const { id, chapterName } = getSingleChapterSchema.validateSync(
+        request.params
+      );
 
       const results = await this.getSingleChapterUseCase.execute({
         id,

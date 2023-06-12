@@ -1,4 +1,4 @@
-import { IController } from "../../../protocols/IController";
+import { IController } from "../../../protocols";
 import { badRequest, ok, serverError } from "../../../helpers";
 import { ServerError } from "../../../errors";
 import { GetGenreNamesUseCase } from "./GetGenreNamesUseCase";

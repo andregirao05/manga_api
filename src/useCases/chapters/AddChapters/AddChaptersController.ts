@@ -4,7 +4,7 @@ import { addChaptersSchema } from "./AddChaptersValidate";
 import { IAddChaptersDTO } from "./IAddChaptersDTO";
 import { ValidationError } from "yup";
 import {
-  MangaNotFound,
+  MangaNotFoundError,
   ServerError,
   ChapterAlreadyExistError,
 } from "../../../errors";
@@ -22,14 +22,16 @@ export class AddChaptersController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const validData = addChaptersSchema.validateSync(request.body) as IAddChaptersDTO;
+      const validData = addChaptersSchema.validateSync(
+        request.body
+      ) as IAddChaptersDTO;
       const results = await this.addChaptersUseCase.execute(validData);
 
       return ok(results);
     } catch (error) {
       console.log(error);
 
-      if (error instanceof MangaNotFound) {
+      if (error instanceof MangaNotFoundError) {
         return notFound(error);
       }
 

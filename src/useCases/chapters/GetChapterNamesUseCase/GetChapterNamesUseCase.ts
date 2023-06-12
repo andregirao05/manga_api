@@ -1,7 +1,7 @@
-import { IUseCase } from "../../../protocols/IUseCase";
+import { IUseCase } from "../../../protocols";
 import { IMangaRepository } from "../../../repositories";
 import { IGetChapterNamesDTO } from "./IGetChapterNamesDTO";
-import { MangaNotFound } from "../../../errors";
+import { MangaNotFoundError } from "../../../errors";
 
 export class GetChapterNamesUseCase
   implements IUseCase<IGetChapterNamesDTO, string[]>
@@ -15,7 +15,7 @@ export class GetChapterNamesUseCase
       id,
     });
 
-    if (!chaptersNames) throw new MangaNotFound(id);
+    if (!chaptersNames) throw new MangaNotFoundError(id);
 
     return chaptersNames;
   }

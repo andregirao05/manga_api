@@ -1,5 +1,5 @@
 import { MangaAlreadyExistError, ServerError } from "../../../errors";
-import { IController } from "../../../protocols/IController";
+import { IController } from "../../../protocols";
 import { AddMangaUseCase } from "./AddMangaUseCase";
 import { ValidationError } from "yup";
 import { IAddMangaDTO } from "./IAddMangaDTO";

@@ -1,4 +1,4 @@
-import { IUseCase } from "../../../protocols/IUseCase";
+import { IUseCase } from "../../../protocols";
 import { IMangaRepository } from "../../../repositories";
 import { IGetGenreNamesDTO } from "./IGetGenreNamesDTO";
 

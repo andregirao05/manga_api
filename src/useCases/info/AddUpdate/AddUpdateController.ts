@@ -1,4 +1,4 @@
-import { IController } from "../../../protocols/IController";
+import { IController } from "../../../protocols";
 import { AddUpdateUseCase } from "./AddUpdateUseCase";
 import { IAddUpdateDTO } from "./IAddUpdateDTO";
 import { ServerError, UpdateAlreadyRegisteredError } from "../../../errors";
@@ -12,7 +12,9 @@ export class AddUpdateController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const validData = addUpdateSchema.validateSync(request.body) as IAddUpdateDTO;
+      const validData = addUpdateSchema.validateSync(
+        request.body
+      ) as IAddUpdateDTO;
       const results = await this.addUpdateUseCase.execute(validData);
 
       return ok(results);

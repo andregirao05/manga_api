@@ -1,7 +1,7 @@
 import { ValidationError } from "yup";
 import { ServerError, UpdateNotFoundError } from "../../../errors";
 import { badRequest, notFound, ok, serverError } from "../../../helpers";
-import { IController } from "../../../protocols/IController";
+import { IController } from "../../../protocols";
 import { GetUpdateUseCase } from "./GetUpdateUseCase";
 import { IGetUpdateDTO } from "./IGetUpdateDTO";
 import { getUpdateSchema } from "./getUpdateValidate";
@@ -12,9 +12,11 @@ export class GetUpdateController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const {origin} = getUpdateSchema.validateSync(request.params) as IGetUpdateDTO;
+      const { origin } = getUpdateSchema.validateSync(
+        request.params
+      ) as IGetUpdateDTO;
       const results = await this.getUpdateUseCase.execute({
-        origin
+        origin,
       });
 
       return ok(results);

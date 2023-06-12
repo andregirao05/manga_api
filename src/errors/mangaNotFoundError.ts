@@ -1,8 +1,8 @@
 import { DataNotFoundError } from "./dataNotFoundError";
 
-export class MangaNotFound extends DataNotFoundError {
+export class MangaNotFoundError extends DataNotFoundError {
   constructor(public readonly id: string) {
     super(`Manga with id ${id}`);
-    this.name = "MangaNotFound";
+    this.name = "MangaNotFoundError";
   }
 }

@@ -1,6 +1,6 @@
 import { UpdateAlreadyRegisteredError } from "../../../errors";
 import { IMangaRepository } from "../../../repositories";
-import { IUseCase } from "../../../protocols/IUseCase";
+import { IUseCase } from "../../../protocols";
 import { IAddUpdateDTO } from "./IAddUpdateDTO";
 
 export class AddUpdateUseCase implements IUseCase<IAddUpdateDTO, string> {

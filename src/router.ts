@@ -15,9 +15,9 @@ import {
   setUpdateController,
   getUpdateController,
   mangaExistsController,
-} from "./useCases/mangas";
-import { addChaptersController } from "./useCases/mangas";
-import { authenticateController } from "./useCases";
+  addChaptersController,
+  authenticateController,
+} from "./useCases";
 import { authMiddleware } from "./middlewares";
 
 const router = Router();

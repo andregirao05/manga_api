@@ -1,7 +1,6 @@
-import { MangaNotFound } from "../../../errors";
-import { ChapterAlreadyExistError } from "../../../errors/chapterAlreadyRegisteredError";
+import { MangaNotFoundError, ChapterAlreadyExistError } from "../../../errors";
 import { IMangaRepository } from "../../../repositories";
-import { IUseCase } from "../../../protocols/IUseCase";
+import { IUseCase } from "../../../protocols";
 import { IAddChaptersDTO } from "./IAddChaptersDTO";
 
 export class AddChaptersUseCase implements IUseCase<IAddChaptersDTO, boolean> {
@@ -13,7 +12,7 @@ export class AddChaptersUseCase implements IUseCase<IAddChaptersDTO, boolean> {
     const chapterNames = await this.mangaRepository.getChapterNames({ id });
 
     if (!chapterNames) {
-      throw new MangaNotFound(id);
+      throw new MangaNotFoundError(id);
     }
 
     for (const chapter of chapters) {

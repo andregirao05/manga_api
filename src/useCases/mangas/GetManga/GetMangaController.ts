@@ -1,6 +1,6 @@
 import { IController } from "../../../protocols/IController";
 import { badRequest, notFound, ok, serverError } from "../../../helpers";
-import { MangaNotFound, ServerError } from "../../../errors";
+import { MangaNotFoundError, ServerError } from "../../../errors";
 import { GetMangaUseCase } from "./GetMangaUseCase";
 import { getMangaValidate } from "./getMangaValidate";
 import { IGetMangaDTO } from "./IGetMangaDTO";
@@ -21,7 +21,7 @@ export class GetMangaController implements IController {
     } catch (error) {
       console.log(error);
 
-      if (error instanceof MangaNotFound) {
+      if (error instanceof MangaNotFoundError) {
         return notFound(error);
       }
 
