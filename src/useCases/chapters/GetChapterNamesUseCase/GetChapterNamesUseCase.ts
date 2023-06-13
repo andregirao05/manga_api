@@ -2,6 +2,7 @@ import { IUseCase } from "protocols";
 import { IMangaRepository } from "repositories";
 import { IGetChapterNamesDTO } from "./IGetChapterNamesDTO";
 import { MangaNotFoundError } from "errors";
+import { compareChapterNames } from "./compareChapterNames";
 
 export class GetChapterNamesUseCase
   implements IUseCase<IGetChapterNamesDTO, string[]>
@@ -16,6 +17,8 @@ export class GetChapterNamesUseCase
     });
 
     if (!chaptersNames) throw new MangaNotFoundError(id);
+
+    chaptersNames.sort(compareChapterNames);
 
     return chaptersNames;
   }
