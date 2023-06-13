@@ -89,6 +89,7 @@ class MangaRepository implements IMangaRepository {
       page: data.page,
       limit: this.mangasPerPage,
       projection: { chapters: 0 },
+      sort: { score: { $meta: "textScore" } },
     };
 
     const term = `\"${data.searchTerm}\"`;
