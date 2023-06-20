@@ -1,9 +1,16 @@
 import { ObjectId } from "mongodb";
 import { IMangaRepository, IMangaPage } from "./IMangaRepository";
-import { IManga, IMangaWithChapters, IUpdate, IChapter } from "entities";
+import {
+  IManga,
+  IMangaWithChapters,
+  IUpdate,
+  IChapter,
+  IRecommendation,
+} from "entities";
 import {
   IAddChaptersDTO,
   IAddMangaDTO,
+  IAddRecommendationsDTO,
   IAddUpdateDTO,
   IGetChapterNamesDTO,
   IGetChaptersDTO,
@@ -12,18 +19,25 @@ import {
   IGetMangaDTO,
   IGetMangasByGenreDTO,
   IGetPopularMangasDTO,
+  IGetRecommendationsDTO,
   IGetSingleChapterDTO,
   IGetUpdateDTO,
   IMangaExistsDTO,
   ISearchMangasDTO,
   ISetUpdateDTO,
 } from "useCases";
-import { MangaModel, MangaSchema, UpdateSchema } from "./MangaRepoSchemas";
+import {
+  MangaModel,
+  MangaSchema,
+  RecommendationSchema,
+  UpdateSchema,
+} from "./MangaRepoSchemas";
 import { model, Model } from "mongoose";
 
 class MangaRepository implements IMangaRepository {
   private MangaModel: MangaModel;
   private UpdateModel: Model<IUpdate>;
+  private RecommendationModel: Model<IRecommendation>;
 
   constructor(private readonly mangasPerPage: number = 20) {
     this.MangaModel = model<IMangaWithChapters>(
@@ -31,6 +45,10 @@ class MangaRepository implements IMangaRepository {
       MangaSchema
     ) as MangaModel;
     this.UpdateModel = model<IUpdate>("Update", UpdateSchema);
+    this.RecommendationModel = model<IRecommendation>(
+      "Recommendation",
+      RecommendationSchema
+    );
   }
 
   async get(data: IGetMangaDTO): Promise<IManga> {
@@ -317,6 +335,41 @@ class MangaRepository implements IMangaRepository {
     );
 
     return results != null;
+  }
+
+  async addRecommendations(data: IAddRecommendationsDTO): Promise<boolean> {
+    const results = await this.RecommendationModel.collection.updateOne(
+      { origin: data.origin },
+      { $set: { origin: data.origin, ids: data.ids } },
+      { upsert: true }
+    );
+    return results.modifiedCount > 0 || results.upsertedCount > 0;
+  }
+
+  async getRecommendations(data: IGetRecommendationsDTO): Promise<IMangaPage> {
+    const recomendationResults = await this.RecommendationModel.findOne({
+      origin: data.origin,
+    });
+
+    const options = {
+      page: data.page,
+      limit: this.mangasPerPage,
+      projection: { chapters: 0 },
+    };
+
+    const results = await this.MangaModel.paginate(
+      {
+        origin: data.origin,
+        _id: { $in: recomendationResults?.ids },
+      },
+      options
+    );
+
+    return {
+      mangas: results.docs,
+      currentPage: results.page,
+      totalPages: results.totalPages,
+    };
   }
 }
 

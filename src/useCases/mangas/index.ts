@@ -5,3 +5,5 @@ export * from "./GetMangasByGenre";
 export * from "./GetPopularMangas";
 export * from "./SearchMangas";
 export * from "./MangaExists";
+export * from "./AddRecommendations";
+export * from "./GetRecommendations";

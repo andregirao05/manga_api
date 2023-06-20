@@ -1,6 +1,12 @@
 import { Schema, PaginateModel } from "mongoose";
 import paginate from "mongoose-paginate-v2";
-import { IChapter, IMangaWithChapters, IUpdate } from "entities";
+import {
+  IChapter,
+  IMangaWithChapters,
+  IRecommendation,
+  IUpdate,
+} from "entities";
+import { ObjectId } from "mongodb";
 
 export const ChapterSchema = new Schema<IChapter>(
   { name: String, pages: [String] },
@@ -53,6 +59,30 @@ export const UpdateSchema = new Schema<IUpdate>(
   },
   {
     collection: "updates",
+
+    toObject: {
+      transform: function (doc, ret) {
+        ret.id = ret._id.toString();
+        delete ret._id;
+      },
+    },
+
+    toJSON: {
+      transform: function (doc, ret) {
+        ret.id = ret._id.toString();
+        delete ret._id;
+      },
+    },
+  }
+);
+
+export const RecommendationSchema = new Schema<IRecommendation>(
+  {
+    origin: String,
+    ids: [ObjectId],
+  },
+  {
+    collection: "recommendations",
 
     toObject: {
       transform: function (doc, ret) {

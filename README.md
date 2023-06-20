@@ -79,6 +79,8 @@ Cada requisição **deve ter um header chamado "authorization" com um token de a
 - [Listar mangás por gênero](/doc/routes/GetMangasByGenre.md)
 - [Adicionar um novo mangá](/doc/routes/AddManga.md)
 - [Checar se mangá existe](/doc/routes/MangaExists.md)
+- [Adicionar Recomendações de Mangas](/doc/routes/AddRecommendations.md)
+- [Obter Mangas Recomendados](/doc/routes/GetRecommendations.md)
 
 ### Capítulos
 

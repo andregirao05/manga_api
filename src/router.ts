@@ -17,6 +17,8 @@ import {
   mangaExistsController,
   addChaptersController,
   authenticateController,
+  addRecommendationsController,
+  getRecommendationsController,
 } from "./useCases";
 import { authMiddleware } from "./middlewares";
 
@@ -55,6 +57,18 @@ router.post(
   "/mangas/exists",
   authMiddleware,
   adaptRoute(mangaExistsController)
+);
+
+router.post(
+  "/mangas/recommendations",
+  authMiddleware,
+  adaptRoute(addRecommendationsController)
+);
+
+router.get(
+  "/mangas/recommendations/:origin/:page",
+  authMiddleware,
+  adaptRoute(getRecommendationsController)
 );
 
 //Chapters Routes
