@@ -19,6 +19,7 @@ import {
   IGetMangaDTO,
   IGetMangasByGenreDTO,
   IGetPopularMangasDTO,
+  IGetRecommendationsDTO,
   IGetSingleChapterDTO,
   IGetUpdateDTO,
   IMangaExistsDTO,
@@ -343,6 +344,32 @@ class MangaRepository implements IMangaRepository {
       { upsert: true }
     );
     return results.modifiedCount > 0 || results.upsertedCount > 0;
+  }
+
+  async getRecommendations(data: IGetRecommendationsDTO): Promise<IMangaPage> {
+    const recomendationResults = await this.RecommendationModel.findOne({
+      origin: data.origin,
+    });
+
+    const options = {
+      page: data.page,
+      limit: this.mangasPerPage,
+      projection: { chapters: 0 },
+    };
+
+    const results = await this.MangaModel.paginate(
+      {
+        origin: data.origin,
+        _id: { $in: recomendationResults?.ids },
+      },
+      options
+    );
+
+    return {
+      mangas: results.docs,
+      currentPage: results.page,
+      totalPages: results.totalPages,
+    };
   }
 }
 

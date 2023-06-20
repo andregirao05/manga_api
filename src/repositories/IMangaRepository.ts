@@ -15,6 +15,7 @@ import {
   ISetUpdateDTO,
   IGetUpdateDTO,
   IAddRecommendationsDTO,
+  IGetRecommendationsDTO,
 } from "useCases";
 import { IChapter, IManga, IUpdate } from "entities";
 
@@ -49,4 +50,5 @@ export interface IMangaRepository {
   mangaExistByUrl(url: string): Promise<boolean>;
 
   addRecommendations(data: IAddRecommendationsDTO): Promise<boolean>;
+  getRecommendations(data: IGetRecommendationsDTO): Promise<IMangaPage>;
 }
