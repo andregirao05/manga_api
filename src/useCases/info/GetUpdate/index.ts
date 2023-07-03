@@ -1,11 +1,11 @@
 import { Validator } from "validation";
-import { mangaRespository } from "repositories";
+import { informationsRespository } from "repositories";
 import { GetUpdateController } from "./GetUpdateController";
 import { GetUpdateUseCase } from "./GetUpdateUseCase";
 import { IGetUpdateDTO } from "./IGetUpdateDTO";
 import { getUpdateSchema } from "./getUpdateSchema";
 
-const getUpdateUseCase = new GetUpdateUseCase(mangaRespository);
+const getUpdateUseCase = new GetUpdateUseCase(informationsRespository);
 const getUpdateValidator = new Validator<IGetUpdateDTO>(getUpdateSchema);
 const getUpdateController = new GetUpdateController(
   getUpdateUseCase,

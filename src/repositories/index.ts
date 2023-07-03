@@ -1,4 +1,5 @@
-export * from "./IMangaRepository";
 export * from "./MangaRepository";
-export * from "./IUserRepository";
 export * from "./UserRepository";
+export * from "./ChapterRepository";
+export * from "./InformationsRepository";
+export * from "./interfaces";

@@ -1,9 +1,9 @@
 import { ObjectSchema, object, string } from "yup";
 import { IGetGenreNamesDTO } from "./IGetGenreNamesDTO";
-import { acceptedLanguages } from "configs";
+import { acceptedOrigins } from "configs";
 
 const getGenreNamesSchema: ObjectSchema<IGetGenreNamesDTO> = object({
-  language: string().oneOf(acceptedLanguages).required(),
+  origin: string().oneOf(acceptedOrigins).required(),
 });
 
 export { getGenreNamesSchema };

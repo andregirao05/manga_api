@@ -1,21 +1,21 @@
 import { UpdateNotFoundError } from "errors";
-import { IMangaRepository } from "repositories";
+import { IInformationsRepository } from "repositories";
 import { IUseCase } from "protocols";
 import { ISetUpdateDTO } from "./ISetUpdateDTO";
 
 export class SetUpdateUseCase implements IUseCase<ISetUpdateDTO, boolean> {
-  constructor(private readonly mangaRepository: IMangaRepository) {}
+  constructor(private readonly infoRepository: IInformationsRepository) {}
 
   async execute(data: ISetUpdateDTO): Promise<boolean> {
     const { origin, language, latest_updates, populars } = data;
 
-    const updateExist = await this.mangaRepository.updateExists(origin);
+    const updateExist = await this.infoRepository.exists(origin);
 
     if (!updateExist) {
       throw new UpdateNotFoundError(origin);
     }
 
-    const wasInserted = await this.mangaRepository.setUpdate({
+    const wasInserted = await this.infoRepository.set({
       origin,
       language,
       latest_updates,

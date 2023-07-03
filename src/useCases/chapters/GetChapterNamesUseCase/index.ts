@@ -1,11 +1,11 @@
-import { mangaRespository } from "repositories";
+import { chapterRespository } from "repositories";
 import { GetChapterNamesUseCase } from "./GetChapterNamesUseCase";
 import { GetChapterNamesController } from "./GetChapterNamesController";
 import { Validator } from "validation";
 import { IGetChapterNamesDTO } from "./IGetChapterNamesDTO";
 import { getChapterNamesSchema } from "./getChapterNamesSchema";
 
-const getChapterNamesUseCase = new GetChapterNamesUseCase(mangaRespository);
+const getChapterNamesUseCase = new GetChapterNamesUseCase(chapterRespository);
 const getChaptersValidator = new Validator<IGetChapterNamesDTO>(
   getChapterNamesSchema
 );

@@ -12,7 +12,7 @@ export class GetMangasByGenreUseCase
     const { origin, genreName, page } = data;
 
     const { mangas, currentPage, totalPages } =
-      await this.mangaRepository.getMangasByGenre({ origin, genreName, page });
+      await this.mangaRepository.getByGenre({ origin, genreName, page });
 
     if (!mangas || mangas.length == 0) {
       throw new DataNotFoundError(`Genre ${genreName}`);

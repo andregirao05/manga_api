@@ -96,7 +96,7 @@ router.post("/chapters/add", authMiddleware, adaptRoute(addChaptersController));
 //Genre routes
 
 router.get(
-  "/genres/names/:language",
+  "/genres/names/:origin",
   authMiddleware,
   adaptRoute(getGenreNamesController)
 );

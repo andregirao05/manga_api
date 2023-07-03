@@ -1,6 +1,6 @@
 # Obter nomes dos gêneros de mangás (GET)
 
-`/genres/names/:language`
+`/genres/names/:origin`
 
 ## Descrição
 
@@ -18,9 +18,9 @@ Retorna os nomes dos gêneros disponíveis para um determinado idioma.
 
 **Params**
 
-| Field    | Format | Description     |
-| -------- | ------ | --------------- |
-| language | string | Idioma desejado |
+| Field  | Format | Description             |
+| ------ | ------ | ----------------------- |
+| origin | string | Site de origem desejado |
 
 ### Response
 
