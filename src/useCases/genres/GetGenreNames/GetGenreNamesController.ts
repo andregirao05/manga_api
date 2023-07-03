@@ -14,8 +14,8 @@ export class GetGenreNamesController implements IController {
 
   async handle(request: IRequest): Promise<IResponse> {
     try {
-      const { language } = await this.validator.validate(request.params);
-      const results = await this.getGenreNamesUseCase.execute({ language });
+      const { origin } = await this.validator.validate(request.params);
+      const results = await this.getGenreNamesUseCase.execute({ origin });
 
       return ok(results);
     } catch (error) {
