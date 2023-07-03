@@ -4,8 +4,9 @@ import { AddChaptersController } from "./AddChaptersController";
 import { AddChaptersUseCase } from "./AddChaptersUseCase";
 import { addChaptersSchema } from "./AddChaptersSchema";
 import { IAddChaptersDTO } from "./IAddChaptersDTO";
+import { chapterRespository } from "repositories";
 
-const addChaptersUseCase = new AddChaptersUseCase(mangaRespository);
+const addChaptersUseCase = new AddChaptersUseCase(chapterRespository);
 const addChaptersValidator = new Validator<IAddChaptersDTO>(addChaptersSchema);
 const addChaptersController = new AddChaptersController(
   addChaptersUseCase,

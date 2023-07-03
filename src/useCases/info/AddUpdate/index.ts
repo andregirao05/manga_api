@@ -1,11 +1,11 @@
-import { mangaRespository } from "repositories";
+import { informationsRespository } from "repositories";
 import { AddUpdateController } from "./AddUpdateController";
 import { AddUpdateUseCase } from "./AddUpdateUseCase";
 import { Validator } from "validation";
 import { IAddUpdateDTO } from "./IAddUpdateDTO";
 import { addUpdateSchema } from "./addUpdateSchema";
 
-const addUpdateUseCase = new AddUpdateUseCase(mangaRespository);
+const addUpdateUseCase = new AddUpdateUseCase(informationsRespository);
 const addUpdateValidator = new Validator<IAddUpdateDTO>(addUpdateSchema);
 const addUpdateController = new AddUpdateController(
   addUpdateUseCase,

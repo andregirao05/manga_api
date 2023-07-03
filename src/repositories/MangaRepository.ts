@@ -1,37 +1,24 @@
 import { ObjectId } from "mongodb";
-import { IMangaRepository, IMangaPage } from "./IMangaRepository";
+import { IMangaRepository, IMangaPage } from "./interfaces/IMangaRepository";
+import { IManga, IMangaWithChapters, IUpdate, IRecommendation } from "entities";
 import {
-  IManga,
-  IMangaWithChapters,
-  IUpdate,
-  IChapter,
-  IRecommendation,
-} from "entities";
-import {
-  IAddChaptersDTO,
   IAddMangaDTO,
   IAddRecommendationsDTO,
-  IAddUpdateDTO,
-  IGetChapterNamesDTO,
-  IGetChaptersDTO,
   IGetGenreNamesDTO,
   IGetLatestUpdatedMangasDTO,
   IGetMangaDTO,
   IGetMangasByGenreDTO,
   IGetPopularMangasDTO,
   IGetRecommendationsDTO,
-  IGetSingleChapterDTO,
-  IGetUpdateDTO,
   IMangaExistsDTO,
   ISearchMangasDTO,
-  ISetUpdateDTO,
 } from "useCases";
 import {
   MangaModel,
   MangaSchema,
   RecommendationSchema,
   UpdateSchema,
-} from "./MangaRepoSchemas";
+} from "./schemas";
 import { model, Model } from "mongoose";
 
 class MangaRepository implements IMangaRepository {
@@ -57,49 +44,6 @@ class MangaRepository implements IMangaRepository {
     });
 
     return manga;
-  }
-
-  async getChapters(data: IGetChaptersDTO): Promise<IChapter[]> {
-    const results = await this.MangaModel.findOne({ _id: data.id }).select({
-      chapters: 1,
-    });
-
-    return results?.chapters;
-  }
-
-  async getChapterNames(data: IGetChapterNamesDTO): Promise<string[]> {
-    const [results] = await this.MangaModel.aggregate([
-      {
-        $match: {
-          _id: new ObjectId(data.id),
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          chapterNames: {
-            $map: {
-              input: "$chapters",
-              as: "chapters",
-              in: "$$chapters.name",
-            },
-          },
-        },
-      },
-    ]);
-
-    const names = results?.chapterNames;
-
-    return names;
-  }
-
-  async getSingleChapter(data: IGetSingleChapterDTO): Promise<IChapter> {
-    const results = await this.MangaModel.findOne({ _id: data.id }).select({
-      _id: 0,
-      chapters: { $elemMatch: { name: data.chapterName } },
-    });
-
-    return results?.chapters[0];
   }
 
   async search(data: ISearchMangasDTO): Promise<IMangaPage> {
@@ -135,7 +79,7 @@ class MangaRepository implements IMangaRepository {
     return genresNames;
   }
 
-  async getMangasByGenre(data: IGetMangasByGenreDTO): Promise<IMangaPage> {
+  async getByGenre(data: IGetMangasByGenreDTO): Promise<IMangaPage> {
     const options = {
       page: data.page,
       limit: this.mangasPerPage,
@@ -237,71 +181,6 @@ class MangaRepository implements IMangaRepository {
       chapters,
     });
     return results.insertedId.toString();
-  }
-
-  async addChapters(data: IAddChaptersDTO): Promise<boolean> {
-    const { id, chapters } = data;
-
-    const results = await this.MangaModel.collection.updateOne(
-      {
-        _id: new ObjectId(id),
-      },
-      {
-        $push: {
-          chapters: { $each: chapters },
-        },
-      }
-    );
-
-    return results.modifiedCount > 0;
-  }
-
-  async addUpdate(data: IAddUpdateDTO): Promise<string> {
-    const { origin, language, latest_updates, populars } = data;
-    const results = await this.UpdateModel.collection.insertOne({
-      origin,
-      language,
-      latest_updates,
-      populars,
-    });
-    return results.insertedId.toString();
-  }
-
-  async getUpdate(data: IGetUpdateDTO): Promise<IUpdate> {
-    const { origin } = data;
-    const results = await this.UpdateModel.findOne({ origin });
-    return results;
-  }
-
-  async setUpdate(data: ISetUpdateDTO): Promise<boolean> {
-    const { origin, language, latest_updates, populars } = data;
-
-    const results = await this.UpdateModel.collection.updateOne(
-      {
-        origin,
-      },
-      {
-        $set: {
-          origin,
-          language,
-          latest_updates,
-          populars,
-        },
-      }
-    );
-
-    return results.modifiedCount > 0;
-  }
-
-  async updateExists(origin: string): Promise<boolean> {
-    const results = await this.UpdateModel.findOne(
-      {
-        origin: origin,
-      },
-      { projection: { _id: 1 } }
-    );
-
-    return results !== null;
   }
 
   async mangaExistsByInfo(data: IMangaExistsDTO): Promise<string> {

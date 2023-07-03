@@ -1,7 +1,7 @@
 import { Model, model } from "mongoose";
 import { IUser } from "entities";
-import { IGetUserProps, IUserRepository } from "./IUserRepository";
-import { UserSchema } from "./UserRepoSchemas";
+import { IGetUserProps, IUserRepository } from "./interfaces";
+import { UserSchema } from "./schemas";
 
 class UserRepository implements IUserRepository {
   private UserModel: Model<IUser>;

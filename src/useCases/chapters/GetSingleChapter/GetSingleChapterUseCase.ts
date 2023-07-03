@@ -1,5 +1,5 @@
 import { IUseCase } from "protocols";
-import { IMangaRepository } from "repositories";
+import { IChapterRepository } from "repositories";
 import { IGetSingleChapterDTO } from "./IGetSingleChapterDTO";
 import { IChapter } from "entities";
 import { DataNotFoundError } from "errors";
@@ -7,12 +7,12 @@ import { DataNotFoundError } from "errors";
 export class GetSingleChapterUseCase
   implements IUseCase<IGetSingleChapterDTO, IChapter>
 {
-  constructor(private readonly mangaRepository: IMangaRepository) {}
+  constructor(private readonly chapterRepository: IChapterRepository) {}
 
   async execute(data: IGetSingleChapterDTO): Promise<IChapter> {
     const { id, chapterName } = data;
 
-    const chapter = await this.mangaRepository.getSingleChapter({
+    const chapter = await this.chapterRepository.get({
       id,
       chapterName,
     });

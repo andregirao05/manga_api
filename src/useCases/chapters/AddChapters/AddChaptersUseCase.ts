@@ -1,15 +1,15 @@
 import { MangaNotFoundError, ChapterAlreadyExistError } from "errors";
-import { IMangaRepository } from "repositories";
+import { IChapterRepository } from "repositories";
 import { IUseCase } from "protocols";
 import { IAddChaptersDTO } from "./IAddChaptersDTO";
 
 export class AddChaptersUseCase implements IUseCase<IAddChaptersDTO, boolean> {
-  constructor(private readonly mangaRepository: IMangaRepository) {}
+  constructor(private readonly chaptersRepository: IChapterRepository) {}
 
   async execute(data: IAddChaptersDTO): Promise<boolean> {
     const { id, chapters } = data;
 
-    const chapterNames = await this.mangaRepository.getChapterNames({ id });
+    const chapterNames = await this.chaptersRepository.getNames({ id });
 
     if (!chapterNames) {
       throw new MangaNotFoundError(id);
@@ -21,7 +21,7 @@ export class AddChaptersUseCase implements IUseCase<IAddChaptersDTO, boolean> {
       }
     }
 
-    const wasInserted = await this.mangaRepository.addChapters({
+    const wasInserted = await this.chaptersRepository.addAll({
       id,
       chapters,
     });
