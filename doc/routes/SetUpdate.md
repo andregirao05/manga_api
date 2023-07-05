@@ -4,7 +4,7 @@
 
 ## Descrição
 
-Atualiza informações de um site de origem.
+Atualiza informações de um site de origem. Se os dados ainda não existirem, um novo registro será criado no banco de dados.
 
 ## Formatos
 

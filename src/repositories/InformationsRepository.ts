@@ -42,10 +42,11 @@ class InfomationsRepository implements IInformationsRepository {
           latest_updates,
           populars,
         },
-      }
+      },
+      { upsert: true }
     );
 
-    return results.modifiedCount > 0;
+    return results.modifiedCount > 0 || results.upsertedCount > 0;
   }
 
   async exists(origin: string): Promise<boolean> {
