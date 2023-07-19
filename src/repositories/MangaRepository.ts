@@ -51,15 +51,12 @@ class MangaRepository implements IMangaRepository {
       page: data.page,
       limit: this.mangasPerPage,
       projection: { chapters: 0 },
-      sort: { score: { $meta: "textScore" } },
     };
-
-    const term = `\"${data.searchTerm}\"`;
 
     const results = await this.MangaModel.paginate(
       {
         origin: data.origin,
-        $text: { $search: term },
+        title: { $regex: data.searchTerm, $options: "i" },
       },
       options
     );
