@@ -127,18 +127,16 @@ class MangaRepository implements IMangaRepository {
   async getLatestUpdated(
     data: IGetLatestUpdatedMangasDTO
   ): Promise<IMangaPage> {
-    const updateData = await this.UpdateModel.findOne({ origin: data.origin });
-
     const options = {
       page: data.page,
       limit: this.mangasPerPage,
       projection: { chapters: 0 },
+      sort: { updated_at: -1 },
     };
 
     const results = await this.MangaModel.paginate(
       {
         origin: data.origin,
-        url: { $in: updateData?.latest_updates },
       },
       options
     );
@@ -181,6 +179,8 @@ class MangaRepository implements IMangaRepository {
       thumbnail,
       genres,
       chapters,
+      created_at: new Date(),
+      updated_at: new Date(),
     });
     return results.insertedId.toString();
   }

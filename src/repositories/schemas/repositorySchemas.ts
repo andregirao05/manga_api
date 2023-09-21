@@ -36,6 +36,9 @@ export const MangaSchema = new Schema<IMangaWithChapters>(
     toObject: {
       transform: function (doc, ret) {
         ret.id = ret._id.toString();
+
+        delete ret.created_at;
+        delete ret.updated_at;
         delete ret._id;
       },
     },
@@ -43,6 +46,9 @@ export const MangaSchema = new Schema<IMangaWithChapters>(
     toJSON: {
       transform: function (doc, ret) {
         ret.id = ret._id.toString();
+
+        delete ret.created_at;
+        delete ret.updated_at;
         delete ret._id;
       },
     },
@@ -64,6 +70,9 @@ export const UpdateSchema = new Schema<IUpdate>(
     toObject: {
       transform: function (doc, ret) {
         ret.id = ret._id.toString();
+
+        delete ret.created_at;
+        delete ret.updated_at;
         delete ret._id;
       },
     },
@@ -71,6 +80,9 @@ export const UpdateSchema = new Schema<IUpdate>(
     toJSON: {
       transform: function (doc, ret) {
         ret.id = ret._id.toString();
+
+        delete ret.created_at;
+        delete ret.updated_at;
         delete ret._id;
       },
     },
@@ -88,6 +100,9 @@ export const RecommendationSchema = new Schema<IRecommendation>(
     toObject: {
       transform: function (doc, ret) {
         ret.id = ret._id.toString();
+
+        delete ret.created_at;
+        delete ret.updated_at;
         delete ret._id;
       },
     },
@@ -95,6 +110,9 @@ export const RecommendationSchema = new Schema<IRecommendation>(
     toJSON: {
       transform: function (doc, ret) {
         ret.id = ret._id.toString();
+
+        delete ret.created_at;
+        delete ret.updated_at;
         delete ret._id;
       },
     },
@@ -109,6 +127,9 @@ export const UserSchema = new Schema<IUser>(
     toObject: {
       transform: function (doc, ret) {
         ret.id = ret._id.toString();
+
+        delete ret.created_at;
+        delete ret.updated_at;
         delete ret._id;
       },
     },
@@ -116,6 +137,9 @@ export const UserSchema = new Schema<IUser>(
     toJSON: {
       transform: function (doc, ret) {
         ret.id = ret._id.toString();
+
+        delete ret.created_at;
+        delete ret.updated_at;
         delete ret._id;
       },
     },
