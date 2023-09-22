@@ -12,11 +12,10 @@ class InfomationsRepository implements IInformationsRepository {
   }
 
   async add(data: IAddUpdateDTO): Promise<string> {
-    const { origin, language, latest_updates, populars } = data;
+    const { origin, language, populars } = data;
     const results = await this.UpdateModel.collection.insertOne({
       origin,
       language,
-      latest_updates,
       populars,
     });
     return results.insertedId.toString();
@@ -29,7 +28,7 @@ class InfomationsRepository implements IInformationsRepository {
   }
 
   async set(data: ISetUpdateDTO): Promise<boolean> {
-    const { origin, language, latest_updates, populars } = data;
+    const { origin, language, populars } = data;
 
     const results = await this.UpdateModel.collection.updateOne(
       {
@@ -39,7 +38,6 @@ class InfomationsRepository implements IInformationsRepository {
         $set: {
           origin,
           language,
-          latest_updates,
           populars,
         },
       },

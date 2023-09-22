@@ -18,12 +18,11 @@ Atualiza informações de um site de origem. Se os dados ainda não existirem, u
 
 **Body**
 
-| Field          | Format    | Description                              |
-| -------------- | --------- | ---------------------------------------- |
-| origin         | string    | Site de origem                           |
-| language       | string    | Idioma do site                           |
-| populars       | string[ ] | URLs dos mangás mais populares           |
-| latest_updates | string[ ] | URLs dos mangás recentemente atualizados |
+| Field    | Format    | Description                    |
+| -------- | --------- | ------------------------------ |
+| origin   | string    | Site de origem                 |
+| language | string    | Idioma do site                 |
+| populars | string[ ] | URLs dos mangás mais populares |
 
 ### Response
 

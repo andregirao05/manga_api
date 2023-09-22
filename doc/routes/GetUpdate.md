@@ -26,9 +26,8 @@ Retorna as informações de um site de origem específico.
 
 **Data**
 
-| Field          | Format    | Description                              |
-| -------------- | --------- | ---------------------------------------- |
-| origin         | string    | Site de origem                           |
-| language       | string    | Idioma do site                           |
-| populars       | string[ ] | URLs dos mangás mais populares           |
-| latest_updates | string[ ] | URLs dos mangás recentemente atualizados |
+| Field    | Format    | Description                    |
+| -------- | --------- | ------------------------------ |
+| origin   | string    | Site de origem                 |
+| language | string    | Idioma do site                 |
+| populars | string[ ] | URLs dos mangás mais populares |
