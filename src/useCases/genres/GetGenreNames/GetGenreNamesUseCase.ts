@@ -8,7 +8,9 @@ export class GetGenreNamesUseCase
   constructor(private readonly mangaRepository: IMangaRepository) {}
 
   async execute(data: IGetGenreNamesDTO): Promise<string[]> {
-    const genreNames = await this.mangaRepository.getGenreNames(data);
+    let genreNames = await this.mangaRepository.getGenreNames(data);
+
+    if (genreNames) genreNames.sort();
 
     return genreNames;
   }

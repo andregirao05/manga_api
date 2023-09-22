@@ -71,6 +71,10 @@ class ChapterRepository implements IChapterRepository {
         _id: new ObjectId(id),
       },
       {
+        $set: {
+          updated_at: new Date(),
+        },
+
         $push: {
           chapters: { $each: chapters },
         },
