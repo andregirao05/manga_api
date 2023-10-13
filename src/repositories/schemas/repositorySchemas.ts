@@ -2,6 +2,7 @@ import { Schema, PaginateModel } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 import {
   IChapter,
+  IGenre,
   IMangaWithChapters,
   IRecommendation,
   IUpdate,
@@ -29,6 +30,8 @@ export const MangaSchema = new Schema<IMangaWithChapters>(
     genres: [String],
     summary: String,
     chapters: [ChapterSchema],
+    created_at: Date,
+    updated_at: Date,
   },
   {
     collection: "mangas",
@@ -62,7 +65,6 @@ export const UpdateSchema = new Schema<IUpdate>(
     origin: String,
     language: String,
     populars: [String],
-    latest_updates: [String],
   },
   {
     collection: "updates",
@@ -71,8 +73,6 @@ export const UpdateSchema = new Schema<IUpdate>(
       transform: function (doc, ret) {
         ret.id = ret._id.toString();
 
-        delete ret.created_at;
-        delete ret.updated_at;
         delete ret._id;
       },
     },
@@ -81,8 +81,6 @@ export const UpdateSchema = new Schema<IUpdate>(
       transform: function (doc, ret) {
         ret.id = ret._id.toString();
 
-        delete ret.created_at;
-        delete ret.updated_at;
         delete ret._id;
       },
     },
@@ -101,8 +99,6 @@ export const RecommendationSchema = new Schema<IRecommendation>(
       transform: function (doc, ret) {
         ret.id = ret._id.toString();
 
-        delete ret.created_at;
-        delete ret.updated_at;
         delete ret._id;
       },
     },
@@ -111,8 +107,6 @@ export const RecommendationSchema = new Schema<IRecommendation>(
       transform: function (doc, ret) {
         ret.id = ret._id.toString();
 
-        delete ret.created_at;
-        delete ret.updated_at;
         delete ret._id;
       },
     },
@@ -128,8 +122,6 @@ export const UserSchema = new Schema<IUser>(
       transform: function (doc, ret) {
         ret.id = ret._id.toString();
 
-        delete ret.created_at;
-        delete ret.updated_at;
         delete ret._id;
       },
     },
@@ -138,8 +130,35 @@ export const UserSchema = new Schema<IUser>(
       transform: function (doc, ret) {
         ret.id = ret._id.toString();
 
-        delete ret.created_at;
-        delete ret.updated_at;
+        delete ret._id;
+      },
+    },
+  }
+);
+
+export const GenreSchema = new Schema<IGenre>(
+  {
+    name: String,
+    origin: String,
+    is_adult: Boolean,
+    image_url: String,
+  },
+
+  {
+    collection: "genres",
+
+    toObject: {
+      transform: function (doc, ret) {
+        ret.id = ret._id.toString();
+
+        delete ret._id;
+      },
+    },
+
+    toJSON: {
+      transform: function (doc, ret) {
+        ret.id = ret._id.toString();
+
         delete ret._id;
       },
     },
