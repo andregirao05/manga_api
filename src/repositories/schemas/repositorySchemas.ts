@@ -2,6 +2,7 @@ import { Schema, PaginateModel } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 import {
   IChapter,
+  IGenre,
   IMangaWithChapters,
   IRecommendation,
   IUpdate,
@@ -116,6 +117,35 @@ export const UserSchema = new Schema<IUser>(
   { username: String, password: String },
   {
     collection: "users",
+
+    toObject: {
+      transform: function (doc, ret) {
+        ret.id = ret._id.toString();
+
+        delete ret._id;
+      },
+    },
+
+    toJSON: {
+      transform: function (doc, ret) {
+        ret.id = ret._id.toString();
+
+        delete ret._id;
+      },
+    },
+  }
+);
+
+export const GenreSchema = new Schema<IGenre>(
+  {
+    name: String,
+    origin: String,
+    is_adult: Boolean,
+    image_url: String,
+  },
+
+  {
+    collection: "genres",
 
     toObject: {
       transform: function (doc, ret) {

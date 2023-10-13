@@ -1,6 +1,12 @@
 import { ObjectId } from "mongodb";
 import { IMangaRepository, IMangaPage } from "./interfaces/IMangaRepository";
-import { IManga, IMangaWithChapters, IUpdate, IRecommendation } from "entities";
+import {
+  IManga,
+  IMangaWithChapters,
+  IUpdate,
+  IRecommendation,
+  IGenre,
+} from "entities";
 import {
   IAddMangaDTO,
   IAddRecommendationsDTO,
@@ -18,6 +24,7 @@ import {
   MangaSchema,
   RecommendationSchema,
   UpdateSchema,
+  GenreSchema,
 } from "./schemas";
 import { model, Model } from "mongoose";
 
@@ -25,6 +32,7 @@ class MangaRepository implements IMangaRepository {
   private MangaModel: MangaModel;
   private UpdateModel: Model<IUpdate>;
   private RecommendationModel: Model<IRecommendation>;
+  private GenreModel: Model<IGenre>;
 
   constructor(private readonly mangasPerPage: number = 20) {
     this.MangaModel = model<IMangaWithChapters>(
@@ -32,10 +40,13 @@ class MangaRepository implements IMangaRepository {
       MangaSchema
     ) as MangaModel;
     this.UpdateModel = model<IUpdate>("Update", UpdateSchema);
+
     this.RecommendationModel = model<IRecommendation>(
       "Recommendation",
       RecommendationSchema
     );
+
+    this.GenreModel = model<IGenre>("Genre", GenreSchema);
   }
 
   async get(data: IGetMangaDTO): Promise<IManga> {
@@ -79,6 +90,26 @@ class MangaRepository implements IMangaRepository {
     const genreNames = distinctGenres.map((doc) => doc.name);
 
     return genreNames;
+  }
+
+  async upsertGenre(name: string, origin: string): Promise<boolean> {
+    const genreExists = await this.GenreModel.findOne({
+      name: name,
+      origin: origin,
+    });
+
+    if (!genreExists) {
+      const results = await this.GenreModel.collection.insertOne({
+        name: name,
+        origin: origin,
+        is_adult: false,
+        image_url: "",
+      });
+
+      return results != null;
+    }
+
+    return false;
   }
 
   async getByGenre(data: IGetMangasByGenreDTO): Promise<IMangaPage> {
@@ -182,6 +213,11 @@ class MangaRepository implements IMangaRepository {
       created_at: new Date(),
       updated_at: new Date(),
     });
+
+    for (let genreName of genres) {
+      this.upsertGenre(genreName, origin);
+    }
+
     return results.insertedId.toString();
   }
 
