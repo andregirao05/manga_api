@@ -23,6 +23,10 @@ export interface IMangaRepository {
   search(data: ISearchMangasDTO): Promise<IMangaPage>;
   getGenreNames(data: IGetGenreNamesDTO): Promise<string[]>;
   getByGenre(data: IGetMangasByGenreDTO): Promise<IMangaPage>;
+
+  upsertGenre(name: string, origin: string): Promise<boolean>;
+  getAdultGenreNames(origin: string): Promise<string[]>;
+
   getPopulars(data: IGetPopularMangasDTO): Promise<IMangaPage>;
   getLatestUpdated(data: IGetLatestUpdatedMangasDTO): Promise<IMangaPage>;
 

@@ -112,6 +112,14 @@ class MangaRepository implements IMangaRepository {
     return false;
   }
 
+  async getAdultGenreNames(origin: string): Promise<string[]> {
+    const results = await this.GenreModel.distinct("name", {
+      origin: origin,
+      is_adult: true,
+    });
+    return results;
+  }
+
   async getByGenre(data: IGetMangasByGenreDTO): Promise<IMangaPage> {
     const options = {
       page: data.page,
