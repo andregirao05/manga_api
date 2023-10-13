@@ -93,6 +93,7 @@ Cada requisição **deve ter um header chamado "authorization" com um token de a
 
 - [Obter nomes de gêneros de mangás](/doc/routes/GetGenreNames.md)
 - [Obter nomes de gêneros de mangás adultos](/doc/routes/GetAdultGenreNames.md)
+- [Obter gêneros (com atributos: is_adult, image_url)](/doc/routes/GetGenres.md)
 
 ### Informações dos sites dos mangás
 

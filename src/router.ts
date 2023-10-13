@@ -20,6 +20,7 @@ import {
   addRecommendationsController,
   getRecommendationsController,
   getAdultGenreNamesController,
+  getGenresController,
 } from "./useCases";
 import { authMiddleware } from "./middlewares";
 
@@ -106,6 +107,12 @@ router.get(
   "/genres/adult-names/:origin",
   authMiddleware,
   adaptRoute(getAdultGenreNamesController)
+);
+
+router.get(
+  "/genres/get/:origin",
+  authMiddleware,
+  adaptRoute(getGenresController)
 );
 
 //Info routes
