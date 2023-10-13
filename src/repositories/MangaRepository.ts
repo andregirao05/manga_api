@@ -80,16 +80,10 @@ class MangaRepository implements IMangaRepository {
   }
 
   async getGenreNames(data: IGetGenreNamesDTO): Promise<string[]> {
-    const distinctGenres = await this.MangaModel.aggregate([
-      { $match: { origin: data.origin } },
-      { $unwind: "$genres" }, // Desconstrói o array "genres" em documentos individuais
-      { $group: { _id: "$genres" } }, // Agrupa pelos valores distintos de "genres"
-      { $project: { _id: 0, name: "$_id" } }, // Renomeia o campo "_id" para "genre"
-    ]);
-
-    const genreNames = distinctGenres.map((doc) => doc.name);
-
-    return genreNames;
+    const results = await this.GenreModel.distinct("name", {
+      origin: data.origin,
+    });
+    return results;
   }
 
   async upsertGenre(name: string, origin: string): Promise<boolean> {
