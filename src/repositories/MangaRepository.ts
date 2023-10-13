@@ -133,6 +133,12 @@ class MangaRepository implements IMangaRepository {
     };
   }
 
+  async getGenres(origin: string): Promise<IGenre[]> {
+    const results = await this.GenreModel.find({ origin });
+
+    return results;
+  }
+
   async getPopulars(data: IGetPopularMangasDTO): Promise<IMangaPage> {
     const updateData = await this.UpdateModel.findOne({ origin: data.origin });
 

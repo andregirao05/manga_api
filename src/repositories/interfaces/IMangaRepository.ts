@@ -10,7 +10,7 @@ import {
   IAddRecommendationsDTO,
   IGetRecommendationsDTO,
 } from "useCases";
-import { IManga } from "entities";
+import { IGenre, IManga } from "entities";
 
 export interface IMangaPage {
   mangas: IManga[];
@@ -26,6 +26,7 @@ export interface IMangaRepository {
 
   upsertGenre(name: string, origin: string): Promise<boolean>;
   getAdultGenreNames(origin: string): Promise<string[]>;
+  getGenres(origin: string): Promise<IGenre[]>;
 
   getPopulars(data: IGetPopularMangasDTO): Promise<IMangaPage>;
   getLatestUpdated(data: IGetLatestUpdatedMangasDTO): Promise<IMangaPage>;
